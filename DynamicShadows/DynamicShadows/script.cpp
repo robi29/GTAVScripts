@@ -45,11 +45,15 @@ std::unordered_map<std::string, uint8_t>* vehLightID = nullptr;
 
 __forceinline void update()
 {
-    const int     vehicleCount    = worldGetAllVehicles(vehsArray, vehsArraySize);
-    const Entity  playerID        = PLAYER::PLAYER_PED_ID();
-    const Vehicle playerVehicleId = PED::IS_PED_IN_ANY_VEHICLE(playerID, 0)
-                                    ? PED::GET_VEHICLE_PED_IS_USING(playerID)
-                                    : -1;
+    const int     vehicleArrayCount = worldGetAllVehicles(vehsArray, vehsArraySize);
+    const int     vehicleCount      = (vehicleArrayCount < 300)
+                                      ? vehicleArrayCount
+                                      : 300;
+
+    const Entity  playerID          = PLAYER::PLAYER_PED_ID();
+    const Vehicle playerVehicleId   = PED::IS_PED_IN_ANY_VEHICLE(playerID, 0)
+                                      ? PED::GET_VEHICLE_PED_IS_USING(playerID)
+                                      : -1;
 
     Vector3 playerPos = ENTITY::GET_ENTITY_COORDS(playerID, TRUE);
     playerPos.z += 5.0f;
@@ -57,7 +61,7 @@ __forceinline void update()
     for (int i = 0; i < vehicleCount; ++i)
     {
         const register int vehicleID = vehsArray[i];
-        if (vehicleID != 0 && ENTITY::DOES_ENTITY_EXIST(vehicleID))
+        if (vehicleID > 0 && ENTITY::DOES_ENTITY_EXIST(vehicleID))
         {
             if (vehicleID == playerVehicleId)
             {
@@ -115,7 +119,9 @@ __forceinline void update()
 
                 const auto modelID = vehLightID->find(modelName);
 
-                const int colorID = modelID->second % 9;
+                const int colorID = (modelID != vehLightID->end())
+                                    ? modelID->second % 9
+                                    : 0;
                 const int red     = id[colorID].r;
                 const int green   = id[colorID].g;
                 const int blue    = id[colorID].b;
@@ -221,752 +227,757 @@ void ScriptMain()
 {
     loadConfigFromFile();
 
-    vehLightID = new std::unordered_map<std::string, uint8_t>;
+    vehLightID = new (std::nothrow) std::unordered_map<std::string, uint8_t>;
 
-    vehLightID->insert({ "NINEF", 6 });
-    vehLightID->insert({ "NINEF2", 6 });
-    vehLightID->insert({ "ASEA", 0 });
-    vehLightID->insert({ "BOXVILLE2", 0 });
-    vehLightID->insert({ "BULLDOZE", 8 }); // BULLDOZER
-    vehLightID->insert({ "CHEETAH", 6 });
-    vehLightID->insert({ "COGCABRI", 6 }); // COGCABRIO
-    vehLightID->insert({ "DUBSTA", 1 });
-    vehLightID->insert({ "DUBSTA2", 0 });
-    vehLightID->insert({ "EMPEROR", 0 });
-    vehLightID->insert({ "ENTITYXF", 6 });
-    vehLightID->insert({ "FIRETRUK", 0 });
-    vehLightID->insert({ "FQ2", 0 });
-    vehLightID->insert({ "INFERNUS", 6 });
-    vehLightID->insert({ "JACKAL", 0 });
-    vehLightID->insert({ "JOURNEY", 0 });
-    vehLightID->insert({ "JB700", 0 });
-    vehLightID->insert({ "ORACLE", 1 });
-    vehLightID->insert({ "PATRIOT", 1 });
-    vehLightID->insert({ "RADI", 1 });
-    vehLightID->insert({ "ROMERO", 0 });
-    vehLightID->insert({ "STINGER", 2 });
-    vehLightID->insert({ "STOCKADE", 0 });
-    vehLightID->insert({ "SUPERD", 6 });
-    vehLightID->insert({ "TAILGATE", 6 }); // TAILGATER
-    vehLightID->insert({ "TORNADO", 2 });
-    vehLightID->insert({ "UTILTRUC", 0 }); // UTILLITRUCK
-    vehLightID->insert({ "UTILLITRUCK2", 0 });
-    vehLightID->insert({ "VOODOO2", 2 });
-    vehLightID->insert({ "SCORCHER", 0 });
-    vehLightID->insert({ "POLICEB", 6 });
-    vehLightID->insert({ "HEXER", 6 });
-    vehLightID->insert({ "BUZZARD", 0 });
-    vehLightID->insert({ "POLMAV", 0 });
-    vehLightID->insert({ "CUBAN800", 0 });
-    vehLightID->insert({ "JET", 0 });
-    vehLightID->insert({ "TITAN", 0 });
-    vehLightID->insert({ "SQUALO", 0 });
-    vehLightID->insert({ "MARQUIS", 0 });
-    vehLightID->insert({ "FREIGHTCAR", 0 });
-    vehLightID->insert({ "FREIGHT", 0 });
-    vehLightID->insert({ "FREIGHTCONT1", 0 });
-    vehLightID->insert({ "FREIGHTCONT2", 0 });
-    vehLightID->insert({ "FREIGHTGRAIN", 0 });
-    vehLightID->insert({ "TANKERCAR", 0 });
-    vehLightID->insert({ "METROTRAIN", 0 });
-    vehLightID->insert({ "TRAILERS", 0 });
-    vehLightID->insert({ "TANKER", 0 });
-    vehLightID->insert({ "TRAILERLOGS", 0 });
-    vehLightID->insert({ "TR2", 0 });
-    vehLightID->insert({ "TR3", 0 });
-    vehLightID->insert({ "PICADOR", 0 });
-    vehLightID->insert({ "POLICEO1", 2 }); // POLICEOLD1
-    vehLightID->insert({ "POLICEO2", 2 }); // ADDED
-    vehLightID->insert({ "ASTROPE", 0 }); // ASTEROPE
-    vehLightID->insert({ "BANSHEE", 6 });
-    vehLightID->insert({ "BUFFALO", 1 });
-    vehLightID->insert({ "BULLET", 6 });
-    vehLightID->insert({ "F620", 6 });
-    vehLightID->insert({ "HANDLER", 8 });
-    vehLightID->insert({ "RUINER", 2 });
-    vehLightID->insert({ "GBURRITO", 0 });
-    vehLightID->insert({ "TRACTOR2", 0 });
-    vehLightID->insert({ "PENUMBRA", 0 });
-    vehLightID->insert({ "SUBMERS", 3 }); // SUBMERSIBLE
-    vehLightID->insert({ "DOCKTUG", 8 });
-    vehLightID->insert({ "DOCKTRAILER", 0 });
-    vehLightID->insert({ "SULTAN", 0 });
-    vehLightID->insert({ "DILETTAN", 1 }); // DILETTANTE
-    vehLightID->insert({ "FUTO", 2 });
-    vehLightID->insert({ "HABANERO", 0 });
-    vehLightID->insert({ "INTRUDER", 0 });
-    vehLightID->insert({ "LANDSTAL", 1 }); // LANDSTALKER
-    vehLightID->insert({ "MINIVAN", 0 });
-    vehLightID->insert({ "SCHAFTER2", 6 });
-    vehLightID->insert({ "SERRANO", 6 });
-    vehLightID->insert({ "MANANA", 2 });
-    vehLightID->insert({ "SEASHARK2", 0 });
-    vehLightID->insert({ "YOUGA", 0 });
-    vehLightID->insert({ "PREMIER", 1 });
-    vehLightID->insert({ "SPEEDO", 0 });
-    vehLightID->insert({ "WASHINGT", 0 }); // WASHINGTON
-    vehLightID->insert({ "ANNIHILATOR", 0 });
-    vehLightID->insert({ "BLAZER2", 0 });
-    vehLightID->insert({ "CRUISER", 0 });
-    vehLightID->insert({ "RAKETRAILER", 0 });
-    vehLightID->insert({ "CARGOPLANE", 0 });
-    vehLightID->insert({ "DUMP", 8 });
-    vehLightID->insert({ "PONY", 2 });
-    vehLightID->insert({ "LGUARD", 0 });
-    vehLightID->insert({ "SENTINEL", 6 });
-    vehLightID->insert({ "SENTINEL2", 6 });
-    vehLightID->insert({ "COMET2", 6 });
-    vehLightID->insert({ "STINGERG", 2 }); // STINGERGT
-    vehLightID->insert({ "INGOT", 2 });
-    vehLightID->insert({ "PEYOTE", 2 });
-    vehLightID->insert({ "STANIER", 0 });
-    vehLightID->insert({ "STRATUM", 2 });
-    vehLightID->insert({ "AKUMA", 6 });
-    vehLightID->insert({ "CARBON", 6 }); // ADDED
-    vehLightID->insert({ "BATI", 6 });
-    vehLightID->insert({ "BATI2", 6 });
-    vehLightID->insert({ "PCJ", 0 });
-    vehLightID->insert({ "DLOADER", 2 });
-    vehLightID->insert({ "PRAIRIE", 6 });
-    vehLightID->insert({ "DUSTER", 0 });
-    vehLightID->insert({ "ISSI2", 1 });
-    vehLightID->insert({ "TRAILERS2", 0 });
-    vehLightID->insert({ "TVTRAILER", 0 });
-    vehLightID->insert({ "CUTTER", 8 });
-    vehLightID->insert({ "TRFLAT", 0 });
-    vehLightID->insert({ "TORNADO2", 2 });
-    vehLightID->insert({ "TORNADO3", 2 });
-    vehLightID->insert({ "TRIBIKE", 0 });
-    vehLightID->insert({ "TRIBIKE2", 0 });
-    vehLightID->insert({ "TRIBIKE3", 0 });
-    vehLightID->insert({ "PROPTRAILER", 0 });
-    vehLightID->insert({ "BURRITO2", 0 });
-    vehLightID->insert({ "DUNE", 0 });
-    vehLightID->insert({ "FELTZER2", 6 });
-    vehLightID->insert({ "BLISTA", 6 });
-    vehLightID->insert({ "BAGGER", 0 });
-    vehLightID->insert({ "VOLTIC", 6 });
-    vehLightID->insert({ "FUGITIVE", 6 });
-    vehLightID->insert({ "FELON", 6 });
-    vehLightID->insert({ "PBUS", 0 });
-    vehLightID->insert({ "ARMYTRAILER", 0 });
-    vehLightID->insert({ "POLICET", 0 });
-    vehLightID->insert({ "SPEEDO2", 2 });
-    vehLightID->insert({ "FELON2", 6 });
-    vehLightID->insert({ "BMX", 0 });
-    vehLightID->insert({ "EXEMPLAR", 6 });
-    vehLightID->insert({ "FUSILADE", 0 });
-    vehLightID->insert({ "BOATTRAILER", 0 });
-    vehLightID->insert({ "CAVCADE", 1 }); // CAVALCADE
-    vehLightID->insert({ "SURGE", 0 });
-    vehLightID->insert({ "BUCCANEE", 2 }); // BUCCANEER
-    vehLightID->insert({ "NEMESIS", 6 });
-    vehLightID->insert({ "ARMYTANKER", 0 });
-    vehLightID->insert({ "ROCOTO", 6 });
-    vehLightID->insert({ "STOCKADE3", 0 });
-    vehLightID->insert({ "REBEL02", 2 }); // REBEL2
-    vehLightID->insert({ "SCHWARZE", 6 }); // SCHWARZER
-    vehLightID->insert({ "SCRAP", 8 });
-    vehLightID->insert({ "SANDKING", 0 });
-    vehLightID->insert({ "SANDKIN2", 0 }); // SANDKING2
-    vehLightID->insert({ "CARBONIZ", 6 }); // CARBONIZZARE
-    vehLightID->insert({ "RUMPO", 0 });
-    vehLightID->insert({ "PRIMO", 0 });
-    vehLightID->insert({ "SABREGT", 2 });
-    vehLightID->insert({ "REGINA", 2 });
-    vehLightID->insert({ "JETMAX", 0 });
-    vehLightID->insert({ "TROPIC", 0 });
-    vehLightID->insert({ "VIGERO", 0 });
-    vehLightID->insert({ "POLICE2", 1 });
-    vehLightID->insert({ "STRETCH", 1 });
-    vehLightID->insert({ "DINGHY2", 0 });
-    vehLightID->insert({ "BOXVILLE", 0 });
-    vehLightID->insert({ "LUXOR", 0 });
-    vehLightID->insert({ "POLICD3", 6 });
-    vehLightID->insert({ "TRAILERS3", 0 });
-    vehLightID->insert({ "DOUBLE", 6 });
-    vehLightID->insert({ "TRACTOR", 8 });
-    vehLightID->insert({ "BIFF", 8 });
-    vehLightID->insert({ "DOMINATO", 0 }); // DOMINATOR
-    vehLightID->insert({ "HAULER", 8 });
-    vehLightID->insert({ "PACKER", 8 });
-    vehLightID->insert({ "PHOENIX", 2 });
-    vehLightID->insert({ "SADLER", 0 });
-    vehLightID->insert({ "SADLER2", 0 });
-    vehLightID->insert({ "DAEMON", 0 });
-    vehLightID->insert({ "COACH", 0 });
-    vehLightID->insert({ "TORNADO4", 2 });
-    vehLightID->insert({ "RATLOADER", 2 });
-    vehLightID->insert({ "RAPIDGT", 6 });
-    vehLightID->insert({ "RAPIDGT2", 6 });
-    vehLightID->insert({ "SURANO", 1 });
-    vehLightID->insert({ "BFINJECT", 2 }); // BFINJECTION
-    vehLightID->insert({ "BISON2", 0 });
-    vehLightID->insert({ "BISON3", 0 });
-    vehLightID->insert({ "BODHI2", 0 });
-    vehLightID->insert({ "BURRITO", 0 });
-    vehLightID->insert({ "BURRITO4", 0 });
-    vehLightID->insert({ "RUBBLE", 8 });
-    vehLightID->insert({ "TIPTRUCK", 8 });
-    vehLightID->insert({ "TIPTRUCK2", 8 });
-    vehLightID->insert({ "MIXER", 8 });
-    vehLightID->insert({ "MIXER2", 8 });
-    vehLightID->insert({ "PHANTOM", 8 });
-    vehLightID->insert({ "POUNDER", 8 });
-    vehLightID->insert({ "BUZZARD2", 0 });
-    vehLightID->insert({ "FROGGER", 0 });
-    vehLightID->insert({ "AIRTUG", 8 });
-    vehLightID->insert({ "BENSON", 8 });
-    vehLightID->insert({ "RIPLEY", 8 });
-    vehLightID->insert({ "AMBULAN", 0 }); // AMBULANCE
-    vehLightID->insert({ "FORK", 8 }); // FORKLIFT
-    vehLightID->insert({ "GRANGER", 0 });
-    vehLightID->insert({ "PRANGER", 0 });
-    vehLightID->insert({ "TRAILERSMALL", 0 });
-    vehLightID->insert({ "BARRACKS", 0 });
-    vehLightID->insert({ "BARRACKS2", 0 });
-    vehLightID->insert({ "CRUSADER", 0 });
-    vehLightID->insert({ "UTILLITRUCK3", 0 });
-    vehLightID->insert({ "SHERIFF", 0 });
-    vehLightID->insert({ "MONROE", 2 });
-    vehLightID->insert({ "MULE", 0 });
-    vehLightID->insert({ "TACO", 0 });
-    vehLightID->insert({ "TRASH", 8 });
-    vehLightID->insert({ "DINGHY", 6 });
-    vehLightID->insert({ "BLAZER", 0 });
-    vehLightID->insert({ "MAVERICK", 0 });
-    vehLightID->insert({ "CARGOBOB", 0 });
-    vehLightID->insert({ "CARGOBOB3", 0 });
-    vehLightID->insert({ "STUNT", 0 });
-    vehLightID->insert({ "EMPEROR3", 2 });
-    vehLightID->insert({ "CADDY", 0 });
-    vehLightID->insert({ "EMPEROR2", 2 });
-    vehLightID->insert({ "SURFER2", 2 });
-    vehLightID->insert({ "TOWTRUCK", 8 });
-    vehLightID->insert({ "TWOTRUCK2", 8 });
-    vehLightID->insert({ "BALLER", 1 });
-    vehLightID->insert({ "SURFER", 2 });
-    vehLightID->insert({ "MAMMATUS", 0 });
-    vehLightID->insert({ "RIOT", 0 });
-    vehLightID->insert({ "VELUM", 0 });
-    vehLightID->insert({ "RANCHERX12", 0 });
-    vehLightID->insert({ "CADDY2", 0 });
-    vehLightID->insert({ "AIRBUS", 0 });
-    vehLightID->insert({ "RENTBUS", 0 }); // RENTALBUS
-    vehLightID->insert({ "GRESLEY", 1 });
-    vehLightID->insert({ "ZION", 0 });
-    vehLightID->insert({ "ZION2", 0 });
-    vehLightID->insert({ "RUFFIAN", 6 });
-    vehLightID->insert({ "ADDER", 6 });
-    vehLightID->insert({ "VACCA", 6 });
-    vehLightID->insert({ "BOXVILLE3", 0 });
-    vehLightID->insert({ "SUNTRAP" , 0 });
-    vehLightID->insert({ "BOBCATXL", 2 });
-    vehLightID->insert({ "BURRITO3", 0 });
-    vehLightID->insert({ "POLICE4", 1 });
-    vehLightID->insert({ "CABLECAR", 0 });
-    vehLightID->insert({ "BLIMP", 0 });
-    vehLightID->insert({ "BUS", 0 });
-    vehLightID->insert({ "DILETTANTE2", 1 });
-    vehLightID->insert({ "REBEL01", 0 }); // REBEL
-    vehLightID->insert({ "SKYLIFT", 0 });
-    vehLightID->insert({ "SHAMAL", 0 });
-    vehLightID->insert({ "GRAINTRAILER", 0 });
-    vehLightID->insert({ "VADER", 6 });
-    vehLightID->insert({ "SHERIFF2", 0 });
-    vehLightID->insert({ "BALETRAILER", 0 });
-    vehLightID->insert({ "TOURBUS", 0 });
-    vehLightID->insert({ "FIXTER", 0 });
-    vehLightID->insert({ "ORACLE2", 6 });
-    vehLightID->insert({ "BALLER2", 0 });
-    vehLightID->insert({ "BUFFALO02", 0 }); // BUFFALO2
-    vehLightID->insert({ "CAVALCADE2", 1 });
-    vehLightID->insert({ "COQUETTE", 6 });
-    vehLightID->insert({ "TRACTOR3", 2 });
-    vehLightID->insert({ "GAUNTLET", 6 });
-    vehLightID->insert({ "MESA", 0 });
-    vehLightID->insert({ "POLICE", 1 });
-    vehLightID->insert({ "CARGOBOB2", 0 });
-    vehLightID->insert({ "TAXI", 0 });
-    vehLightID->insert({ "SANCHEZ", 0 });
-    vehLightID->insert({ "FLATBED", 0 });
-    vehLightID->insert({ "SEMINOLE", 0 });
-    vehLightID->insert({ "MOWER", 0 });
-    vehLightID->insert({ "ZTYPE", 0 });
-    vehLightID->insert({ "PREDATOR", 1 });
-    vehLightID->insert({ "RUMPO2", 0 });
-    vehLightID->insert({ "PONY2", 0 });
-    vehLightID->insert({ "BJXL", 1 });
-    vehLightID->insert({ "CAMPER", 0 });
-    vehLightID->insert({ "RANCHERX", 0 }); // RANCHERXL
-    vehLightID->insert({ "FAGGIO2", 0 });
-    vehLightID->insert({ "LAZER", 0 });
-    vehLightID->insert({ "SEASHARK", 0 });
-    vehLightID->insert({ "BISON", 1 });
-    vehLightID->insert({ "FBI", 1 });
-    vehLightID->insert({ "FBI2", 0 });
-    vehLightID->insert({ "MULE2", 0 });
-    vehLightID->insert({ "RHINO", 0 });
-    vehLightID->insert({ "BURRITO5", 0 });
-    vehLightID->insert({ "ASES2", 2 });
-    vehLightID->insert({ "MESA2", 0 });
-    vehLightID->insert({ "MESA3", 0 });
-    vehLightID->insert({ "FROGGER2", 0 });
-    vehLightID->insert({ "HOTKNIFE", 1 });
-    vehLightID->insert({ "ELEGY2", 6 });
-    vehLightID->insert({ "KHAMEL", 6 }); // KHAMELION
-    vehLightID->insert({ "DUNE2", 7 });
-    vehLightID->insert({ "ARMYTRAILER2", 0 });
-    vehLightID->insert({ "FREIGHTTRAILER", 0 });
-    vehLightID->insert({ "TR4", 0 });
-    vehLightID->insert({ "BLAZER03", 0 }); // BLAZER3
-    vehLightID->insert({ "SANCHEZ01", 0 }); // ADDED
-    vehLightID->insert({ "SANCHEZ02", 0 }); // SANCHEZ2
-    vehLightID->insert({ "VERLIER", 1 }); // mpapartment // VERLIERER2
-    vehLightID->insert({ "MAMBA", 2 });
-    vehLightID->insert({ "NITESHAD", 2 }); // NIGHTSHADE
-    vehLightID->insert({ "COG55", 6 });
-    vehLightID->insert({ "COG552", 6 });
-    vehLightID->insert({ "COGNOSC", 6 }); // COGNOSCENTI
-    vehLightID->insert({ "COGNOSC2", 6 }); // COGNOSCENTI2
-    vehLightID->insert({ "SCHAFTER3", 6 });
-    vehLightID->insert({ "SCHAFTER4", 6 });
-    vehLightID->insert({ "SCHAFTER5", 6 });
-    vehLightID->insert({ "SCHAFTER6", 6 });
-    vehLightID->insert({ "LIMO2", 6 });
-    vehLightID->insert({ "BALLER3", 0 });
-    vehLightID->insert({ "BALLER4", 0 });
-    vehLightID->insert({ "BALLER5", 0 });
-    vehLightID->insert({ "BALLER6", 0 });
-    vehLightID->insert({ "SEASHARK3", 0 });
-    vehLightID->insert({ "DINGHY4", 0 });
-    vehLightID->insert({ "TROPIC2", 0 });
-    vehLightID->insert({ "SPEEDER2", 0 });
-    vehLightID->insert({ "TORO2", 0 });
-    vehLightID->insert({ "CARGOBOB4", 0 });
-    vehLightID->insert({ "SUPERVOLITO", 0 });
-    vehLightID->insert({ "SUPERVOLITO2", 0 });
-    vehLightID->insert({ "VALKYRIE2", 0 });
-    vehLightID->insert({ "BIFTA", 0 }); // mpbeach
-    vehLightID->insert({ "SPEEDER", 0 });
-    vehLightID->insert({ "KALAHARI", 0 });
-    vehLightID->insert({ "PARADISE", 0 });
-    vehLightID->insert({ "TORNADO6", 2 }); //mpbiker
-    vehLightID->insert({ "RAPTOR", 6 });
-    vehLightID->insert({ "VORTEX", 6 });
-    vehLightID->insert({ "AVARUS", 6 });
-    vehLightID->insert({ "SANCTUS", 4 });
-    vehLightID->insert({ "FAGGIO3", 0 });
-    vehLightID->insert({ "FAGGIO", 0 });
-    vehLightID->insert({ "FAGGION", 0 }); // ADDED
-    vehLightID->insert({ "HAKUCHOU2", 1 });
-    vehLightID->insert({ "NIGHTBLADE", 0 });
-    vehLightID->insert({ "YOUGA2", 6 });
-    vehLightID->insert({ "CHIMERA", 0 });
-    vehLightID->insert({ "ESSKEY", 0 });
-    vehLightID->insert({ "ZOMBIEA", 0 });
-    vehLightID->insert({ "WOLFSBANE", 0 });
-    vehLightID->insert({ "DAEMON2", 0 });
-    vehLightID->insert({ "SHOTARO", 0 });
-    vehLightID->insert({ "RATBIKE", 0 });
-    vehLightID->insert({ "ZOMBIEB", 0 });
-    vehLightID->insert({ "DEFILER", 0 });
-    vehLightID->insert({ "MANCHEZ", 0 });
-    vehLightID->insert({ "BLAZER4", 0 });
-    vehLightID->insert({ "JESTER", 0 }); // mpbusiness
-    vehLightID->insert({ "TURISMOR", 0 });
-    vehLightID->insert({ "ALPHA", 6 });
-    vehLightID->insert({ "VESTRA", 0 });
-    vehLightID->insert({ "ZENTORNO", 0 }); // mpbusiness2
-    vehLightID->insert({ "MASSACRO", 6 });
-    vehLightID->insert({ "HUNTLEY", 6 });
-    vehLightID->insert({ "THRUST", 6 });
-    vehLightID->insert({ "SLAMVAN", 2 }); // mpchristmas2
-    vehLightID->insert({ "RLOADER2", 2 }); // RATLOADER2
-    vehLightID->insert({ "JESTER2", 0 });
-    vehLightID->insert({ "MASSACRO2", 6 });
-    vehLightID->insert({ "NIMBUS", 0 }); // mpexecutive
-    vehLightID->insert({ "XLS", 1 });
-    vehLightID->insert({ "XLS2", 1 });
-    vehLightID->insert({ "SEVEN70", 6 });
-    vehLightID->insert({ "REAPER", 6 });
-    vehLightID->insert({ "FMJ", 6 });
-    vehLightID->insert({ "PFISTER811", 6 });
-    vehLightID->insert({ "BESTIAGTS", 6 });
-    vehLightID->insert({ "BRICKADE", 0 });
-    vehLightID->insert({ "RUMPO3", 0 });
-    vehLightID->insert({ "PROTOTIPO", 6 });
-    vehLightID->insert({ "WINDSOR2", 6 });
-    vehLightID->insert({ "VOLATUS", 0 });
-    vehLightID->insert({ "TUG", 0 });
-    vehLightID->insert({ "TRAILERS4", 0 }); // mpgunrunning
-    vehLightID->insert({ "XA21", 0 });
-    vehLightID->insert({ "VAGNER", 6 });
-    vehLightID->insert({ "CADDY3", 0 });
-    vehLightID->insert({ "PHANTOM3", 1 });
-    vehLightID->insert({ "NIGHTSHARK", 1 });
-    vehLightID->insert({ "CHEETAH2", 6 });
-    vehLightID->insert({ "TORERO", 6 });
-    vehLightID->insert({ "HAULER2", 8 });
-    vehLightID->insert({ "TRAILERLARGE", 6 });
-    vehLightID->insert({ "TECHNICAL3", 0 });
-    vehLightID->insert({ "TAMPA3", 2 });
-    vehLightID->insert({ "INSURGENT3", 1 });
-    vehLightID->insert({ "APC", 2 });
-    vehLightID->insert({ "HALFTRACK", 2 });
-    vehLightID->insert({ "DUNE3", 0 });
-    vehLightID->insert({ "TRAILERSMALL2", 0 });
-    vehLightID->insert({ "ARDENT", 6 });
-    vehLightID->insert({ "OPPRESSOR", 0 });
-    vehLightID->insert({ "LURCHER", 2 }); // mphalloween
-    vehLightID->insert({ "BTYPE2", 2 });
-    vehLightID->insert({ "MULE3", 0 }); // mpheist
-    vehLightID->insert({ "TRASH2", 8 });
-    vehLightID->insert({ "VELUM2", 0 });
-    vehLightID->insert({ "TANKER2", 0 });
-    vehLightID->insert({ "ENDURO", 1 });
-    vehLightID->insert({ "SAVAGE", 1 });
-    vehLightID->insert({ "CASCO", 0 });
-    vehLightID->insert({ "TECHNICAL", 0 });
-    vehLightID->insert({ "INSURGENT", 0 });
-    vehLightID->insert({ "INSURGENT2", 0 });
-    vehLightID->insert({ "HYDRA", 0 });
-    vehLightID->insert({ "BOXVILLE4", 0 });
-    vehLightID->insert({ "GBURRITO2", 0 });
-    vehLightID->insert({ "GUARDIAN", 6 });
-    vehLightID->insert({ "DINGHY3", 0 });
-    vehLightID->insert({ "LECTRO", 6 });
-    vehLightID->insert({ "KURUMA", 6 });
-    vehLightID->insert({ "KURUMA2", 6 });
-    vehLightID->insert({ "BARRCAKS3", 0 });
-    vehLightID->insert({ "VALKYRIE", 0 });
-    vehLightID->insert({ "SLAMVAN2", 0 });
-    vehLightID->insert({ "RHAPSODY", 0 }); // mphipster
-    vehLightID->insert({ "WARRENER", 2 });
-    vehLightID->insert({ "BLADE", 2 });
-    vehLightID->insert({ "GLENDALE", 5 });
-    vehLightID->insert({ "PANTO", 0 });
-    vehLightID->insert({ "DUBSTA3", 1 });
-    vehLightID->insert({ "PIGALLE", 5 });
-    vehLightID->insert({ "NERO", 0 }); // mpimportexport
-    vehLightID->insert({ "NERO2", 0 });
-    vehLightID->insert({ "ELEGY", 2 });
-    vehLightID->insert({ "ITALIGTB", 0 });
-    vehLightID->insert({ "ITALIGTB2", 0 });
-    vehLightID->insert({ "TEMPESTA", 0 });
-    vehLightID->insert({ "DIABLOUS", 1 });
-    vehLightID->insert({ "SPECTER", 6 });
-    vehLightID->insert({ "SPECTER2", 6 });
-    vehLightID->insert({ "DIABLOUS2", 1 });
-    vehLightID->insert({ "COMET3", 6 });
-    vehLightID->insert({ "BLAZER5", 0 });
-    vehLightID->insert({ "DUNE4", 1 });
-    vehLightID->insert({ "DUNE5", 1 });
-    vehLightID->insert({ "RUINER2", 2 });
-    vehLightID->insert({ "VOLTIC2", 6 });
-    vehLightID->insert({ "PHANTOM2", 1 });
-    vehLightID->insert({ "BOXVILLE5", 1 });
-    vehLightID->insert({ "WASTLNDR", 0 }); // WESTERLANDER
-    vehLightID->insert({ "TECHNICAL2", 1 });
-    vehLightID->insert({ "PENETRATOR", 6 });
-    vehLightID->insert({ "FCR", 1 });
-    vehLightID->insert({ "FCR2", 1 });
-    vehLightID->insert({ "RUINER3", 1 });
-    vehLightID->insert({ "MONSTER", 1 }); // mpindependence
-    vehLightID->insert({ "SOVEREIGN", 1 });
-    vehLightID->insert({ "SULTANRS", 6 }); // mpjanuary2016
-    vehLightID->insert({ "BANSHEE2", 6 });
-    vehLightID->insert({ "BUCCANEE2", 2 }); // mplowrider // BUCCANEER2
-    vehLightID->insert({ "VOODOO", 2 });
-    vehLightID->insert({ "FACTION", 2 });
-    vehLightID->insert({ "FACTION2", 2 });
-    vehLightID->insert({ "MOONBEAM", 2 });
-    vehLightID->insert({ "MOONBEAM2", 2 });
-    vehLightID->insert({ "PRIMO2", 2 });
-    vehLightID->insert({ "CHINO2", 6 });
-    vehLightID->insert({ "FACTION3", 2 }); // mplowrider2
-    vehLightID->insert({ "MINIVAN2", 2 });
-    vehLightID->insert({ "SABREGT2", 2 });
-    vehLightID->insert({ "SLAMVAN3", 2 });
-    vehLightID->insert({ "TORNADO5", 2 });
-    vehLightID->insert({ "VIRGO2", 2 });
-    vehLightID->insert({ "VIRGO3", 2 });
-    vehLightID->insert({ "INNOVATION", 1 }); // mplts
-    vehLightID->insert({ "HAKUCHOU", 1 });
-    vehLightID->insert({ "FURORE", 0 }); // FUROREGT
-    vehLightID->insert({ "SWIFT2", 0 }); // mpluxe
-    vehLightID->insert({ "LUXOR2", 0 });
-    vehLightID->insert({ "FELTZER3", 2 });
-    vehLightID->insert({ "OSIRIS", 6 });
-    vehLightID->insert({ "VIRGO", 2 });
-    vehLightID->insert({ "WINDSOR", 6 });
-    vehLightID->insert({ "COQUETTE3", 2 }); // mpluxe2
-    vehLightID->insert({ "VINDICATOR", 0 });
-    vehLightID->insert({ "T20", 0 });
-    vehLightID->insert({ "BRAWLER", 6 });
-    vehLightID->insert({ "TORO", 6 });
-    vehLightID->insert({ "CHINO", 6 });
-    vehLightID->insert({ "MILJET", 0 }); // mppilot
-    vehLightID->insert({ "BESRA", 1 });
-    vehLightID->insert({ "COQUETTE2", 2 });
-    vehLightID->insert({ "SWIFT", 0 });
-    vehLightID->insert({ "VIGILANTE", 6 }); // mpsmuggler
-    vehLightID->insert({ "BOMBUSHKA", 1 });
-    vehLightID->insert({ "HOWARD", 1 });
-    vehLightID->insert({ "ALPHAZ1", 1 });
-    vehLightID->insert({ "SEABREEZE", 1 });
-    vehLightID->insert({ "NOKOTA", 1 });
-    vehLightID->insert({ "MOLOTOK", 1 });
-    vehLightID->insert({ "STARLING", 1 });
-    vehLightID->insert({ "HAVOK", 1 });
-    vehLightID->insert({ "TULA", 1 });
-    vehLightID->insert({ "MICROLIGHT", 1 });
-    vehLightID->insert({ "HUNTER", 1 });
-    vehLightID->insert({ "ROGUE", 1 });
-    vehLightID->insert({ "PYRO", 1 });
-    vehLightID->insert({ "RAPIDGT3", 2 });
-    vehLightID->insert({ "MOGUL", 1 });
-    vehLightID->insert({ "RETINUE", 2 });
-    vehLightID->insert({ "CYCLONE", 6 });
-    vehLightID->insert({ "VISIONE", 1 });
-    vehLightID->insert({ "TURISMO2", 6 }); // mpspecialraces
-    vehLightID->insert({ "INFERNUS2", 6 });
-    vehLightID->insert({ "GP1", 6 });
-    vehLightID->insert({ "RUSTON", 6 });
-    vehLightID->insert({ "GARGOYLE", 0 }); // mpstunt
-    vehLightID->insert({ "OMNIS", 0 });
-    vehLightID->insert({ "SHEAVA", 0 });
-    vehLightID->insert({ "TYRUS", 0 });
-    vehLightID->insert({ "LE7B", 0 });
-    vehLightID->insert({ "LYNX", 0 });
-    vehLightID->insert({ "TROPOS", 2 });
-    vehLightID->insert({ "TAMPA2", 2 });
-    vehLightID->insert({ "BRIOSO", 0 });
-    vehLightID->insert({ "BF400", 1 });
-    vehLightID->insert({ "CLIFFHANGER", 1 });
-    vehLightID->insert({ "CONTENDER", 0 });
-    vehLightID->insert({ "E109", 0 }); // ADDED
-    vehLightID->insert({ "TROPHY", 6 }); // TROPHYTRUCK
-    vehLightID->insert({ "TROPHY2", 6 }); // TROPHYTRUCK2
-    vehLightID->insert({ "RALLYTRUCK", 0 });
-    vehLightID->insert({ "ROOSEVELT", 0 }); // mpvalentines // BTYPE
-    vehLightID->insert({ "ROOSEVELT2", 2 }); // mpvalentines2 // BTYPE3
-    vehLightID->insert({ "TAMPA", 2 }); // mpxmas_604490
-    vehLightID->insert({ "SUBMERS2", 3 }); // spupgrade // SUBMERSIBLE2
-    vehLightID->insert({ "MARSHALL", 1 });
-    vehLightID->insert({ "BLIMP2", 0 });
-    vehLightID->insert({ "DUKES", 2 });
-    vehLightID->insert({ "DUKES2", 2 });
-    vehLightID->insert({ "BUFFALO3", 0 });
-    vehLightID->insert({ "DOMINATO2", 0 }); // DOMINATOR2
-    vehLightID->insert({ "GAUNTLET2", 6 });
-    vehLightID->insert({ "STALION", 2 });
-    vehLightID->insert({ "STALION2", 2 });
-    vehLightID->insert({ "BLISTA2", 2 });
-    vehLightID->insert({ "BLISTA3", 2 });
-    vehLightID->insert({ "ADMIRAL", 0 }); // IV Pack
-    vehLightID->insert({ "ANGEL", 0 });
-    vehLightID->insert({ "APC2", 0 });
-    vehLightID->insert({ "BLADE2", 1 });
-    vehLightID->insert({ "BOBCAT", 2 });
-    vehLightID->insert({ "BODHI", 0 });
-    vehLightID->insert({ "BOXVILLE6", 0 });
-    vehLightID->insert({ "BRICKADE2", 0 });
-    vehLightID->insert({ "BUCCANEER3", 0 });
-    vehLightID->insert({ "BUS2", 0 });
-    vehLightID->insert({ "CABBY", 0 });
-    vehLightID->insert({ "CHAVOS", 0 });
-    vehLightID->insert({ "CHAVOS2", 0 });
-    vehLightID->insert({ "CHEETAH3", 1 });
-    vehLightID->insert({ "CONTENDER2", 0 });
-    vehLightID->insert({ "COQUETTE4", 0 });
-    vehLightID->insert({ "DF8", 6 });
-    vehLightID->insert({ "DIABOLUS", 0 });
-    vehLightID->insert({ "DOUBLE2", 6 });
-    vehLightID->insert({ "ESPERANTO", 0 });
-    vehLightID->insert({ "EMPEROR4", 0 });
-    vehLightID->insert({ "FELTZER", 6 });
-    vehLightID->insert({ "FEROCI", 0 });
-    vehLightID->insert({ "FEROCI2", 0 });
-    vehLightID->insert({ "FLATBED2", 0 });
-    vehLightID->insert({ "FLOATER", 1 });
-    vehLightID->insert({ "FORTUNE", 0 });
-    vehLightID->insert({ "FREEWAY", 0 });
-    vehLightID->insert({ "FUTO2", 2 });
-    vehLightID->insert({ "FXT", 1 });
-    vehLightID->insert({ "GHAWAR", 0 });
-    vehLightID->insert({ "HAKUMAI", 0 });
-    vehLightID->insert({ "HAKUCHOU3", 0 });
-    vehLightID->insert({ "HELLFURY", 0 });
-    vehLightID->insert({ "HUNTLEY2", 0 });
-    vehLightID->insert({ "INTERC", 6 }); // INTERCEPTOR
-    vehLightID->insert({ "JB7002", 2 });
-    vehLightID->insert({ "LOKUS", 0 });
-    vehLightID->insert({ "LYCAN", 0 });
-    vehLightID->insert({ "LYCAN2", 0 });
-    vehLightID->insert({ "MARBELLE", 2 });
-    vehLightID->insert({ "MERIT", 0 });
-    vehLightID->insert({ "MRTASTY", 0 });
-    vehLightID->insert({ "NIGHTBLADE2", 0 });
-    vehLightID->insert({ "NOOSE", 0 });
-    vehLightID->insert({ "NRG900", 0 });
-    vehLightID->insert({ "NSTOCKADE", 0 });
-    vehLightID->insert({ "PACKER2", 0 });
-    vehLightID->insert({ "PERENNIAL", 0 });
-    vehLightID->insert({ "PERENNIAL2", 0 });
-    vehLightID->insert({ "PHOENIX2", 2 });
-    vehLightID->insert({ "PINNACLE", 0 });
-    vehLightID->insert({ "PMP600", 0 });
-    vehLightID->insert({ "POLICE6", 0 });
-    vehLightID->insert({ "POLICE7", 1 });
-    vehLightID->insert({ "POLICE8", 0 });
-    vehLightID->insert({ "POLPATRIOT", 1 });
-    vehLightID->insert({ "PREMIER2", 0 });
-    vehLightID->insert({ "PRES", 6 });
-    vehLightID->insert({ "PRES2", 1 });
-    vehLightID->insert({ "PSTOCKADE", 0 });
-    vehLightID->insert({ "RANCHER", 0 });
-    vehLightID->insert({ "REBLA", 3 });
-    vehLightID->insert({ "REEFER", 3 });
-    vehLightID->insert({ "REGINA2", 0 });
-    vehLightID->insert({ "REGINA3", 2 });
-    vehLightID->insert({ "REVENANT", 0 });
-    vehLightID->insert({ "ROM", 0 });
-    vehLightID->insert({ "SABRE", 2 });
-    vehLightID->insert({ "SABRE2", 2 });
-    vehLightID->insert({ "SCHAFTER", 6 });
-    vehLightID->insert({ "SCHAFTERGTR", 6 });
-    vehLightID->insert({ "SENTINEL4", 0 });
-    vehLightID->insert({ "SMUGGLER", 1 });
-    vehLightID->insert({ "SOLAIR", 0 });
-    vehLightID->insert({ "SOVEREIGN2", 0 });
-    vehLightID->insert({ "STANIER2", 0 });
-    vehLightID->insert({ "STEED", 0 });
-    vehLightID->insert({ "STRATUM2", 2 });
-    vehLightID->insert({ "STRETCH2", 0 });
-    vehLightID->insert({ "STRETCH3", 6 });
-    vehLightID->insert({ "SULTAN2", 0 });
-    vehLightID->insert({ "SUPERD2", 6 });
-    vehLightID->insert({ "SUPERGT", 0 });
-    vehLightID->insert({ "TAXI2", 2 });
-    vehLightID->insert({ "TAXI3", 0 });
-    vehLightID->insert({ "TOURMAV", 0 });
-    vehLightID->insert({ "TURISMO", 0 });
-    vehLightID->insert({ "TYPHOON", 0 });
-    vehLightID->insert({ "URANUS", 0 });
-    vehLightID->insert({ "VIGERO2", 2 });
-    vehLightID->insert({ "VINCENT", 0 });
-    vehLightID->insert({ "VIOLATOR", 1 });
-    vehLightID->insert({ "VOODOO3", 2 });
-    vehLightID->insert({ "WAYFARER", 0 });
-    vehLightID->insert({ "WILLARD", 0 });
-    vehLightID->insert({ "WOLFSBANE2", 0 });
-    vehLightID->insert({ "YANKEE", 8 });
-    vehLightID->insert({ "TANKEE2", 8 });
-    vehLightID->insert({ "COMET5", 6 }); // mpchristmas2017
-    vehLightID->insert({ "RAIDEN", 6 });
-    vehLightID->insert({ "VISERIS", 0 });
-    vehLightID->insert({ "RIATA", 1 });
-    vehLightID->insert({ "KAMACHO", 1 });
-    vehLightID->insert({ "SC1", 6 });
-    vehLightID->insert({ "AUTARCH", 6 });
-    vehLightID->insert({ "SAVESTRA", 6 });
-    vehLightID->insert({ "GT500", 0 });
-    vehLightID->insert({ "NEON", 6 });
-    vehLightID->insert({ "YOSEMITE", 2 });
-    vehLightID->insert({ "HERMES", 2 });
-    vehLightID->insert({ "HUSTLER", 2 });
-    vehLightID->insert({ "SENTINEL3", 2 });
-    vehLightID->insert({ "Z190", 1 });
-    vehLightID->insert({ "KHANJALI", 1 });
-    vehLightID->insert({ "BARRAGE", 1 });
-    vehLightID->insert({ "VOLATOL", 2 });
-    vehLightID->insert({ "AKULA", 1 });
-    vehLightID->insert({ "AVENGER", 1 });
-    vehLightID->insert({ "AVENGER2", 1 });
-    vehLightID->insert({ "DELUXO", 1 });
-    vehLightID->insert({ "STROMBERG", 1 });
-    vehLightID->insert({ "CHERNOBOG", 2 });
-    vehLightID->insert({ "RIOT2", 1 });
-    vehLightID->insert({ "THRUSTER", 1 });
-    vehLightID->insert({ "STREITER", 6 });
-    vehLightID->insert({ "REVOLTER", 1 });
-    vehLightID->insert({ "PARIAH", 0 });
-    vehLightID->insert({ "CARACARA", 1 }); // mpassault
-    vehLightID->insert({ "SEASPARROW", 6 });
-    vehLightID->insert({ "ENTITY2", 6 });
-    vehLightID->insert({ "JESTER3", 1 });
-    vehLightID->insert({ "TYRANT", 6 });
-    vehLightID->insert({ "DOMINATOR3", 6 });
-    vehLightID->insert({ "HOTRING", 6 });
-    vehLightID->insert({ "FLASHGT", 6 });
-    vehLightID->insert({ "TEZERACT", 1 });
-    vehLightID->insert({ "ELLIE", 6 });
-    vehLightID->insert({ "MICHELLI", 6 });
-    vehLightID->insert({ "GB200", 1 });
-    vehLightID->insert({ "ISSI3", 1 });
-    vehLightID->insert({ "TAIPAN", 0 });
-    vehLightID->insert({ "FAGALOA", 2 });
-    vehLightID->insert({ "CHEBUREK", 2 });
-    vehLightID->insert({ "STAFFORD", 2 }); // mpbattle
-    vehLightID->insert({ "SCRAMJET", 1 });
-    vehLightID->insert({ "STRIKEFORCE", 0 });
-    vehLightID->insert({ "TERBYTE", 1 });
-    vehLightID->insert({ "PBUS2", 0 });
-    vehLightID->insert({ "POUNDER2", 8 });
-    vehLightID->insert({ "FREECRAWLER", 6 });
-    vehLightID->insert({ "MULE4", 1 });
-    vehLightID->insert({ "BLIMP3", 0 });
-    vehLightID->insert({ "MENACER", 1 });
-    vehLightID->insert({ "SWINGER", 0 });
-    vehLightID->insert({ "PATRIOT2", 1 });
-    vehLightID->insert({ "OPPRESSOR2", 0 });
-    vehLightID->insert({ "IMPALER3", 2 }); // mpchristmas2018
-    vehLightID->insert({ "MONSTER5", 1 });
-    vehLightID->insert({ "SLAMVAN6", 1 });
-    vehLightID->insert({ "ISSI6", 1 });
-    vehLightID->insert({ "CERBERUS3", 6 });
-    vehLightID->insert({ "DEATHBIKE2", 0 });
-    vehLightID->insert({ "DOMINATOR6", 1 });
-    vehLightID->insert({ "DEATHBIKE3", 1 });
-    vehLightID->insert({ "IMPALER4", 2 });
-    vehLightID->insert({ "SLAMVAN4", 1 });
-    vehLightID->insert({ "SLAMVAN5", 1 });
-    vehLightID->insert({ "BRUTUS3", 1 });
-    vehLightID->insert({ "BRUTUS2", 1 });
-    vehLightID->insert({ "BRUTUS", 1 });
-    vehLightID->insert({ "DEATHBIKE", 1 });
-    vehLightID->insert({ "BRUISER", 0 });
-    vehLightID->insert({ "BRUISER2", 0 });
-    vehLightID->insert({ "BRUISER3", 0 });
-    vehLightID->insert({ "RCBANDITO", 1 });
-    vehLightID->insert({ "CERBERUS", 6 });
-    vehLightID->insert({ "CERBERUS2", 6 });
-    vehLightID->insert({ "IMPALER2", 2 });
-    vehLightID->insert({ "MONSTER4", 1 });
-    vehLightID->insert({ "MONSTER3", 1 });
-    vehLightID->insert({ "TULIP", 1 });
-    vehLightID->insert({ "ITALIGTO", 6 });
-    vehLightID->insert({ "ISSI4", 1 });
-    vehLightID->insert({ "ISSI5", 1 });
-    vehLightID->insert({ "SCARAB", 1 });
-    vehLightID->insert({ "SCARAB2", 1 });
-    vehLightID->insert({ "SCARAB3", 1 });
-    vehLightID->insert({ "CLIQUE", 1 });
-    vehLightID->insert({ "IMPALER", 2 });
-    vehLightID->insert({ "VAMOS", 1 });
-    vehLightID->insert({ "IMPERATOR", 2 });
-    vehLightID->insert({ "IMPERATOR2", 2 });
-    vehLightID->insert({ "IMPERATOR3", 2 });
-    vehLightID->insert({ "TOROS", 6 });
-    vehLightID->insert({ "SCHLAGEN", 6 });
-    vehLightID->insert({ "DEVIANT", 1 });
-    vehLightID->insert({ "DOMINATOR4", 1 });
-    vehLightID->insert({ "DOMINATOR5", 1 });
-    vehLightID->insert({ "ZR380", 1 });
-    vehLightID->insert({ "ZR3802", 1 });
-    vehLightID->insert({ "ZR3803", 1 });
-    vehLightID->insert({ "DEVESTE", 1 });
+    if (vehLightID == nullptr)
+    {
+        return;
+    }
+
+    vehLightID->emplace( "NINEF", 6 );
+    vehLightID->emplace( "NINEF2", 6 );
+    vehLightID->emplace( "ASEA", 0 );
+    vehLightID->emplace( "BOXVILLE2", 0 );
+    vehLightID->emplace( "BULLDOZE", 8 ); // BULLDOZER
+    vehLightID->emplace( "CHEETAH", 6 );
+    vehLightID->emplace( "COGCABRI", 6 ); // COGCABRIO
+    vehLightID->emplace( "DUBSTA", 1 );
+    vehLightID->emplace( "DUBSTA2", 0 );
+    vehLightID->emplace( "EMPEROR", 0 );
+    vehLightID->emplace( "ENTITYXF", 6 );
+    vehLightID->emplace( "FIRETRUK", 0 );
+    vehLightID->emplace( "FQ2", 0 );
+    vehLightID->emplace( "INFERNUS", 6 );
+    vehLightID->emplace( "JACKAL", 0 );
+    vehLightID->emplace( "JOURNEY", 0 );
+    vehLightID->emplace( "JB700", 0 );
+    vehLightID->emplace( "ORACLE", 1 );
+    vehLightID->emplace( "PATRIOT", 1 );
+    vehLightID->emplace( "RADI", 1 );
+    vehLightID->emplace( "ROMERO", 0 );
+    vehLightID->emplace( "STINGER", 2 );
+    vehLightID->emplace( "STOCKADE", 0 );
+    vehLightID->emplace( "SUPERD", 6 );
+    vehLightID->emplace( "TAILGATE", 6 ); // TAILGATER
+    vehLightID->emplace( "TORNADO", 2 );
+    vehLightID->emplace( "UTILTRUC", 0 ); // UTILLITRUCK
+    vehLightID->emplace( "UTILLITRUCK2", 0 );
+    vehLightID->emplace( "VOODOO2", 2 );
+    vehLightID->emplace( "SCORCHER", 0 );
+    vehLightID->emplace( "POLICEB", 6 );
+    vehLightID->emplace( "HEXER", 6 );
+    vehLightID->emplace( "BUZZARD", 0 );
+    vehLightID->emplace( "POLMAV", 0 );
+    vehLightID->emplace( "CUBAN800", 0 );
+    vehLightID->emplace( "JET", 0 );
+    vehLightID->emplace( "TITAN", 0 );
+    vehLightID->emplace( "SQUALO", 0 );
+    vehLightID->emplace( "MARQUIS", 0 );
+    vehLightID->emplace( "FREIGHTCAR", 0 );
+    vehLightID->emplace( "FREIGHT", 0 );
+    vehLightID->emplace( "FREIGHTCONT1", 0 );
+    vehLightID->emplace( "FREIGHTCONT2", 0 );
+    vehLightID->emplace( "FREIGHTGRAIN", 0 );
+    vehLightID->emplace( "TANKERCAR", 0 );
+    vehLightID->emplace( "METROTRAIN", 0 );
+    vehLightID->emplace( "TRAILERS", 0 );
+    vehLightID->emplace( "TANKER", 0 );
+    vehLightID->emplace( "TRAILERLOGS", 0 );
+    vehLightID->emplace( "TR2", 0 );
+    vehLightID->emplace( "TR3", 0 );
+    vehLightID->emplace( "PICADOR", 0 );
+    vehLightID->emplace( "POLICEO1", 2 ); // POLICEOLD1
+    vehLightID->emplace( "POLICEO2", 2 ); // ADDED
+    vehLightID->emplace( "ASTROPE", 0 ); // ASTEROPE
+    vehLightID->emplace( "BANSHEE", 6 );
+    vehLightID->emplace( "BUFFALO", 1 );
+    vehLightID->emplace( "BULLET", 6 );
+    vehLightID->emplace( "F620", 6 );
+    vehLightID->emplace( "HANDLER", 8 );
+    vehLightID->emplace( "RUINER", 2 );
+    vehLightID->emplace( "GBURRITO", 0 );
+    vehLightID->emplace( "TRACTOR2", 0 );
+    vehLightID->emplace( "PENUMBRA", 0 );
+    vehLightID->emplace( "SUBMERS", 3 ); // SUBMERSIBLE
+    vehLightID->emplace( "DOCKTUG", 8 );
+    vehLightID->emplace( "DOCKTRAILER", 0 );
+    vehLightID->emplace( "SULTAN", 0 );
+    vehLightID->emplace( "DILETTAN", 1 ); // DILETTANTE
+    vehLightID->emplace( "FUTO", 2 );
+    vehLightID->emplace( "HABANERO", 0 );
+    vehLightID->emplace( "INTRUDER", 0 );
+    vehLightID->emplace( "LANDSTAL", 1 ); // LANDSTALKER
+    vehLightID->emplace( "MINIVAN", 0 );
+    vehLightID->emplace( "SCHAFTER2", 6 );
+    vehLightID->emplace( "SERRANO", 6 );
+    vehLightID->emplace( "MANANA", 2 );
+    vehLightID->emplace( "SEASHARK2", 0 );
+    vehLightID->emplace( "YOUGA", 0 );
+    vehLightID->emplace( "PREMIER", 1 );
+    vehLightID->emplace( "SPEEDO", 0 );
+    vehLightID->emplace( "WASHINGT", 0 ); // WASHINGTON
+    vehLightID->emplace( "ANNIHILATOR", 0 );
+    vehLightID->emplace( "BLAZER2", 0 );
+    vehLightID->emplace( "CRUISER", 0 );
+    vehLightID->emplace( "RAKETRAILER", 0 );
+    vehLightID->emplace( "CARGOPLANE", 0 );
+    vehLightID->emplace( "DUMP", 8 );
+    vehLightID->emplace( "PONY", 2 );
+    vehLightID->emplace( "LGUARD", 0 );
+    vehLightID->emplace( "SENTINEL", 6 );
+    vehLightID->emplace( "SENTINEL2", 6 );
+    vehLightID->emplace( "COMET2", 6 );
+    vehLightID->emplace( "STINGERG", 2 ); // STINGERGT
+    vehLightID->emplace( "INGOT", 2 );
+    vehLightID->emplace( "PEYOTE", 2 );
+    vehLightID->emplace( "STANIER", 0 );
+    vehLightID->emplace( "STRATUM", 2 );
+    vehLightID->emplace( "AKUMA", 6 );
+    vehLightID->emplace( "CARBON", 6 ); // ADDED
+    vehLightID->emplace( "BATI", 6 );
+    vehLightID->emplace( "BATI2", 6 );
+    vehLightID->emplace( "PCJ", 0 );
+    vehLightID->emplace( "DLOADER", 2 );
+    vehLightID->emplace( "PRAIRIE", 6 );
+    vehLightID->emplace( "DUSTER", 0 );
+    vehLightID->emplace( "ISSI2", 1 );
+    vehLightID->emplace( "TRAILERS2", 0 );
+    vehLightID->emplace( "TVTRAILER", 0 );
+    vehLightID->emplace( "CUTTER", 8 );
+    vehLightID->emplace( "TRFLAT", 0 );
+    vehLightID->emplace( "TORNADO2", 2 );
+    vehLightID->emplace( "TORNADO3", 2 );
+    vehLightID->emplace( "TRIBIKE", 0 );
+    vehLightID->emplace( "TRIBIKE2", 0 );
+    vehLightID->emplace( "TRIBIKE3", 0 );
+    vehLightID->emplace( "PROPTRAILER", 0 );
+    vehLightID->emplace( "BURRITO2", 0 );
+    vehLightID->emplace( "DUNE", 0 );
+    vehLightID->emplace( "FELTZER2", 6 );
+    vehLightID->emplace( "BLISTA", 6 );
+    vehLightID->emplace( "BAGGER", 0 );
+    vehLightID->emplace( "VOLTIC", 6 );
+    vehLightID->emplace( "FUGITIVE", 6 );
+    vehLightID->emplace( "FELON", 6 );
+    vehLightID->emplace( "PBUS", 0 );
+    vehLightID->emplace( "ARMYTRAILER", 0 );
+    vehLightID->emplace( "POLICET", 0 );
+    vehLightID->emplace( "SPEEDO2", 2 );
+    vehLightID->emplace( "FELON2", 6 );
+    vehLightID->emplace( "BMX", 0 );
+    vehLightID->emplace( "EXEMPLAR", 6 );
+    vehLightID->emplace( "FUSILADE", 0 );
+    vehLightID->emplace( "BOATTRAILER", 0 );
+    vehLightID->emplace( "CAVCADE", 1 ); // CAVALCADE
+    vehLightID->emplace( "SURGE", 0 );
+    vehLightID->emplace( "BUCCANEE", 2 ); // BUCCANEER
+    vehLightID->emplace( "NEMESIS", 6 );
+    vehLightID->emplace( "ARMYTANKER", 0 );
+    vehLightID->emplace( "ROCOTO", 6 );
+    vehLightID->emplace( "STOCKADE3", 0 );
+    vehLightID->emplace( "REBEL02", 2 ); // REBEL2
+    vehLightID->emplace( "SCHWARZE", 6 ); // SCHWARZER
+    vehLightID->emplace( "SCRAP", 8 );
+    vehLightID->emplace( "SANDKING", 0 );
+    vehLightID->emplace( "SANDKIN2", 0 ); // SANDKING2
+    vehLightID->emplace( "CARBONIZ", 6 ); // CARBONIZZARE
+    vehLightID->emplace( "RUMPO", 0 );
+    vehLightID->emplace( "PRIMO", 0 );
+    vehLightID->emplace( "SABREGT", 2 );
+    vehLightID->emplace( "REGINA", 2 );
+    vehLightID->emplace( "JETMAX", 0 );
+    vehLightID->emplace( "TROPIC", 0 );
+    vehLightID->emplace( "VIGERO", 0 );
+    vehLightID->emplace( "POLICE2", 1 );
+    vehLightID->emplace( "STRETCH", 1 );
+    vehLightID->emplace( "DINGHY2", 0 );
+    vehLightID->emplace( "BOXVILLE", 0 );
+    vehLightID->emplace( "LUXOR", 0 );
+    vehLightID->emplace( "POLICD3", 6 );
+    vehLightID->emplace( "TRAILERS3", 0 );
+    vehLightID->emplace( "DOUBLE", 6 );
+    vehLightID->emplace( "TRACTOR", 8 );
+    vehLightID->emplace( "BIFF", 8 );
+    vehLightID->emplace( "DOMINATO", 0 ); // DOMINATOR
+    vehLightID->emplace( "HAULER", 8 );
+    vehLightID->emplace( "PACKER", 8 );
+    vehLightID->emplace( "PHOENIX", 2 );
+    vehLightID->emplace( "SADLER", 0 );
+    vehLightID->emplace( "SADLER2", 0 );
+    vehLightID->emplace( "DAEMON", 0 );
+    vehLightID->emplace( "COACH", 0 );
+    vehLightID->emplace( "TORNADO4", 2 );
+    vehLightID->emplace( "RATLOADER", 2 );
+    vehLightID->emplace( "RAPIDGT", 6 );
+    vehLightID->emplace( "RAPIDGT2", 6 );
+    vehLightID->emplace( "SURANO", 1 );
+    vehLightID->emplace( "BFINJECT", 2 ); // BFINJECTION
+    vehLightID->emplace( "BISON2", 0 );
+    vehLightID->emplace( "BISON3", 0 );
+    vehLightID->emplace( "BODHI2", 0 );
+    vehLightID->emplace( "BURRITO", 0 );
+    vehLightID->emplace( "BURRITO4", 0 );
+    vehLightID->emplace( "RUBBLE", 8 );
+    vehLightID->emplace( "TIPTRUCK", 8 );
+    vehLightID->emplace( "TIPTRUCK2", 8 );
+    vehLightID->emplace( "MIXER", 8 );
+    vehLightID->emplace( "MIXER2", 8 );
+    vehLightID->emplace( "PHANTOM", 8 );
+    vehLightID->emplace( "POUNDER", 8 );
+    vehLightID->emplace( "BUZZARD2", 0 );
+    vehLightID->emplace( "FROGGER", 0 );
+    vehLightID->emplace( "AIRTUG", 8 );
+    vehLightID->emplace( "BENSON", 8 );
+    vehLightID->emplace( "RIPLEY", 8 );
+    vehLightID->emplace( "AMBULAN", 0 ); // AMBULANCE
+    vehLightID->emplace( "FORK", 8 ); // FORKLIFT
+    vehLightID->emplace( "GRANGER", 0 );
+    vehLightID->emplace( "PRANGER", 0 );
+    vehLightID->emplace( "TRAILERSMALL", 0 );
+    vehLightID->emplace( "BARRACKS", 0 );
+    vehLightID->emplace( "BARRACKS2", 0 );
+    vehLightID->emplace( "CRUSADER", 0 );
+    vehLightID->emplace( "UTILLITRUCK3", 0 );
+    vehLightID->emplace( "SHERIFF", 0 );
+    vehLightID->emplace( "MONROE", 2 );
+    vehLightID->emplace( "MULE", 0 );
+    vehLightID->emplace( "TACO", 0 );
+    vehLightID->emplace( "TRASH", 8 );
+    vehLightID->emplace( "DINGHY", 6 );
+    vehLightID->emplace( "BLAZER", 0 );
+    vehLightID->emplace( "MAVERICK", 0 );
+    vehLightID->emplace( "CARGOBOB", 0 );
+    vehLightID->emplace( "CARGOBOB3", 0 );
+    vehLightID->emplace( "STUNT", 0 );
+    vehLightID->emplace( "EMPEROR3", 2 );
+    vehLightID->emplace( "CADDY", 0 );
+    vehLightID->emplace( "EMPEROR2", 2 );
+    vehLightID->emplace( "SURFER2", 2 );
+    vehLightID->emplace( "TOWTRUCK", 8 );
+    vehLightID->emplace( "TWOTRUCK2", 8 );
+    vehLightID->emplace( "BALLER", 1 );
+    vehLightID->emplace( "SURFER", 2 );
+    vehLightID->emplace( "MAMMATUS", 0 );
+    vehLightID->emplace( "RIOT", 0 );
+    vehLightID->emplace( "VELUM", 0 );
+    vehLightID->emplace( "RANCHERX12", 0 );
+    vehLightID->emplace( "CADDY2", 0 );
+    vehLightID->emplace( "AIRBUS", 0 );
+    vehLightID->emplace( "RENTBUS", 0 ); // RENTALBUS
+    vehLightID->emplace( "GRESLEY", 1 );
+    vehLightID->emplace( "ZION", 0 );
+    vehLightID->emplace( "ZION2", 0 );
+    vehLightID->emplace( "RUFFIAN", 6 );
+    vehLightID->emplace( "ADDER", 6 );
+    vehLightID->emplace( "VACCA", 6 );
+    vehLightID->emplace( "BOXVILLE3", 0 );
+    vehLightID->emplace( "SUNTRAP" , 0 );
+    vehLightID->emplace( "BOBCATXL", 2 );
+    vehLightID->emplace( "BURRITO3", 0 );
+    vehLightID->emplace( "POLICE4", 1 );
+    vehLightID->emplace( "CABLECAR", 0 );
+    vehLightID->emplace( "BLIMP", 0 );
+    vehLightID->emplace( "BUS", 0 );
+    vehLightID->emplace( "DILETTANTE2", 1 );
+    vehLightID->emplace( "REBEL01", 0 ); // REBEL
+    vehLightID->emplace( "SKYLIFT", 0 );
+    vehLightID->emplace( "SHAMAL", 0 );
+    vehLightID->emplace( "GRAINTRAILER", 0 );
+    vehLightID->emplace( "VADER", 6 );
+    vehLightID->emplace( "SHERIFF2", 0 );
+    vehLightID->emplace( "BALETRAILER", 0 );
+    vehLightID->emplace( "TOURBUS", 0 );
+    vehLightID->emplace( "FIXTER", 0 );
+    vehLightID->emplace( "ORACLE2", 6 );
+    vehLightID->emplace( "BALLER2", 0 );
+    vehLightID->emplace( "BUFFALO02", 0 ); // BUFFALO2
+    vehLightID->emplace( "CAVALCADE2", 1 );
+    vehLightID->emplace( "COQUETTE", 6 );
+    vehLightID->emplace( "TRACTOR3", 2 );
+    vehLightID->emplace( "GAUNTLET", 6 );
+    vehLightID->emplace( "MESA", 0 );
+    vehLightID->emplace( "POLICE", 1 );
+    vehLightID->emplace( "CARGOBOB2", 0 );
+    vehLightID->emplace( "TAXI", 0 );
+    vehLightID->emplace( "SANCHEZ", 0 );
+    vehLightID->emplace( "FLATBED", 0 );
+    vehLightID->emplace( "SEMINOLE", 0 );
+    vehLightID->emplace( "MOWER", 0 );
+    vehLightID->emplace( "ZTYPE", 0 );
+    vehLightID->emplace( "PREDATOR", 1 );
+    vehLightID->emplace( "RUMPO2", 0 );
+    vehLightID->emplace( "PONY2", 0 );
+    vehLightID->emplace( "BJXL", 1 );
+    vehLightID->emplace( "CAMPER", 0 );
+    vehLightID->emplace( "RANCHERX", 0 ); // RANCHERXL
+    vehLightID->emplace( "FAGGIO2", 0 );
+    vehLightID->emplace( "LAZER", 0 );
+    vehLightID->emplace( "SEASHARK", 0 );
+    vehLightID->emplace( "BISON", 1 );
+    vehLightID->emplace( "FBI", 1 );
+    vehLightID->emplace( "FBI2", 0 );
+    vehLightID->emplace( "MULE2", 0 );
+    vehLightID->emplace( "RHINO", 0 );
+    vehLightID->emplace( "BURRITO5", 0 );
+    vehLightID->emplace( "ASES2", 2 );
+    vehLightID->emplace( "MESA2", 0 );
+    vehLightID->emplace( "MESA3", 0 );
+    vehLightID->emplace( "FROGGER2", 0 );
+    vehLightID->emplace( "HOTKNIFE", 1 );
+    vehLightID->emplace( "ELEGY2", 6 );
+    vehLightID->emplace( "KHAMEL", 6 ); // KHAMELION
+    vehLightID->emplace( "DUNE2", 7 );
+    vehLightID->emplace( "ARMYTRAILER2", 0 );
+    vehLightID->emplace( "FREIGHTTRAILER", 0 );
+    vehLightID->emplace( "TR4", 0 );
+    vehLightID->emplace( "BLAZER03", 0 ); // BLAZER3
+    vehLightID->emplace( "SANCHEZ01", 0 ); // ADDED
+    vehLightID->emplace( "SANCHEZ02", 0 ); // SANCHEZ2
+    vehLightID->emplace( "VERLIER", 1 ); // mpapartment // VERLIERER2
+    vehLightID->emplace( "MAMBA", 2 );
+    vehLightID->emplace( "NITESHAD", 2 ); // NIGHTSHADE
+    vehLightID->emplace( "COG55", 6 );
+    vehLightID->emplace( "COG552", 6 );
+    vehLightID->emplace( "COGNOSC", 6 ); // COGNOSCENTI
+    vehLightID->emplace( "COGNOSC2", 6 ); // COGNOSCENTI2
+    vehLightID->emplace( "SCHAFTER3", 6 );
+    vehLightID->emplace( "SCHAFTER4", 6 );
+    vehLightID->emplace( "SCHAFTER5", 6 );
+    vehLightID->emplace( "SCHAFTER6", 6 );
+    vehLightID->emplace( "LIMO2", 6 );
+    vehLightID->emplace( "BALLER3", 0 );
+    vehLightID->emplace( "BALLER4", 0 );
+    vehLightID->emplace( "BALLER5", 0 );
+    vehLightID->emplace( "BALLER6", 0 );
+    vehLightID->emplace( "SEASHARK3", 0 );
+    vehLightID->emplace( "DINGHY4", 0 );
+    vehLightID->emplace( "TROPIC2", 0 );
+    vehLightID->emplace( "SPEEDER2", 0 );
+    vehLightID->emplace( "TORO2", 0 );
+    vehLightID->emplace( "CARGOBOB4", 0 );
+    vehLightID->emplace( "SUPERVOLITO", 0 );
+    vehLightID->emplace( "SUPERVOLITO2", 0 );
+    vehLightID->emplace( "VALKYRIE2", 0 );
+    vehLightID->emplace( "BIFTA", 0 ); // mpbeach
+    vehLightID->emplace( "SPEEDER", 0 );
+    vehLightID->emplace( "KALAHARI", 0 );
+    vehLightID->emplace( "PARADISE", 0 );
+    vehLightID->emplace( "TORNADO6", 2 ); //mpbiker
+    vehLightID->emplace( "RAPTOR", 6 );
+    vehLightID->emplace( "VORTEX", 6 );
+    vehLightID->emplace( "AVARUS", 6 );
+    vehLightID->emplace( "SANCTUS", 4 );
+    vehLightID->emplace( "FAGGIO3", 0 );
+    vehLightID->emplace( "FAGGIO", 0 );
+    vehLightID->emplace( "FAGGION", 0 ); // ADDED
+    vehLightID->emplace( "HAKUCHOU2", 1 );
+    vehLightID->emplace( "NIGHTBLADE", 0 );
+    vehLightID->emplace( "YOUGA2", 6 );
+    vehLightID->emplace( "CHIMERA", 0 );
+    vehLightID->emplace( "ESSKEY", 0 );
+    vehLightID->emplace( "ZOMBIEA", 0 );
+    vehLightID->emplace( "WOLFSBANE", 0 );
+    vehLightID->emplace( "DAEMON2", 0 );
+    vehLightID->emplace( "SHOTARO", 0 );
+    vehLightID->emplace( "RATBIKE", 0 );
+    vehLightID->emplace( "ZOMBIEB", 0 );
+    vehLightID->emplace( "DEFILER", 0 );
+    vehLightID->emplace( "MANCHEZ", 0 );
+    vehLightID->emplace( "BLAZER4", 0 );
+    vehLightID->emplace( "JESTER", 0 ); // mpbusiness
+    vehLightID->emplace( "TURISMOR", 0 );
+    vehLightID->emplace( "ALPHA", 6 );
+    vehLightID->emplace( "VESTRA", 0 );
+    vehLightID->emplace( "ZENTORNO", 0 ); // mpbusiness2
+    vehLightID->emplace( "MASSACRO", 6 );
+    vehLightID->emplace( "HUNTLEY", 6 );
+    vehLightID->emplace( "THRUST", 6 );
+    vehLightID->emplace( "SLAMVAN", 2 ); // mpchristmas2
+    vehLightID->emplace( "RLOADER2", 2 ); // RATLOADER2
+    vehLightID->emplace( "JESTER2", 0 );
+    vehLightID->emplace( "MASSACRO2", 6 );
+    vehLightID->emplace( "NIMBUS", 0 ); // mpexecutive
+    vehLightID->emplace( "XLS", 1 );
+    vehLightID->emplace( "XLS2", 1 );
+    vehLightID->emplace( "SEVEN70", 6 );
+    vehLightID->emplace( "REAPER", 6 );
+    vehLightID->emplace( "FMJ", 6 );
+    vehLightID->emplace( "PFISTER811", 6 );
+    vehLightID->emplace( "BESTIAGTS", 6 );
+    vehLightID->emplace( "BRICKADE", 0 );
+    vehLightID->emplace( "RUMPO3", 0 );
+    vehLightID->emplace( "PROTOTIPO", 6 );
+    vehLightID->emplace( "WINDSOR2", 6 );
+    vehLightID->emplace( "VOLATUS", 0 );
+    vehLightID->emplace( "TUG", 0 );
+    vehLightID->emplace( "TRAILERS4", 0 ); // mpgunrunning
+    vehLightID->emplace( "XA21", 0 );
+    vehLightID->emplace( "VAGNER", 6 );
+    vehLightID->emplace( "CADDY3", 0 );
+    vehLightID->emplace( "PHANTOM3", 1 );
+    vehLightID->emplace( "NIGHTSHARK", 1 );
+    vehLightID->emplace( "CHEETAH2", 6 );
+    vehLightID->emplace( "TORERO", 6 );
+    vehLightID->emplace( "HAULER2", 8 );
+    vehLightID->emplace( "TRAILERLARGE", 6 );
+    vehLightID->emplace( "TECHNICAL3", 0 );
+    vehLightID->emplace( "TAMPA3", 2 );
+    vehLightID->emplace( "INSURGENT3", 1 );
+    vehLightID->emplace( "APC", 2 );
+    vehLightID->emplace( "HALFTRACK", 2 );
+    vehLightID->emplace( "DUNE3", 0 );
+    vehLightID->emplace( "TRAILERSMALL2", 0 );
+    vehLightID->emplace( "ARDENT", 6 );
+    vehLightID->emplace( "OPPRESSOR", 0 );
+    vehLightID->emplace( "LURCHER", 2 ); // mphalloween
+    vehLightID->emplace( "BTYPE2", 2 );
+    vehLightID->emplace( "MULE3", 0 ); // mpheist
+    vehLightID->emplace( "TRASH2", 8 );
+    vehLightID->emplace( "VELUM2", 0 );
+    vehLightID->emplace( "TANKER2", 0 );
+    vehLightID->emplace( "ENDURO", 1 );
+    vehLightID->emplace( "SAVAGE", 1 );
+    vehLightID->emplace( "CASCO", 0 );
+    vehLightID->emplace( "TECHNICAL", 0 );
+    vehLightID->emplace( "INSURGENT", 0 );
+    vehLightID->emplace( "INSURGENT2", 0 );
+    vehLightID->emplace( "HYDRA", 0 );
+    vehLightID->emplace( "BOXVILLE4", 0 );
+    vehLightID->emplace( "GBURRITO2", 0 );
+    vehLightID->emplace( "GUARDIAN", 6 );
+    vehLightID->emplace( "DINGHY3", 0 );
+    vehLightID->emplace( "LECTRO", 6 );
+    vehLightID->emplace( "KURUMA", 6 );
+    vehLightID->emplace( "KURUMA2", 6 );
+    vehLightID->emplace( "BARRCAKS3", 0 );
+    vehLightID->emplace( "VALKYRIE", 0 );
+    vehLightID->emplace( "SLAMVAN2", 0 );
+    vehLightID->emplace( "RHAPSODY", 0 ); // mphipster
+    vehLightID->emplace( "WARRENER", 2 );
+    vehLightID->emplace( "BLADE", 2 );
+    vehLightID->emplace( "GLENDALE", 5 );
+    vehLightID->emplace( "PANTO", 0 );
+    vehLightID->emplace( "DUBSTA3", 1 );
+    vehLightID->emplace( "PIGALLE", 5 );
+    vehLightID->emplace( "NERO", 0 ); // mpimportexport
+    vehLightID->emplace( "NERO2", 0 );
+    vehLightID->emplace( "ELEGY", 2 );
+    vehLightID->emplace( "ITALIGTB", 0 );
+    vehLightID->emplace( "ITALIGTB2", 0 );
+    vehLightID->emplace( "TEMPESTA", 0 );
+    vehLightID->emplace( "DIABLOUS", 1 );
+    vehLightID->emplace( "SPECTER", 6 );
+    vehLightID->emplace( "SPECTER2", 6 );
+    vehLightID->emplace( "DIABLOUS2", 1 );
+    vehLightID->emplace( "COMET3", 6 );
+    vehLightID->emplace( "BLAZER5", 0 );
+    vehLightID->emplace( "DUNE4", 1 );
+    vehLightID->emplace( "DUNE5", 1 );
+    vehLightID->emplace( "RUINER2", 2 );
+    vehLightID->emplace( "VOLTIC2", 6 );
+    vehLightID->emplace( "PHANTOM2", 1 );
+    vehLightID->emplace( "BOXVILLE5", 1 );
+    vehLightID->emplace( "WASTLNDR", 0 ); // WESTERLANDER
+    vehLightID->emplace( "TECHNICAL2", 1 );
+    vehLightID->emplace( "PENETRATOR", 6 );
+    vehLightID->emplace( "FCR", 1 );
+    vehLightID->emplace( "FCR2", 1 );
+    vehLightID->emplace( "RUINER3", 1 );
+    vehLightID->emplace( "MONSTER", 1 ); // mpindependence
+    vehLightID->emplace( "SOVEREIGN", 1 );
+    vehLightID->emplace( "SULTANRS", 6 ); // mpjanuary2016
+    vehLightID->emplace( "BANSHEE2", 6 );
+    vehLightID->emplace( "BUCCANEE2", 2 ); // mplowrider // BUCCANEER2
+    vehLightID->emplace( "VOODOO", 2 );
+    vehLightID->emplace( "FACTION", 2 );
+    vehLightID->emplace( "FACTION2", 2 );
+    vehLightID->emplace( "MOONBEAM", 2 );
+    vehLightID->emplace( "MOONBEAM2", 2 );
+    vehLightID->emplace( "PRIMO2", 2 );
+    vehLightID->emplace( "CHINO2", 6 );
+    vehLightID->emplace( "FACTION3", 2 ); // mplowrider2
+    vehLightID->emplace( "MINIVAN2", 2 );
+    vehLightID->emplace( "SABREGT2", 2 );
+    vehLightID->emplace( "SLAMVAN3", 2 );
+    vehLightID->emplace( "TORNADO5", 2 );
+    vehLightID->emplace( "VIRGO2", 2 );
+    vehLightID->emplace( "VIRGO3", 2 );
+    vehLightID->emplace( "INNOVATION", 1 ); // mplts
+    vehLightID->emplace( "HAKUCHOU", 1 );
+    vehLightID->emplace( "FURORE", 0 ); // FUROREGT
+    vehLightID->emplace( "SWIFT2", 0 ); // mpluxe
+    vehLightID->emplace( "LUXOR2", 0 );
+    vehLightID->emplace( "FELTZER3", 2 );
+    vehLightID->emplace( "OSIRIS", 6 );
+    vehLightID->emplace( "VIRGO", 2 );
+    vehLightID->emplace( "WINDSOR", 6 );
+    vehLightID->emplace( "COQUETTE3", 2 ); // mpluxe2
+    vehLightID->emplace( "VINDICATOR", 0 );
+    vehLightID->emplace( "T20", 0 );
+    vehLightID->emplace( "BRAWLER", 6 );
+    vehLightID->emplace( "TORO", 6 );
+    vehLightID->emplace( "CHINO", 6 );
+    vehLightID->emplace( "MILJET", 0 ); // mppilot
+    vehLightID->emplace( "BESRA", 1 );
+    vehLightID->emplace( "COQUETTE2", 2 );
+    vehLightID->emplace( "SWIFT", 0 );
+    vehLightID->emplace( "VIGILANTE", 6 ); // mpsmuggler
+    vehLightID->emplace( "BOMBUSHKA", 1 );
+    vehLightID->emplace( "HOWARD", 1 );
+    vehLightID->emplace( "ALPHAZ1", 1 );
+    vehLightID->emplace( "SEABREEZE", 1 );
+    vehLightID->emplace( "NOKOTA", 1 );
+    vehLightID->emplace( "MOLOTOK", 1 );
+    vehLightID->emplace( "STARLING", 1 );
+    vehLightID->emplace( "HAVOK", 1 );
+    vehLightID->emplace( "TULA", 1 );
+    vehLightID->emplace( "MICROLIGHT", 1 );
+    vehLightID->emplace( "HUNTER", 1 );
+    vehLightID->emplace( "ROGUE", 1 );
+    vehLightID->emplace( "PYRO", 1 );
+    vehLightID->emplace( "RAPIDGT3", 2 );
+    vehLightID->emplace( "MOGUL", 1 );
+    vehLightID->emplace( "RETINUE", 2 );
+    vehLightID->emplace( "CYCLONE", 6 );
+    vehLightID->emplace( "VISIONE", 1 );
+    vehLightID->emplace( "TURISMO2", 6 ); // mpspecialraces
+    vehLightID->emplace( "INFERNUS2", 6 );
+    vehLightID->emplace( "GP1", 6 );
+    vehLightID->emplace( "RUSTON", 6 );
+    vehLightID->emplace( "GARGOYLE", 0 ); // mpstunt
+    vehLightID->emplace( "OMNIS", 0 );
+    vehLightID->emplace( "SHEAVA", 0 );
+    vehLightID->emplace( "TYRUS", 0 );
+    vehLightID->emplace( "LE7B", 0 );
+    vehLightID->emplace( "LYNX", 0 );
+    vehLightID->emplace( "TROPOS", 2 );
+    vehLightID->emplace( "TAMPA2", 2 );
+    vehLightID->emplace( "BRIOSO", 0 );
+    vehLightID->emplace( "BF400", 1 );
+    vehLightID->emplace( "CLIFFHANGER", 1 );
+    vehLightID->emplace( "CONTENDER", 0 );
+    vehLightID->emplace( "E109", 0 ); // ADDED
+    vehLightID->emplace( "TROPHY", 6 ); // TROPHYTRUCK
+    vehLightID->emplace( "TROPHY2", 6 ); // TROPHYTRUCK2
+    vehLightID->emplace( "RALLYTRUCK", 0 );
+    vehLightID->emplace( "ROOSEVELT", 0 ); // mpvalentines // BTYPE
+    vehLightID->emplace( "ROOSEVELT2", 2 ); // mpvalentines2 // BTYPE3
+    vehLightID->emplace( "TAMPA", 2 ); // mpxmas_604490
+    vehLightID->emplace( "SUBMERS2", 3 ); // spupgrade // SUBMERSIBLE2
+    vehLightID->emplace( "MARSHALL", 1 );
+    vehLightID->emplace( "BLIMP2", 0 );
+    vehLightID->emplace( "DUKES", 2 );
+    vehLightID->emplace( "DUKES2", 2 );
+    vehLightID->emplace( "BUFFALO3", 0 );
+    vehLightID->emplace( "DOMINATO2", 0 ); // DOMINATOR2
+    vehLightID->emplace( "GAUNTLET2", 6 );
+    vehLightID->emplace( "STALION", 2 );
+    vehLightID->emplace( "STALION2", 2 );
+    vehLightID->emplace( "BLISTA2", 2 );
+    vehLightID->emplace( "BLISTA3", 2 );
+    vehLightID->emplace( "ADMIRAL", 0 ); // IV Pack
+    vehLightID->emplace( "ANGEL", 0 );
+    vehLightID->emplace( "APC2", 0 );
+    vehLightID->emplace( "BLADE2", 1 );
+    vehLightID->emplace( "BOBCAT", 2 );
+    vehLightID->emplace( "BODHI", 0 );
+    vehLightID->emplace( "BOXVILLE6", 0 );
+    vehLightID->emplace( "BRICKADE2", 0 );
+    vehLightID->emplace( "BUCCANEER3", 0 );
+    vehLightID->emplace( "BUS2", 0 );
+    vehLightID->emplace( "CABBY", 0 );
+    vehLightID->emplace( "CHAVOS", 0 );
+    vehLightID->emplace( "CHAVOS2", 0 );
+    vehLightID->emplace( "CHEETAH3", 1 );
+    vehLightID->emplace( "CONTENDER2", 0 );
+    vehLightID->emplace( "COQUETTE4", 0 );
+    vehLightID->emplace( "DF8", 6 );
+    vehLightID->emplace( "DIABOLUS", 0 );
+    vehLightID->emplace( "DOUBLE2", 6 );
+    vehLightID->emplace( "ESPERANTO", 0 );
+    vehLightID->emplace( "EMPEROR4", 0 );
+    vehLightID->emplace( "FELTZER", 6 );
+    vehLightID->emplace( "FEROCI", 0 );
+    vehLightID->emplace( "FEROCI2", 0 );
+    vehLightID->emplace( "FLATBED2", 0 );
+    vehLightID->emplace( "FLOATER", 1 );
+    vehLightID->emplace( "FORTUNE", 0 );
+    vehLightID->emplace( "FREEWAY", 0 );
+    vehLightID->emplace( "FUTO2", 2 );
+    vehLightID->emplace( "FXT", 1 );
+    vehLightID->emplace( "GHAWAR", 0 );
+    vehLightID->emplace( "HAKUMAI", 0 );
+    vehLightID->emplace( "HAKUCHOU3", 0 );
+    vehLightID->emplace( "HELLFURY", 0 );
+    vehLightID->emplace( "HUNTLEY2", 0 );
+    vehLightID->emplace( "INTERC", 6 ); // INTERCEPTOR
+    vehLightID->emplace( "JB7002", 2 );
+    vehLightID->emplace( "LOKUS", 0 );
+    vehLightID->emplace( "LYCAN", 0 );
+    vehLightID->emplace( "LYCAN2", 0 );
+    vehLightID->emplace( "MARBELLE", 2 );
+    vehLightID->emplace( "MERIT", 0 );
+    vehLightID->emplace( "MRTASTY", 0 );
+    vehLightID->emplace( "NIGHTBLADE2", 0 );
+    vehLightID->emplace( "NOOSE", 0 );
+    vehLightID->emplace( "NRG900", 0 );
+    vehLightID->emplace( "NSTOCKADE", 0 );
+    vehLightID->emplace( "PACKER2", 0 );
+    vehLightID->emplace( "PERENNIAL", 0 );
+    vehLightID->emplace( "PERENNIAL2", 0 );
+    vehLightID->emplace( "PHOENIX2", 2 );
+    vehLightID->emplace( "PINNACLE", 0 );
+    vehLightID->emplace( "PMP600", 0 );
+    vehLightID->emplace( "POLICE6", 0 );
+    vehLightID->emplace( "POLICE7", 1 );
+    vehLightID->emplace( "POLICE8", 0 );
+    vehLightID->emplace( "POLPATRIOT", 1 );
+    vehLightID->emplace( "PREMIER2", 0 );
+    vehLightID->emplace( "PRES", 6 );
+    vehLightID->emplace( "PRES2", 1 );
+    vehLightID->emplace( "PSTOCKADE", 0 );
+    vehLightID->emplace( "RANCHER", 0 );
+    vehLightID->emplace( "REBLA", 3 );
+    vehLightID->emplace( "REEFER", 3 );
+    vehLightID->emplace( "REGINA2", 0 );
+    vehLightID->emplace( "REGINA3", 2 );
+    vehLightID->emplace( "REVENANT", 0 );
+    vehLightID->emplace( "ROM", 0 );
+    vehLightID->emplace( "SABRE", 2 );
+    vehLightID->emplace( "SABRE2", 2 );
+    vehLightID->emplace( "SCHAFTER", 6 );
+    vehLightID->emplace( "SCHAFTERGTR", 6 );
+    vehLightID->emplace( "SENTINEL4", 0 );
+    vehLightID->emplace( "SMUGGLER", 1 );
+    vehLightID->emplace( "SOLAIR", 0 );
+    vehLightID->emplace( "SOVEREIGN2", 0 );
+    vehLightID->emplace( "STANIER2", 0 );
+    vehLightID->emplace( "STEED", 0 );
+    vehLightID->emplace( "STRATUM2", 2 );
+    vehLightID->emplace( "STRETCH2", 0 );
+    vehLightID->emplace( "STRETCH3", 6 );
+    vehLightID->emplace( "SULTAN2", 0 );
+    vehLightID->emplace( "SUPERD2", 6 );
+    vehLightID->emplace( "SUPERGT", 0 );
+    vehLightID->emplace( "TAXI2", 2 );
+    vehLightID->emplace( "TAXI3", 0 );
+    vehLightID->emplace( "TOURMAV", 0 );
+    vehLightID->emplace( "TURISMO", 0 );
+    vehLightID->emplace( "TYPHOON", 0 );
+    vehLightID->emplace( "URANUS", 0 );
+    vehLightID->emplace( "VIGERO2", 2 );
+    vehLightID->emplace( "VINCENT", 0 );
+    vehLightID->emplace( "VIOLATOR", 1 );
+    vehLightID->emplace( "VOODOO3", 2 );
+    vehLightID->emplace( "WAYFARER", 0 );
+    vehLightID->emplace( "WILLARD", 0 );
+    vehLightID->emplace( "WOLFSBANE2", 0 );
+    vehLightID->emplace( "YANKEE", 8 );
+    vehLightID->emplace( "TANKEE2", 8 );
+    vehLightID->emplace( "COMET5", 6 ); // mpchristmas2017
+    vehLightID->emplace( "RAIDEN", 6 );
+    vehLightID->emplace( "VISERIS", 0 );
+    vehLightID->emplace( "RIATA", 1 );
+    vehLightID->emplace( "KAMACHO", 1 );
+    vehLightID->emplace( "SC1", 6 );
+    vehLightID->emplace( "AUTARCH", 6 );
+    vehLightID->emplace( "SAVESTRA", 6 );
+    vehLightID->emplace( "GT500", 0 );
+    vehLightID->emplace( "NEON", 6 );
+    vehLightID->emplace( "YOSEMITE", 2 );
+    vehLightID->emplace( "HERMES", 2 );
+    vehLightID->emplace( "HUSTLER", 2 );
+    vehLightID->emplace( "SENTINEL3", 2 );
+    vehLightID->emplace( "Z190", 1 );
+    vehLightID->emplace( "KHANJALI", 1 );
+    vehLightID->emplace( "BARRAGE", 1 );
+    vehLightID->emplace( "VOLATOL", 2 );
+    vehLightID->emplace( "AKULA", 1 );
+    vehLightID->emplace( "AVENGER", 1 );
+    vehLightID->emplace( "AVENGER2", 1 );
+    vehLightID->emplace( "DELUXO", 1 );
+    vehLightID->emplace( "STROMBERG", 1 );
+    vehLightID->emplace( "CHERNOBOG", 2 );
+    vehLightID->emplace( "RIOT2", 1 );
+    vehLightID->emplace( "THRUSTER", 1 );
+    vehLightID->emplace( "STREITER", 6 );
+    vehLightID->emplace( "REVOLTER", 1 );
+    vehLightID->emplace( "PARIAH", 0 );
+    vehLightID->emplace( "CARACARA", 1 ); // mpassault
+    vehLightID->emplace( "SEASPARROW", 6 );
+    vehLightID->emplace( "ENTITY2", 6 );
+    vehLightID->emplace( "JESTER3", 1 );
+    vehLightID->emplace( "TYRANT", 6 );
+    vehLightID->emplace( "DOMINATOR3", 6 );
+    vehLightID->emplace( "HOTRING", 6 );
+    vehLightID->emplace( "FLASHGT", 6 );
+    vehLightID->emplace( "TEZERACT", 1 );
+    vehLightID->emplace( "ELLIE", 6 );
+    vehLightID->emplace( "MICHELLI", 6 );
+    vehLightID->emplace( "GB200", 1 );
+    vehLightID->emplace( "ISSI3", 1 );
+    vehLightID->emplace( "TAIPAN", 0 );
+    vehLightID->emplace( "FAGALOA", 2 );
+    vehLightID->emplace( "CHEBUREK", 2 );
+    vehLightID->emplace( "STAFFORD", 2 ); // mpbattle
+    vehLightID->emplace( "SCRAMJET", 1 );
+    vehLightID->emplace( "STRIKEFORCE", 0 );
+    vehLightID->emplace( "TERBYTE", 1 );
+    vehLightID->emplace( "PBUS2", 0 );
+    vehLightID->emplace( "POUNDER2", 8 );
+    vehLightID->emplace( "FREECRAWLER", 6 );
+    vehLightID->emplace( "MULE4", 1 );
+    vehLightID->emplace( "BLIMP3", 0 );
+    vehLightID->emplace( "MENACER", 1 );
+    vehLightID->emplace( "SWINGER", 0 );
+    vehLightID->emplace( "PATRIOT2", 1 );
+    vehLightID->emplace( "OPPRESSOR2", 0 );
+    vehLightID->emplace( "IMPALER3", 2 ); // mpchristmas2018
+    vehLightID->emplace( "MONSTER5", 1 );
+    vehLightID->emplace( "SLAMVAN6", 1 );
+    vehLightID->emplace( "ISSI6", 1 );
+    vehLightID->emplace( "CERBERUS3", 6 );
+    vehLightID->emplace( "DEATHBIKE2", 0 );
+    vehLightID->emplace( "DOMINATOR6", 1 );
+    vehLightID->emplace( "DEATHBIKE3", 1 );
+    vehLightID->emplace( "IMPALER4", 2 );
+    vehLightID->emplace( "SLAMVAN4", 1 );
+    vehLightID->emplace( "SLAMVAN5", 1 );
+    vehLightID->emplace( "BRUTUS3", 1 );
+    vehLightID->emplace( "BRUTUS2", 1 );
+    vehLightID->emplace( "BRUTUS", 1 );
+    vehLightID->emplace( "DEATHBIKE", 1 );
+    vehLightID->emplace( "BRUISER", 0 );
+    vehLightID->emplace( "BRUISER2", 0 );
+    vehLightID->emplace( "BRUISER3", 0 );
+    vehLightID->emplace( "RCBANDITO", 1 );
+    vehLightID->emplace( "CERBERUS", 6 );
+    vehLightID->emplace( "CERBERUS2", 6 );
+    vehLightID->emplace( "IMPALER2", 2 );
+    vehLightID->emplace( "MONSTER4", 1 );
+    vehLightID->emplace( "MONSTER3", 1 );
+    vehLightID->emplace( "TULIP", 1 );
+    vehLightID->emplace( "ITALIGTO", 6 );
+    vehLightID->emplace( "ISSI4", 1 );
+    vehLightID->emplace( "ISSI5", 1 );
+    vehLightID->emplace( "SCARAB", 1 );
+    vehLightID->emplace( "SCARAB2", 1 );
+    vehLightID->emplace( "SCARAB3", 1 );
+    vehLightID->emplace( "CLIQUE", 1 );
+    vehLightID->emplace( "IMPALER", 2 );
+    vehLightID->emplace( "VAMOS", 1 );
+    vehLightID->emplace( "IMPERATOR", 2 );
+    vehLightID->emplace( "IMPERATOR2", 2 );
+    vehLightID->emplace( "IMPERATOR3", 2 );
+    vehLightID->emplace( "TOROS", 6 );
+    vehLightID->emplace( "SCHLAGEN", 6 );
+    vehLightID->emplace( "DEVIANT", 1 );
+    vehLightID->emplace( "DOMINATOR4", 1 );
+    vehLightID->emplace( "DOMINATOR5", 1 );
+    vehLightID->emplace( "ZR380", 1 );
+    vehLightID->emplace( "ZR3802", 1 );
+    vehLightID->emplace( "ZR3803", 1 );
+    vehLightID->emplace( "DEVESTE", 1);
 
     while (true)
     {
