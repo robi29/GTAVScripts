@@ -1,0 +1,8 @@
+*.vs
+*.asi
+*.iobj
+*.ipdb
+*.tlog
+*.log
+*.obj
+*.pdb
