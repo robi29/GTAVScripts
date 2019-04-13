@@ -5,7 +5,7 @@ http://dev-c.com
 */
 
 #include "script.h"
-#include "..\..\inc\enbseries.h"
+#include "..\inc\enbseries.h"
 #include <stdint.h>
 #include <windows.h>
 #include <Shlwapi.h>

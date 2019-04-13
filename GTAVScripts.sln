@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WeatherDetector", "WeatherDetector\WeatherDetector\WeatherDetector.vcxproj", "{8D82F34A-1D64-465B-84B1-37F89AD3D20B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WeatherDetector", "WeatherDetector\WeatherDetector.vcxproj", "{8D82F34A-1D64-465B-84B1-37F89AD3D20B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TimecycleMods", "TimecycleMods\TimecycleMods\TimecycleMods.vcxproj", "{6BE107A2-7A44-4703-BA0C-7C7FBDAC1E87}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TimecycleMods", "TimecycleMods\TimecycleMods.vcxproj", "{6BE107A2-7A44-4703-BA0C-7C7FBDAC1E87}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionBlur", "MotionBlur\MotionBlur\MotionBlur.vcxproj", "{5FFC83E6-D6FF-45CA-BBA3-0E78CE70F3E5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MotionBlur", "MotionBlur\MotionBlur.vcxproj", "{5FFC83E6-D6FF-45CA-BBA3-0E78CE70F3E5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicShadows", "DynamicShadows\DynamicShadows\DynamicShadows.vcxproj", "{301799D4-FA63-45C0-80BD-5F9E6C76DC4B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicShadows", "DynamicShadows\DynamicShadows.vcxproj", "{301799D4-FA63-45C0-80BD-5F9E6C76DC4B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Atmosphere", "Atmosphere\Atmosphere\Atmosphere.vcxproj", "{5A510EB8-D788-431B-9AA6-770AAAF2C159}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Atmosphere", "Atmosphere\Atmosphere.vcxproj", "{5A510EB8-D788-431B-9AA6-770AAAF2C159}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXBC", "DXBC\DXBC\DXBC.vcxproj", "{F03615B6-E207-401B-B31C-D67DBB336CCD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXBC", "DXBC\DXBC.vcxproj", "{F03615B6-E207-401B-B31C-D67DBB336CCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
