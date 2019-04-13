@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "script.h"
-#include "keyboard.h"
+#include "..\Common\inc\script.h"
+#include "..\Common\inc\keyboard.h"
 
 #include <cstdio>
 #include <Psapi.h>
@@ -888,8 +888,8 @@ uintptr_t FindPattern(const char *pattern, const char *mask)
 
 void ScriptMain()
 {
-    GetModuleFileName(NULL, path, MAX_PATH);
-    for (unsigned i = MAX_PATH - 1; i >= 0; --i)
+    GetModuleFileName(nullptr, path, MAX_PATH);
+    for (unsigned i = MAX_PATH - 2; i > 0; --i)
     {
         if (path[i] == '\\')
         {

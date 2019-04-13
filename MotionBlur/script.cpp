@@ -4,8 +4,8 @@ http://dev-c.com
 (C) Alexander Blade 2015
 */
 
-#include "script.h"
-#include "keyboard.h"
+#include "..\Common\inc\script.h"
+#include "..\Common\inc\keyboard.h"
 //#include <cstdio>
 
 /*char text[128];

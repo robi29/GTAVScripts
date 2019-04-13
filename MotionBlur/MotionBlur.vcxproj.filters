@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\Common\main.cpp" />
     <ClCompile Include="script.cpp" />
-    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="..\Common\keyboard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\enums.h">
+    <ClInclude Include="..\inc\enums.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\natives.h">
+    <ClInclude Include="..\inc\natives.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\types.h">
+    <ClInclude Include="..\inc\types.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="script.h" />
-    <ClInclude Include="..\..\inc\main.h">
+    <ClInclude Include="..\Common\inc\script.h" />
+    <ClInclude Include="..\inc\main.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="keyboard.h" />
+    <ClInclude Include="..\Common\inc\keyboard.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

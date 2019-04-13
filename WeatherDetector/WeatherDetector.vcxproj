@@ -7,16 +7,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\Common\main.cpp" />
     <ClCompile Include="script.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\enbseries.h" />
-    <ClInclude Include="..\..\inc\main.h" />
-    <ClInclude Include="..\..\inc\enums.h" />
-    <ClInclude Include="..\..\inc\natives.h" />
-    <ClInclude Include="..\..\inc\types.h" />
-    <ClInclude Include="script.h" />
+    <ClInclude Include="..\inc\enbseries.h" />
+    <ClInclude Include="..\inc\main.h" />
+    <ClInclude Include="..\inc\enums.h" />
+    <ClInclude Include="..\inc\natives.h" />
+    <ClInclude Include="..\inc\types.h" />
+    <ClInclude Include="..\Common\inc\script.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8D82F34A-1D64-465B-84B1-37F89AD3D20B}</ProjectGuid>
@@ -55,7 +55,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;WEATHER_DETECTOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>

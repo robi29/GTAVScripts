@@ -1,5 +1,5 @@
-#include "script.h"
-#include "keyboard.h"
+#include "..\Common\inc\script.h"
+#include "..\Common\inc\keyboard.h"
 
 #include <unordered_map>
 

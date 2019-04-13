@@ -4,7 +4,7 @@ http://dev-c.com
 (C) Alexander Blade 2015
 */
 
-#include "script.h"
+#include "..\Common\inc\script.h"
 #include "..\inc\enbseries.h"
 #include <stdint.h>
 #include <windows.h>
@@ -684,4 +684,9 @@ void ScriptMain()
             }
         }
     }
+}
+
+void UnloadScript()
+{
+
 }

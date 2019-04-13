@@ -7,17 +7,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="keyboard.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\Common\keyboard.cpp" />
+    <ClCompile Include="..\Common\main.cpp" />
     <ClCompile Include="script.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\main.h" />
-    <ClInclude Include="..\..\inc\enums.h" />
-    <ClInclude Include="..\..\inc\natives.h" />
-    <ClInclude Include="..\..\inc\types.h" />
-    <ClInclude Include="keyboard.h" />
-    <ClInclude Include="script.h" />
+    <ClInclude Include="..\inc\main.h" />
+    <ClInclude Include="..\inc\enums.h" />
+    <ClInclude Include="..\inc\natives.h" />
+    <ClInclude Include="..\inc\types.h" />
+    <ClInclude Include="..\Common\inc\keyboard.h" />
+    <ClInclude Include="..\Common\inc\script.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5FFC83E6-D6FF-45CA-BBA3-0E78CE70F3E5}</ProjectGuid>
