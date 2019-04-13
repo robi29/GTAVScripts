@@ -592,7 +592,8 @@ __forceinline void update(Entity entity)
                 GAMEPLAY::SET_WIND_SPEED(lerp(windSpeed, windSpeed*aboveWindMultiplier[static_cast<int>(currentWeatherType)], progress));
             }
         }
-        GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(weather, weatherHashes[aboveWeatherOverride[static_cast<int>(currentWeatherType)]], (progress * 3.0f > 1.0f) ? 1.0f : progress * 3.0f);
+        const int weatherIndex = static_cast<int>(aboveWeatherOverride[static_cast<int>(currentWeatherType)]);
+        GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(weather, weatherHashes[weatherIndex], (progress * 3.0f > 1.0f) ? 1.0f : progress * 3.0f);
 
         doLightningAboveClouds();
 
@@ -602,7 +603,8 @@ __forceinline void update(Entity entity)
     }
     else if (coords.z < aboveCloudsZoneEnd[static_cast<int>(currentWeatherType)]) // z < 2000
     {
-        GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(weatherHashes[aboveWeatherOverride[static_cast<int>(currentWeatherType)]], weatherHashes[aboveWeatherOverride[static_cast<int>(currentWeatherType)]], 0.5f);
+        const int weatherIndex = static_cast<int>(aboveWeatherOverride[static_cast<int>(currentWeatherType)]);
+        GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(weatherHashes[weatherIndex], weatherHashes[weatherIndex], 0.5f);
         if (!isSunnyWeather(weather))
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY(1.0f);
@@ -668,7 +670,9 @@ __forceinline void update(Entity entity)
         {
             GAMEPLAY::SET_WIND_SPEED(lerp(windSpeed*aboveWindMultiplier[static_cast<int>(currentWeatherType)], 0.0f, progress));
         }
-        GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(weatherHashes[aboveWeatherOverride[static_cast<int>(currentWeatherType)]], weatherHashes[spaceWeatherOverride[static_cast<int>(currentWeatherType)]],
+        const int aboveWeatherIndex = static_cast<int>(aboveWeatherOverride[static_cast<int>(currentWeatherType)]);
+        const int spaceWeatherIndex = static_cast<int>(spaceWeatherOverride[static_cast<int>(currentWeatherType)]);
+        GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(weatherHashes[aboveWeatherIndex], weatherHashes[spaceWeatherIndex],
             SYSTEM::SIN((coords.z - aboveCloudsZoneEnd[static_cast<int>(currentWeatherType)]) / (spaceZoneStart[static_cast<int>(currentWeatherType)] - aboveCloudsZoneEnd[static_cast<int>(currentWeatherType)]) * 90));
 
         if (isAllModifiersDisabled())
@@ -691,7 +695,8 @@ __forceinline void update(Entity entity)
     {
         if (!isSpace)
         {
-            GAMEPLAY::SET_OVERRIDE_WEATHER(const_cast<char*>(weatherTypes[spaceWeatherOverride[static_cast<int>(currentWeatherType)]]));
+            const int weatherIndex = static_cast<int>(spaceWeatherOverride[static_cast<int>(currentWeatherType)]);
+            GAMEPLAY::SET_OVERRIDE_WEATHER(const_cast<char*>(weatherTypes[weatherIndex]));
         }
         if (!isSunnyWeather(weather))
         {
@@ -723,30 +728,34 @@ __forceinline void update(Entity entity)
         sprintf_s(text[0], "spacezone\n");
     }
 
+    const int currentWeatherIndex = static_cast<int>(currentWeatherType);
+    const int aboveWeatherIndex   = static_cast<int>(aboveWeatherOverride[currentWeatherIndex]);
+    const int spaceWeatherIndex   = static_cast<int>(spaceWeatherOverride[currentWeatherIndex]);
 
-
-    sprintf_s(text[0], "%snormalZoneEnd: %.2f\ncloudZoneStart: %.2f\ncloudZoneEnd: %.2f", text[0], normalZoneEnd[currentWeatherType], cloudZoneStart[currentWeatherType], cloudZoneEnd[currentWeatherType]);
-    sprintf_s(text[1], "aboveCloudsZoneStart: %.2f\naboveCloudsZoneEnd : %.2f\nspaceZoneStart : %.2f", aboveCloudsZoneStart[currentWeatherType], aboveCloudsZoneEnd[currentWeatherType], spaceZoneStart[currentWeatherType]);
-    sprintf_s(text[2], "cloudZoneWindMultiplier: %.2f\naboveCloudsZoneWindMultiplier: %.2f\nspaceZoneWindMultiplier : %.2f", cloudWindMultiplier[currentWeatherType], aboveWindMultiplier[currentWeatherType], spaceWindMultiplier[currentWeatherType]);
-    sprintf_s(text[3], "aboveCloudWeatherOverride: %s\nspaceZoneWeatherOverride: %s", weatherTypes[aboveWeatherOverride[currentWeatherType]], weatherTypes[spaceWeatherOverride[currentWeatherType]]);
-    sprintf_s(text[4], "normalZoneTimecycMod: %s\ncloudZoneTimecycMod : %s\naboveCloudsZoneTimecycMod: %s", normalZoneTimecycleModifier[currentWeatherType], cloudZoneTimecycleModifier[currentWeatherType], aboveCloudsZoneTimecycleModifier[currentWeatherType]);
-    sprintf_s(text[5], "spaceZoneTimecycMod: %s\n\nwind speed : %.2f\ntimecycle index: %d\n%s", spaceZoneTimecycleModifier[currentWeatherType], GAMEPLAY::GET_WIND_SPEED(), GRAPHICS::GET_TIMECYCLE_MODIFIER_INDEX(), nameFile);
+    sprintf_s(text[0], "%snormalZoneEnd: %.2f\ncloudZoneStart: %.2f\ncloudZoneEnd: %.2f", text[0], normalZoneEnd[currentWeatherIndex], cloudZoneStart[currentWeatherIndex], cloudZoneEnd[currentWeatherIndex]);
+    sprintf_s(text[1], "aboveCloudsZoneStart: %.2f\naboveCloudsZoneEnd : %.2f\nspaceZoneStart : %.2f", aboveCloudsZoneStart[currentWeatherIndex], aboveCloudsZoneEnd[currentWeatherIndex], spaceZoneStart[currentWeatherIndex]);
+    sprintf_s(text[2], "cloudZoneWindMultiplier: %.2f\naboveCloudsZoneWindMultiplier: %.2f\nspaceZoneWindMultiplier : %.2f", cloudWindMultiplier[currentWeatherIndex], aboveWindMultiplier[currentWeatherIndex], spaceWindMultiplier[currentWeatherIndex]);
+    sprintf_s(text[3], "aboveCloudWeatherOverride: %s\nspaceZoneWeatherOverride: %s", weatherTypes[aboveWeatherIndex], weatherTypes[spaceWeatherIndex]);
+    sprintf_s(text[4], "normalZoneTimecycMod: %s\ncloudZoneTimecycMod : %s\naboveCloudsZoneTimecycMod: %s", normalZoneTimecycleModifier[currentWeatherIndex], cloudZoneTimecycleModifier[currentWeatherIndex], aboveCloudsZoneTimecycleModifier[currentWeatherIndex]);
+    sprintf_s(text[5], "spaceZoneTimecycMod: %s\n\nwind speed : %.2f\ntimecycle index: %d\n%s", spaceZoneTimecycleModifier[currentWeatherIndex], GAMEPLAY::GET_WIND_SPEED(), GRAPHICS::GET_TIMECYCLE_MODIFIER_INDEX(), nameFile);
 }
 
-__forceinline void loadWeatherSettings(char* fileName, unsigned weatherType, char* sectionName)
+__forceinline void loadWeatherSettings(char* fileName, Weather weatherType, char* sectionName)
 {
+    const int weatherIndex = static_cast<int>(weatherType);
+
     char sValue[MAX_NAME];
     Cloud clouds = Cloud::NoClouds;
 
-    normalZoneEnd[weatherType] = GetPrivateProfileFloat(sectionName, "NormalZoneEnd", "800.0", fileName);
-    cloudZoneStart[weatherType] = GetPrivateProfileFloat(sectionName, "CloudZoneStart", "900.0", fileName);
-    cloudZoneEnd[weatherType] = GetPrivateProfileFloat(sectionName, "CloudZoneEnd", "1200.0", fileName);
-    aboveCloudsZoneStart[weatherType] = GetPrivateProfileFloat(sectionName, "AboveCloudsZoneStart", "1400.0", fileName);
-    aboveCloudsZoneEnd[weatherType] = GetPrivateProfileFloat(sectionName, "AboveCloudsZoneEnd", "2000.0", fileName);
-    spaceZoneStart[weatherType] = GetPrivateProfileFloat(sectionName, "SpaceZoneStart", "3000.0", fileName);
-    cloudWindMultiplier[weatherType] = GetPrivateProfileFloat(sectionName, "CloudZoneWindMultiplier", "2.0", fileName);
-    aboveWindMultiplier[weatherType] = GetPrivateProfileFloat(sectionName, "AboveCloudsZoneWindMultiplier", "0.5", fileName);
-    spaceWindMultiplier[weatherType] = GetPrivateProfileFloat(sectionName, "SpaceZoneWindMultiplier", "0.0", fileName);
+    normalZoneEnd[weatherIndex] = GetPrivateProfileFloat(sectionName, "NormalZoneEnd", "800.0", fileName);
+    cloudZoneStart[weatherIndex] = GetPrivateProfileFloat(sectionName, "CloudZoneStart", "900.0", fileName);
+    cloudZoneEnd[weatherIndex] = GetPrivateProfileFloat(sectionName, "CloudZoneEnd", "1200.0", fileName);
+    aboveCloudsZoneStart[weatherIndex] = GetPrivateProfileFloat(sectionName, "AboveCloudsZoneStart", "1400.0", fileName);
+    aboveCloudsZoneEnd[weatherIndex] = GetPrivateProfileFloat(sectionName, "AboveCloudsZoneEnd", "2000.0", fileName);
+    spaceZoneStart[weatherIndex] = GetPrivateProfileFloat(sectionName, "SpaceZoneStart", "3000.0", fileName);
+    cloudWindMultiplier[weatherIndex] = GetPrivateProfileFloat(sectionName, "CloudZoneWindMultiplier", "2.0", fileName);
+    aboveWindMultiplier[weatherIndex] = GetPrivateProfileFloat(sectionName, "AboveCloudsZoneWindMultiplier", "0.5", fileName);
+    spaceWindMultiplier[weatherIndex] = GetPrivateProfileFloat(sectionName, "SpaceZoneWindMultiplier", "0.0", fileName);
 
     GetPrivateProfileString(sectionName, "NormalZoneClouds", "NO_CLOUDS", sValue, MAX_NAME, fileName);
     for (unsigned i = 0; i < static_cast<unsigned>(Cloud::Count); i++)
@@ -757,40 +766,40 @@ __forceinline void loadWeatherSettings(char* fileName, unsigned weatherType, cha
             break;
         }
     }
-    strcpy(weatherClouds[weatherType], cloudTypes[clouds]);
+    strcpy(weatherClouds[weatherIndex], cloudTypes[static_cast<int>(clouds)]);
 
     GetPrivateProfileString(sectionName, "AboveCloudsZoneWeatherOverride", "EXTRASUNNY", sValue, MAX_NAME, fileName);
-    for (unsigned i = 0; i < W_MAX; i++)
+    for (unsigned i = 0; i < static_cast<unsigned>(Weather::Count); i++)
     {
         if (!strcmp(weatherTypes[i], sValue))
         {
-            aboveWeatherOverride[weatherType] = i;
+            aboveWeatherOverride[weatherIndex] = static_cast<Weather>(i);
             break;
         }
     }
 
     GetPrivateProfileString(sectionName, "SpaceZoneWeatherOverride", "HALLOWEEN", sValue, MAX_NAME, fileName);
-    for (unsigned i = 0; i < W_MAX; i++)
+    for (unsigned i = 0; i < static_cast<unsigned>(Weather::Count); i++)
     {
         if (!strcmp(weatherTypes[i], sValue))
         {
-            spaceWeatherOverride[weatherType] = i;
+            spaceWeatherOverride[weatherIndex] = static_cast<Weather>(i);
             break;
         }
     }
 
-    GetPrivateProfileString(sectionName, "NormalZoneTimecycleModifier", "nextgen", normalZoneTimecycleModifier[weatherType], MAX_NAME, fileName);
-    GetPrivateProfileString(sectionName, "CloudZoneTimecycleModifier", "nextgen", cloudZoneTimecycleModifier[weatherType], MAX_NAME, fileName);
-    GetPrivateProfileString(sectionName, "AboveCloudsZoneTimecycleModifier", "nextgen", aboveCloudsZoneTimecycleModifier[weatherType], MAX_NAME, fileName);
-    GetPrivateProfileString(sectionName, "SpaceZoneTimecycleModifier", "nextgen", spaceZoneTimecycleModifier[weatherType], MAX_NAME, fileName);
+    GetPrivateProfileString(sectionName, "NormalZoneTimecycleModifier", "nextgen", normalZoneTimecycleModifier[weatherIndex], MAX_NAME, fileName);
+    GetPrivateProfileString(sectionName, "CloudZoneTimecycleModifier", "nextgen", cloudZoneTimecycleModifier[weatherIndex], MAX_NAME, fileName);
+    GetPrivateProfileString(sectionName, "AboveCloudsZoneTimecycleModifier", "nextgen", aboveCloudsZoneTimecycleModifier[weatherIndex], MAX_NAME, fileName);
+    GetPrivateProfileString(sectionName, "SpaceZoneTimecycleModifier", "nextgen", spaceZoneTimecycleModifier[weatherIndex], MAX_NAME, fileName);
 
-    aboveCloudsZoneTimecycleTransitionTime[weatherType] = GetPrivateProfileFloat(sectionName, "AboveCloudsZoneTimecycleTransitionTime", "30.0", fileName);
-    spaceZoneTimecycleTransitionTime[weatherType] = GetPrivateProfileFloat(sectionName, "SpaceZoneTimecycleTransitionTime", "30.0", fileName);
+    aboveCloudsZoneTimecycleTransitionTime[weatherIndex] = GetPrivateProfileFloat(sectionName, "AboveCloudsZoneTimecycleTransitionTime", "30.0", fileName);
+    spaceZoneTimecycleTransitionTime[weatherIndex] = GetPrivateProfileFloat(sectionName, "SpaceZoneTimecycleTransitionTime", "30.0", fileName);
 
-    enableLightningAboveClouds[weatherType] = GetPrivateProfileBool(sectionName, "EnableLightningAboveClouds", false, fileName);
-    enableLightningInSpace[weatherType] = GetPrivateProfileBool(sectionName, "EnableLightningInSpace", false, fileName);
+    enableLightningAboveClouds[weatherIndex] = GetPrivateProfileBool(sectionName, "EnableLightningAboveClouds", false, fileName);
+    enableLightningInSpace[weatherIndex] = GetPrivateProfileBool(sectionName, "EnableLightningInSpace", false, fileName);
 
-    lightningFrequency[weatherType] = GetPrivateProfileInt(sectionName, "LightningFrequency", 5, fileName);
+    lightningFrequency[weatherIndex] = GetPrivateProfileInt(sectionName, "LightningFrequency", 5, fileName);
 }
 
 bool loadConfigFromFile(char* fileName, bool isMainFile)
@@ -826,19 +835,19 @@ bool loadConfigFromFile(char* fileName, bool isMainFile)
     textColorBlue = GetPrivateProfileInt("DEBUG", "TextColorBlue", 0, namePath);
 
     loadWeatherSettings(namePath, Weather::Extrasunny, "EXTRASUNNY");
-    loadWeatherSettings(namePath, CLEAR, "CLEAR");
-    loadWeatherSettings(namePath, CLOUDS, "CLOUDS");
-    loadWeatherSettings(namePath, SMOG, "SMOG");
-    loadWeatherSettings(namePath, NEUTRAL, "NEUTRAL");
-    loadWeatherSettings(namePath, SNOWLIGHT, "SNOWLIGHT");
-    loadWeatherSettings(namePath, FOGGY, "FOGGY");
-    loadWeatherSettings(namePath, OVERCAST, "OVERCAST");
-    loadWeatherSettings(namePath, RAIN, "RAIN");
-    loadWeatherSettings(namePath, THUNDER, "THUNDER");
-    loadWeatherSettings(namePath, CLEARING, "CLEARING");
-    loadWeatherSettings(namePath, SNOW, "SNOW");
-    loadWeatherSettings(namePath, BLIZZARD, "BLIZZARD");
-    loadWeatherSettings(namePath, XMAS, "XMAS");
+    loadWeatherSettings(namePath, Weather::Clear, "CLEAR");
+    loadWeatherSettings(namePath, Weather::Clouds, "CLOUDS");
+    loadWeatherSettings(namePath, Weather::Smog, "SMOG");
+    loadWeatherSettings(namePath, Weather::Neutral, "NEUTRAL");
+    loadWeatherSettings(namePath, Weather::Snowlight, "SNOWLIGHT");
+    loadWeatherSettings(namePath, Weather::Foggy, "FOGGY");
+    loadWeatherSettings(namePath, Weather::Overcast, "OVERCAST");
+    loadWeatherSettings(namePath, Weather::Rain, "RAIN");
+    loadWeatherSettings(namePath, Weather::Thunder, "THUNDER");
+    loadWeatherSettings(namePath, Weather::Clearing, "CLEARING");
+    loadWeatherSettings(namePath, Weather::Snow, "SNOW");
+    loadWeatherSettings(namePath, Weather::Blizzard, "BLIZZARD");
+    loadWeatherSettings(namePath, Weather::Xmas, "XMAS");
     loadWeatherSettings(namePath, Weather::Halloween, "HALLOWEEN");
 
     return true;
@@ -898,21 +907,21 @@ void ScriptMain()
     register bool isOnMod = true;
     register bool isDebug = false;
 
-    weatherHashes[EXTRASUNNY] = GAMEPLAY::GET_HASH_KEY("extrasunny");
-    weatherHashes[CLEAR] = GAMEPLAY::GET_HASH_KEY("clear");
-    weatherHashes[CLOUDS] = GAMEPLAY::GET_HASH_KEY("clouds");
-    weatherHashes[SMOG] = GAMEPLAY::GET_HASH_KEY("smog");
-    weatherHashes[NEUTRAL] = GAMEPLAY::GET_HASH_KEY("neutral");
-    weatherHashes[SNOWLIGHT] = GAMEPLAY::GET_HASH_KEY("snowlight");
-    weatherHashes[FOGGY] = GAMEPLAY::GET_HASH_KEY("foggy");
-    weatherHashes[OVERCAST] = GAMEPLAY::GET_HASH_KEY("overcast");
-    weatherHashes[RAIN] = GAMEPLAY::GET_HASH_KEY("rain");
-    weatherHashes[THUNDER] = GAMEPLAY::GET_HASH_KEY("thunder");
-    weatherHashes[CLEARING] = GAMEPLAY::GET_HASH_KEY("clearing");
-    weatherHashes[SNOW] = GAMEPLAY::GET_HASH_KEY("snow");
-    weatherHashes[BLIZZARD] = GAMEPLAY::GET_HASH_KEY("blizzard");
-    weatherHashes[XMAS] = GAMEPLAY::GET_HASH_KEY("xmas");
-    weatherHashes[HALLOWEEN] = GAMEPLAY::GET_HASH_KEY("halloween");
+    weatherHashes[static_cast<int>(Weather::Extrasunny)] = GAMEPLAY::GET_HASH_KEY("extrasunny");
+    weatherHashes[static_cast<int>(Weather::Clear)] = GAMEPLAY::GET_HASH_KEY("clear");
+    weatherHashes[static_cast<int>(Weather::Clouds)] = GAMEPLAY::GET_HASH_KEY("clouds");
+    weatherHashes[static_cast<int>(Weather::Smog)] = GAMEPLAY::GET_HASH_KEY("smog");
+    weatherHashes[static_cast<int>(Weather::Neutral)] = GAMEPLAY::GET_HASH_KEY("neutral");
+    weatherHashes[static_cast<int>(Weather::Snowlight)] = GAMEPLAY::GET_HASH_KEY("snowlight");
+    weatherHashes[static_cast<int>(Weather::Foggy)] = GAMEPLAY::GET_HASH_KEY("foggy");
+    weatherHashes[static_cast<int>(Weather::Overcast)] = GAMEPLAY::GET_HASH_KEY("overcast");
+    weatherHashes[static_cast<int>(Weather::Rain)] = GAMEPLAY::GET_HASH_KEY("rain");
+    weatherHashes[static_cast<int>(Weather::Thunder)] = GAMEPLAY::GET_HASH_KEY("thunder");
+    weatherHashes[static_cast<int>(Weather::Clearing)] = GAMEPLAY::GET_HASH_KEY("clearing");
+    weatherHashes[static_cast<int>(Weather::Snow)] = GAMEPLAY::GET_HASH_KEY("snow");
+    weatherHashes[static_cast<int>(Weather::Blizzard)] = GAMEPLAY::GET_HASH_KEY("blizzard");
+    weatherHashes[static_cast<int>(Weather::Xmas)] = GAMEPLAY::GET_HASH_KEY("xmas");
+    weatherHashes[static_cast<int>(Weather::Halloween)] = GAMEPLAY::GET_HASH_KEY("halloween");
 
     GAMEPLAY::_GET_WEATHER_TYPE_TRANSITION(&weather0, &weather1, &progress);
 
@@ -970,7 +979,7 @@ void UnloadScript()
 {
     GAMEPLAY::CLEAR_OVERRIDE_WEATHER();
     GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION(weather0, weather1, progress);
-    GRAPHICS::SET_TIMECYCLE_MODIFIER(normalZoneTimecycleModifier[currentWeatherType]);
+    GRAPHICS::SET_TIMECYCLE_MODIFIER(normalZoneTimecycleModifier[static_cast<int>(currentWeatherType)]);
     GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(0.0f);
     GRAPHICS::CLEAR_TIMECYCLE_MODIFIER();
     resetCloudHat();
