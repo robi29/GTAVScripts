@@ -20,7 +20,7 @@
     <ClInclude Include="script.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8D82F34A-1D64-465B-84B1-37F89AD3D20B}</ProjectGuid>
+    <ProjectGuid>{5FFC83E6-D6FF-45CA-BBA3-0E78CE70F3E5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Pools</RootNamespace>
     <ProjectName>MotionBlur</ProjectName>

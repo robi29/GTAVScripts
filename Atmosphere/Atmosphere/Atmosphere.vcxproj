@@ -20,7 +20,7 @@
     <ClInclude Include="script.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8D82F34A-1D64-465B-84B1-37F89AD3D20B}</ProjectGuid>
+    <ProjectGuid>{5A510EB8-D788-431B-9AA6-770AAAF2C159}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>NativeTrainer</RootNamespace>
     <ProjectName>Atmosphere</ProjectName>

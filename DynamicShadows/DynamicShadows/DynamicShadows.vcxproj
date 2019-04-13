@@ -20,7 +20,7 @@
     <ClInclude Include="script.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8D82F34A-1D64-465B-84B1-37F89AD3D20B}</ProjectGuid>
+    <ProjectGuid>{301799D4-FA63-45C0-80BD-5F9E6C76DC4B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>NativeTrainer</RootNamespace>
     <ProjectName>DynamicShadows</ProjectName>
