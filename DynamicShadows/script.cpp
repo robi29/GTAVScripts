@@ -991,6 +991,8 @@ void ScriptMain()
     vehLightID->emplace( "ZR3803", 1 );
     vehLightID->emplace( "DEVESTE", 1 );
 
+    bool restoreLightsSettings = false;
+
     while( true )
     {
         if( IsKeyJustUp( reloadKey ) )
@@ -999,13 +1001,14 @@ void ScriptMain()
         }
         if( IsKeyJustUp( toggleKey ) )
         {
-            isModOn = !isModOn;
+            restoreLightsSettings = isModOn;
+            isModOn               = !isModOn;
         }
         if( isModOn )
         {
             update();
         }
-        else
+        else if( restoreLightsSettings )
         {
             RestoreOriginalLightsSettings();
         }
