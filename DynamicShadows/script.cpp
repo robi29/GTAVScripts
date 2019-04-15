@@ -45,37 +45,37 @@ std::unordered_map<std::string, uint8_t>* vehLightID = nullptr;
 
 __forceinline void update()
 {
-    const int     vehicleArrayCount = worldGetAllVehicles(vehsArray, vehsArraySize);
-    const int     vehicleCount      = (vehicleArrayCount < 300)
-                                      ? vehicleArrayCount
-                                      : 300;
+    const int vehicleArrayCount = worldGetAllVehicles( vehsArray, vehsArraySize );
+    const int vehicleCount      = ( vehicleArrayCount < 300 )
+                                  ? vehicleArrayCount
+                                  : 300;
 
-    const Entity  playerID          = PLAYER::PLAYER_PED_ID();
-    const Vehicle playerVehicleId   = PED::IS_PED_IN_ANY_VEHICLE(playerID, 0)
-                                      ? PED::GET_VEHICLE_PED_IS_USING(playerID)
-                                      : -1;
+    const Entity  playerID        = PLAYER::PLAYER_PED_ID();
+    const Vehicle playerVehicleId = PED::IS_PED_IN_ANY_VEHICLE( playerID, 0 )
+                                    ? PED::GET_VEHICLE_PED_IS_USING( playerID )
+                                    : -1;
 
-    Vector3 playerPos = ENTITY::GET_ENTITY_COORDS(playerID, TRUE);
+    Vector3 playerPos = ENTITY::GET_ENTITY_COORDS( playerID, TRUE );
     playerPos.z += 5.0f;
 
-    for (int i = 0; i < vehicleCount; ++i)
+    for( int i = 0; i < vehicleCount; ++i )
     {
         const register int vehicleID = vehsArray[i];
-        if (vehicleID > 0 && ENTITY::DOES_ENTITY_EXIST(vehicleID))
+        if( vehicleID > 0 && ENTITY::DOES_ENTITY_EXIST( vehicleID ) )
         {
-            if (vehicleID == playerVehicleId)
+            if( vehicleID == playerVehicleId )
             {
-                VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER(vehicleID, 1.0f);
+                VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER( vehicleID, 1.0f );
                 continue;
             }
             BOOL          highbeamsOn = FALSE;
             BOOL          lightsOn    = FALSE;
-            const BOOL    result      = VEHICLE::GET_VEHICLE_LIGHTS_STATE(vehicleID, &lightsOn, &highbeamsOn);
-            const BOOL    isRunning   = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(vehicleID);
-            const Vector3 vehiclePos  = ENTITY::GET_ENTITY_COORDS(vehicleID, TRUE);
-            if (result == TRUE && lightsOn == TRUE && isRunning == TRUE && playerPos.z > vehiclePos.z)
+            const BOOL    result      = VEHICLE::GET_VEHICLE_LIGHTS_STATE( vehicleID, &lightsOn, &highbeamsOn );
+            const BOOL    isRunning   = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING( vehicleID );
+            const Vector3 vehiclePos  = ENTITY::GET_ENTITY_COORDS( vehicleID, TRUE );
+            if( result == TRUE && lightsOn == TRUE && isRunning == TRUE && playerPos.z > vehiclePos.z )
             {
-                const Vector3 angle = ENTITY::GET_ENTITY_FORWARD_VECTOR(vehicleID);
+                const Vector3 angle = ENTITY::GET_ENTITY_FORWARD_VECTOR( vehicleID );
 
                 float leftAngle  = angle.z;
                 float rightAngle = angle.z;
@@ -83,7 +83,7 @@ __forceinline void update()
                 float lightDistance   = distance;
                 float lightBrightness = brightness;
 
-                if (highbeamsOn == TRUE)
+                if( highbeamsOn == TRUE )
                 {
                     lightDistance   *= distanceMultiplier;
                     lightBrightness *= brightnessMultiplier;
@@ -93,53 +93,53 @@ __forceinline void update()
                     leftAngle  += leftangle;
                     rightAngle += rightangle;
                 }
-                VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER(vehicleID, 0.0f);
+                VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER( vehicleID, 0.0f );
 
-                const int left  = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(vehicleID, "headlight_l");
-                const int right = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(vehicleID, "headlight_r");
+                const int left  = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME( vehicleID, "headlight_l" );
+                const int right = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME( vehicleID, "headlight_r" );
 
                 Vector3 leftLightPos  = { 0.0f, 0, 0.0f, 0, 0.0f, 0 };
                 Vector3 rightLightPos = { 0.0f, 0, 0.0f, 0, 0.0f, 0 };
 
-                if (left != -1)
+                if( left != -1 )
                 {
-                    leftLightPos = ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(vehicleID, left);
+                    leftLightPos = ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE( vehicleID, left );
                 }
-                if (right != -1)
+                if( right != -1 )
                 {
-                    rightLightPos = ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(vehicleID, right);
-                }
-
-                const Hash  modelHash = ENTITY::GET_ENTITY_MODEL(vehicleID);
-                std::string modelName = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(modelHash);
-                for (auto& c : modelName)
-                {
-                    c = toupper(c);
+                    rightLightPos = ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE( vehicleID, right );
                 }
 
-                const auto modelID = vehLightID->find(modelName);
+                const Hash  modelHash = ENTITY::GET_ENTITY_MODEL( vehicleID );
+                std::string modelName = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL( modelHash );
+                for( auto& c : modelName )
+                {
+                    c = toupper( c );
+                }
 
-                const int colorID = (modelID != vehLightID->end())
+                const auto modelID = vehLightID->find( modelName );
+
+                const int colorID = ( modelID != vehLightID->end() )
                                     ? modelID->second % 9
                                     : 0;
-                const int red     = id[colorID].r;
-                const int green   = id[colorID].g;
-                const int blue    = id[colorID].b;
+                const int red   = id[colorID].r;
+                const int green = id[colorID].g;
+                const int blue  = id[colorID].b;
 
                 leftLightPos.x  += 0.22f * angle.x;
                 leftLightPos.y  += 0.22f * angle.y;
                 rightLightPos.x += 0.2f  * angle.x;
                 rightLightPos.y += 0.2f  * angle.y;
 
-                const BOOL isLeftDamaged  = VEHICLE::GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED(vehicleID);
-                const BOOL isRightDamaged = VEHICLE::GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED(vehicleID);
+                const BOOL isLeftDamaged  = VEHICLE::GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED( vehicleID );
+                const BOOL isRightDamaged = VEHICLE::GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED( vehicleID );
 
-                if (isOneShadowMode)
+                if( isOneShadowMode )
                 {
-                    if (isLeftDamaged != TRUE || isRightDamaged != TRUE)
+                    if( isLeftDamaged != TRUE || isRightDamaged != TRUE )
                     {
                         radius += 10.0f;
-                        if (VEHICLE::IS_THIS_MODEL_A_BIKE(modelHash) || VEHICLE::IS_THIS_MODEL_A_BICYCLE(modelHash))
+                        if( VEHICLE::IS_THIS_MODEL_A_BIKE( modelHash ) || VEHICLE::IS_THIS_MODEL_A_BICYCLE( modelHash ) )
                         {
                             leftLightPos.x = rightLightPos.x;
                             leftLightPos.y = rightLightPos.y;
@@ -147,90 +147,90 @@ __forceinline void update()
                         }
                         else
                         {
-                            leftLightPos.x = (leftLightPos.x + rightLightPos.x) / 2;
-                            leftLightPos.y = (leftLightPos.y + rightLightPos.y) / 2;
-                            leftLightPos.z = (leftLightPos.z + rightLightPos.z) / 2;
+                            leftLightPos.x = ( leftLightPos.x + rightLightPos.x ) / 2;
+                            leftLightPos.y = ( leftLightPos.y + rightLightPos.y ) / 2;
+                            leftLightPos.z = ( leftLightPos.z + rightLightPos.z ) / 2;
                         }
-                        GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW(leftLightPos.x, leftLightPos.y, leftLightPos.z, angle.x, angle.y, leftAngle, red, green, blue, lightDistance, lightBrightness, roundness, radius, falloff, vehicleID);
+                        GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW( leftLightPos.x, leftLightPos.y, leftLightPos.z, angle.x, angle.y, leftAngle, red, green, blue, lightDistance, lightBrightness, roundness, radius, falloff, vehicleID );
                     }
                 }
                 else
                 {
-                    if (isLeftDamaged != TRUE)
+                    if( isLeftDamaged != TRUE )
                     {
-                        GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW(leftLightPos.x, leftLightPos.y, leftLightPos.z, angle.x, angle.y, leftAngle, red, green, blue, lightDistance, lightBrightness, roundness, radius, falloff, vehicleID);
+                        GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW( leftLightPos.x, leftLightPos.y, leftLightPos.z, angle.x, angle.y, leftAngle, red, green, blue, lightDistance, lightBrightness, roundness, radius, falloff, vehicleID );
                     }
-                    if (isRightDamaged != TRUE)
+                    if( isRightDamaged != TRUE )
                     {
-                        GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW(rightLightPos.x, rightLightPos.y, rightLightPos.z, angle.x, angle.y, rightAngle, red, green, blue, lightDistance, lightBrightness, roundness, radius, falloff, vehicleID + 1);
+                        GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW( rightLightPos.x, rightLightPos.y, rightLightPos.z, angle.x, angle.y, rightAngle, red, green, blue, lightDistance, lightBrightness, roundness, radius, falloff, vehicleID + 1 );
                     }
                 }
             }
             else
             {
-                VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER(vehicleID, 1.0f);
+                VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER( vehicleID, 1.0f );
             }
         }
     }
 }
 
-unsigned GetPrivateProfileHex(const char* sectionName, const char* keyName, const char* defaultValue, const char* fileName)
+unsigned GetPrivateProfileHex( const char* sectionName, const char* keyName, const char* defaultValue, const char* fileName )
 {
     char sValue[32];
-    GetPrivateProfileString(sectionName, keyName, defaultValue, sValue, 32, fileName);
-    return strtol(sValue, nullptr, 16);
+    GetPrivateProfileString( sectionName, keyName, defaultValue, sValue, 32, fileName );
+    return strtol( sValue, nullptr, 16 );
 }
 
-float GetPrivateProfileFloat(const char* sectionName, const char* keyName, const char* defaultValue, const char* fileName)
+float GetPrivateProfileFloat( const char* sectionName, const char* keyName, const char* defaultValue, const char* fileName )
 {
     char sValue[32];
-    GetPrivateProfileString(sectionName, keyName, defaultValue, sValue, 32, fileName);
-    return strtof(sValue, nullptr);
+    GetPrivateProfileString( sectionName, keyName, defaultValue, sValue, 32, fileName );
+    return strtof( sValue, nullptr );
 }
 
-bool GetPrivateProfileBool(const char* sectionName, const char* keyName, const bool defaultValue, const char* fileName)
+bool GetPrivateProfileBool( const char* sectionName, const char* keyName, const bool defaultValue, const char* fileName )
 {
-    return (GetPrivateProfileInt(sectionName, keyName, defaultValue ? 1 : 0, fileName) == 1 ? true : false);
+    return ( GetPrivateProfileInt( sectionName, keyName, defaultValue ? 1 : 0, fileName ) == 1 ? true : false );
 }
 
 void loadConfigFromFile()
 {
     char path[MAX_PATH];
-    GetModuleFileName(nullptr, path, MAX_PATH);
-    for (size_t i = strlen(path); i > 0; --i)
+    GetModuleFileName( nullptr, path, MAX_PATH );
+    for( size_t i = strlen( path ); i > 0; --i )
     {
-        if (path[i] == '\\')
+        if( path[i] == '\\' )
         {
             path[i] = '\0';
             break;
         }
     }
-    strcat_s(path, "\\shadows.ini");
+    strcat_s( path, "\\shadows.ini" );
 
-    toggleKey = GetPrivateProfileHex("KEYS", "ToggleKey", "0x31", path);
-    reloadKey = GetPrivateProfileHex("KEYS", "ReloadKey", "0x32", path);
+    toggleKey = GetPrivateProfileHex( "KEYS", "ToggleKey", "0x31", path );
+    reloadKey = GetPrivateProfileHex( "KEYS", "ReloadKey", "0x32", path );
 
-    isOneShadowMode = GetPrivateProfileBool("MODES", "OneShadowMode", false, path);
+    isOneShadowMode = GetPrivateProfileBool( "MODES", "OneShadowMode", false, path );
 
-    brightness = GetPrivateProfileFloat("OPTIONS", "LightBrightness", "2.0", path);
-    distance = GetPrivateProfileFloat("OPTIONS", "LightDistance", "25.0", path);
-    radius = GetPrivateProfileFloat("OPTIONS", "LightRadius", "50.0", path);
-    roundness = GetPrivateProfileFloat("OPTIONS", "LightRoundness", "1.0", path);
-    falloff = GetPrivateProfileFloat("OPTIONS", "LightFallOff", "20.0", path);
-    leftangle = GetPrivateProfileFloat("OPTIONS", "LeftLightAngle", "-0.7", path);
-    rightangle = GetPrivateProfileFloat("OPTIONS", "RightLightAngle", "-0.6", path);
-    brightnessMultiplier = GetPrivateProfileFloat("OPTIONS", "HighBeamBrightnessMultiplier", "1.5", path);
-    distanceMultiplier = GetPrivateProfileFloat("OPTIONS", "HighBeamDistanceMultiplier", "2.0", path);
+    brightness           = GetPrivateProfileFloat( "OPTIONS", "LightBrightness", "2.0", path );
+    distance             = GetPrivateProfileFloat( "OPTIONS", "LightDistance", "25.0", path );
+    radius               = GetPrivateProfileFloat( "OPTIONS", "LightRadius", "50.0", path );
+    roundness            = GetPrivateProfileFloat( "OPTIONS", "LightRoundness", "1.0", path );
+    falloff              = GetPrivateProfileFloat( "OPTIONS", "LightFallOff", "20.0", path );
+    leftangle            = GetPrivateProfileFloat( "OPTIONS", "LeftLightAngle", "-0.7", path );
+    rightangle           = GetPrivateProfileFloat( "OPTIONS", "RightLightAngle", "-0.6", path );
+    brightnessMultiplier = GetPrivateProfileFloat( "OPTIONS", "HighBeamBrightnessMultiplier", "1.5", path );
+    distanceMultiplier   = GetPrivateProfileFloat( "OPTIONS", "HighBeamDistanceMultiplier", "2.0", path );
 }
 
 void RestoreOriginalLightsSettings()
 {
-    for (unsigned i = 0; i < vehsArraySize; ++i)
+    for( unsigned i = 0; i < vehsArraySize; ++i )
     {
         const int vehicleID = vehsArray[i];
-        if (vehicleID != 0 && ENTITY::DOES_ENTITY_EXIST(vehicleID))
+        if( vehicleID != 0 && ENTITY::DOES_ENTITY_EXIST( vehicleID ) )
         {
-            VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER(vehicleID, 1.0f);
+            VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER( vehicleID, 1.0f );
         }
     }
 }
@@ -239,9 +239,9 @@ void ScriptMain()
 {
     loadConfigFromFile();
 
-    vehLightID = new (std::nothrow) std::unordered_map<std::string, uint8_t>;
+    vehLightID = new( std::nothrow ) std::unordered_map<std::string, uint8_t>;
 
-    if (vehLightID == nullptr)
+    if( vehLightID == nullptr )
     {
         return;
     }
@@ -300,7 +300,7 @@ void ScriptMain()
     vehLightID->emplace( "PICADOR", 0 );
     vehLightID->emplace( "POLICEO1", 2 ); // POLICEOLD1
     vehLightID->emplace( "POLICEO2", 2 ); // ADDED
-    vehLightID->emplace( "ASTROPE", 0 ); // ASTEROPE
+    vehLightID->emplace( "ASTROPE", 0 );  // ASTEROPE
     vehLightID->emplace( "BANSHEE", 6 );
     vehLightID->emplace( "BUFFALO", 1 );
     vehLightID->emplace( "BULLET", 6 );
@@ -387,7 +387,7 @@ void ScriptMain()
     vehLightID->emplace( "ARMYTANKER", 0 );
     vehLightID->emplace( "ROCOTO", 6 );
     vehLightID->emplace( "STOCKADE3", 0 );
-    vehLightID->emplace( "REBEL02", 2 ); // REBEL2
+    vehLightID->emplace( "REBEL02", 2 );  // REBEL2
     vehLightID->emplace( "SCHWARZE", 6 ); // SCHWARZER
     vehLightID->emplace( "SCRAP", 8 );
     vehLightID->emplace( "SANDKING", 0 );
@@ -442,7 +442,7 @@ void ScriptMain()
     vehLightID->emplace( "BENSON", 8 );
     vehLightID->emplace( "RIPLEY", 8 );
     vehLightID->emplace( "AMBULAN", 0 ); // AMBULANCE
-    vehLightID->emplace( "FORK", 8 ); // FORKLIFT
+    vehLightID->emplace( "FORK", 8 );    // FORKLIFT
     vehLightID->emplace( "GRANGER", 0 );
     vehLightID->emplace( "PRANGER", 0 );
     vehLightID->emplace( "TRAILERSMALL", 0 );
@@ -483,7 +483,7 @@ void ScriptMain()
     vehLightID->emplace( "ADDER", 6 );
     vehLightID->emplace( "VACCA", 6 );
     vehLightID->emplace( "BOXVILLE3", 0 );
-    vehLightID->emplace( "SUNTRAP" , 0 );
+    vehLightID->emplace( "SUNTRAP", 0 );
     vehLightID->emplace( "BOBCATXL", 2 );
     vehLightID->emplace( "BURRITO3", 0 );
     vehLightID->emplace( "POLICE4", 1 );
@@ -542,15 +542,15 @@ void ScriptMain()
     vehLightID->emplace( "ARMYTRAILER2", 0 );
     vehLightID->emplace( "FREIGHTTRAILER", 0 );
     vehLightID->emplace( "TR4", 0 );
-    vehLightID->emplace( "BLAZER03", 0 ); // BLAZER3
+    vehLightID->emplace( "BLAZER03", 0 );  // BLAZER3
     vehLightID->emplace( "SANCHEZ01", 0 ); // ADDED
     vehLightID->emplace( "SANCHEZ02", 0 ); // SANCHEZ2
-    vehLightID->emplace( "VERLIER", 1 ); // mpapartment // VERLIERER2
+    vehLightID->emplace( "VERLIER", 1 );   // mpapartment // VERLIERER2
     vehLightID->emplace( "MAMBA", 2 );
     vehLightID->emplace( "NITESHAD", 2 ); // NIGHTSHADE
     vehLightID->emplace( "COG55", 6 );
     vehLightID->emplace( "COG552", 6 );
-    vehLightID->emplace( "COGNOSC", 6 ); // COGNOSCENTI
+    vehLightID->emplace( "COGNOSC", 6 );  // COGNOSCENTI
     vehLightID->emplace( "COGNOSC2", 6 ); // COGNOSCENTI2
     vehLightID->emplace( "SCHAFTER3", 6 );
     vehLightID->emplace( "SCHAFTER4", 6 );
@@ -604,7 +604,7 @@ void ScriptMain()
     vehLightID->emplace( "MASSACRO", 6 );
     vehLightID->emplace( "HUNTLEY", 6 );
     vehLightID->emplace( "THRUST", 6 );
-    vehLightID->emplace( "SLAMVAN", 2 ); // mpchristmas2
+    vehLightID->emplace( "SLAMVAN", 2 );  // mpchristmas2
     vehLightID->emplace( "RLOADER2", 2 ); // RATLOADER2
     vehLightID->emplace( "JESTER2", 0 );
     vehLightID->emplace( "MASSACRO2", 6 );
@@ -768,14 +768,14 @@ void ScriptMain()
     vehLightID->emplace( "BF400", 1 );
     vehLightID->emplace( "CLIFFHANGER", 1 );
     vehLightID->emplace( "CONTENDER", 0 );
-    vehLightID->emplace( "E109", 0 ); // ADDED
-    vehLightID->emplace( "TROPHY", 6 ); // TROPHYTRUCK
+    vehLightID->emplace( "E109", 0 );    // ADDED
+    vehLightID->emplace( "TROPHY", 6 );  // TROPHYTRUCK
     vehLightID->emplace( "TROPHY2", 6 ); // TROPHYTRUCK2
     vehLightID->emplace( "RALLYTRUCK", 0 );
-    vehLightID->emplace( "ROOSEVELT", 0 ); // mpvalentines // BTYPE
+    vehLightID->emplace( "ROOSEVELT", 0 );  // mpvalentines // BTYPE
     vehLightID->emplace( "ROOSEVELT2", 2 ); // mpvalentines2 // BTYPE3
-    vehLightID->emplace( "TAMPA", 2 ); // mpxmas_604490
-    vehLightID->emplace( "SUBMERS2", 3 ); // spupgrade // SUBMERSIBLE2
+    vehLightID->emplace( "TAMPA", 2 );      // mpxmas_604490
+    vehLightID->emplace( "SUBMERS2", 3 );   // spupgrade // SUBMERSIBLE2
     vehLightID->emplace( "MARSHALL", 1 );
     vehLightID->emplace( "BLIMP2", 0 );
     vehLightID->emplace( "DUKES", 2 );
@@ -989,19 +989,19 @@ void ScriptMain()
     vehLightID->emplace( "ZR380", 1 );
     vehLightID->emplace( "ZR3802", 1 );
     vehLightID->emplace( "ZR3803", 1 );
-    vehLightID->emplace( "DEVESTE", 1);
+    vehLightID->emplace( "DEVESTE", 1 );
 
-    while (true)
+    while( true )
     {
-        if (IsKeyJustUp(reloadKey))
+        if( IsKeyJustUp( reloadKey ) )
         {
             loadConfigFromFile();
         }
-        if (IsKeyJustUp(toggleKey))
+        if( IsKeyJustUp( toggleKey ) )
         {
             isModOn = !isModOn;
         }
-        if (isModOn)
+        if( isModOn )
         {
             update();
         }
@@ -1009,13 +1009,13 @@ void ScriptMain()
         {
             RestoreOriginalLightsSettings();
         }
-        WAIT(0);
+        WAIT( 0 );
     }
 }
 
 void UnloadScript()
 {
-    if (vehLightID != nullptr)
+    if( vehLightID != nullptr )
     {
         delete vehLightID;
         vehLightID = nullptr;
