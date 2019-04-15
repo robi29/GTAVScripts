@@ -19,6 +19,9 @@
     <ClInclude Include="..\Common\inc\keyboard.h" />
     <ClInclude Include="..\Common\inc\script.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.clang-format" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5FFC83E6-D6FF-45CA-BBA3-0E78CE70F3E5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

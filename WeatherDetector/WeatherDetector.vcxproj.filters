@@ -27,4 +27,7 @@
       <UniqueIdentifier>{5d58942b-ebbf-4d0a-9526-359e3a556796}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.clang-format" />
+  </ItemGroup>
 </Project>

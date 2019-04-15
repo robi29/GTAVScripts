@@ -7,9 +7,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\inc\script.h" />
-    <ClInclude Include="..\inc\types.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\inc\enums.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -25,5 +22,8 @@
     <Filter Include="include">
       <UniqueIdentifier>{fe82bd4a-2d14-486a-8be5-8bf6b50a2414}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.clang-format" />
   </ItemGroup>
 </Project>

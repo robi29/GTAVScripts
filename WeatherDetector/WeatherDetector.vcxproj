@@ -18,6 +18,9 @@
     <ClInclude Include="..\inc\types.h" />
     <ClInclude Include="..\Common\inc\script.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.clang-format" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8D82F34A-1D64-465B-84B1-37F89AD3D20B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
