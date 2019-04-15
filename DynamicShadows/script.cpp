@@ -223,6 +223,18 @@ void loadConfigFromFile()
     distanceMultiplier = GetPrivateProfileFloat("OPTIONS", "HighBeamDistanceMultiplier", "2.0", path);
 }
 
+void RestoreOriginalLightsSettings()
+{
+    for (unsigned i = 0; i < vehsArraySize; ++i)
+    {
+        const int vehicleID = vehsArray[i];
+        if (vehicleID != 0 && ENTITY::DOES_ENTITY_EXIST(vehicleID))
+        {
+            VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER(vehicleID, 1.0f);
+        }
+    }
+}
+
 void ScriptMain()
 {
     loadConfigFromFile();
@@ -995,7 +1007,7 @@ void ScriptMain()
         }
         else
         {
-            UnloadScript();
+            RestoreOriginalLightsSettings();
         }
         WAIT(0);
     }
@@ -1003,15 +1015,6 @@ void ScriptMain()
 
 void UnloadScript()
 {
-    for (unsigned i = 0; i < vehsArraySize; ++i)
-    {
-        const int vehicleID = vehsArray[i];
-        if (vehicleID != 0 && ENTITY::DOES_ENTITY_EXIST(vehicleID))
-        {
-            VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER(vehicleID, 1.0f);
-        }
-    }
-
     if (vehLightID != nullptr)
     {
         delete vehLightID;
