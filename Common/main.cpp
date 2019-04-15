@@ -8,23 +8,23 @@ http://dev-c.com
 #include "inc\script.h"
 #include "inc\keyboard.h"
 
-BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
+BOOL APIENTRY DllMain( HMODULE hInstance, DWORD reason, LPVOID lpReserved )
 {
-    switch (reason)
+    switch( reason )
     {
-    case DLL_PROCESS_ATTACH:
-        scriptRegister(hInstance, ScriptMain);
+        case DLL_PROCESS_ATTACH:
+            scriptRegister( hInstance, ScriptMain );
 #ifndef WEATHER_DETECTOR
-        keyboardHandlerRegister(OnKeyboardMessage);
+            keyboardHandlerRegister( OnKeyboardMessage );
 #endif
-        break;
-    case DLL_PROCESS_DETACH:
-        UnloadScript();
-        scriptUnregister(hInstance);
+            break;
+        case DLL_PROCESS_DETACH:
+            UnloadScript();
+            scriptUnregister( hInstance );
 #ifndef WEATHER_DETECTOR
-        keyboardHandlerUnregister(OnKeyboardMessage);
+            keyboardHandlerUnregister( OnKeyboardMessage );
 #endif
-        break;
+            break;
     }
     return TRUE;
 }

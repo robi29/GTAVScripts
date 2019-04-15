@@ -1,7 +1,7 @@
 /*
-	THIS FILE IS A PART OF GTA V SCRIPT HOOK SDK
-				http://dev-c.com
-			(C) Alexander Blade 2015
+    THIS FILE IS A PART OF GTA V SCRIPT HOOK SDK
+                http://dev-c.com
+            (C) Alexander Blade 2015
 */
 
 #pragma once
@@ -38,11 +38,11 @@ typedef int ScrHandle;
 #pragma pack(push, 1)
 typedef struct
 {
-	float x;
-	DWORD _paddingx;
-	float y;
-	DWORD _paddingy;
-	float z;
-	DWORD _paddingz;
+    float x;
+    DWORD _paddingx;
+    float y;
+    DWORD _paddingy;
+    float z;
+    DWORD _paddingz;
 } Vector3;
 #pragma pack(pop)
