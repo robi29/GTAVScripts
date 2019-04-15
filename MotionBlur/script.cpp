@@ -23,58 +23,57 @@ void update_status_text()
     UI::END_TEXT_COMMAND_DISPLAY_TEXT(0.5, 0.5);
 }*/
 
-
-float pedBlur = 0.1f;
-float vehBlur = 1.0f;
-float vehStart = 0.0f;
-bool enabledVeh = true;
-bool enabledPed = true;
-bool enabledMod = true;
+float pedBlur    = 0.1f;
+float vehBlur    = 1.0f;
+float vehStart   = 0.0f;
+bool  enabledVeh = true;
+bool  enabledPed = true;
+bool  enabledMod = true;
 
 __forceinline void update()
 {
     //sprintf_s(text, "index: %d\n", GRAPHICS::GET_TIMECYCLE_MODIFIER_INDEX());
-    if (STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() || !CUTSCENE::HAS_CUTSCENE_FINISHED())
+    if( STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() || !CUTSCENE::HAS_CUTSCENE_FINISHED() )
     {
         //sprintf_s(text, "%s1\n", text);
         return;
     }
 
     //sprintf_s(text, "jo %d", (int)id);
-    
-    if (GRAPHICS::GET_TIMECYCLE_MODIFIER_INDEX() == -1)
+
+    if( GRAPHICS::GET_TIMECYCLE_MODIFIER_INDEX() == -1 )
     {
-        GRAPHICS::SET_TIMECYCLE_MODIFIER("motionblur");
+        GRAPHICS::SET_TIMECYCLE_MODIFIER( "motionblur" );
     }
 
-    const Player player = PLAYER::PLAYER_ID();
-    const Ped playerPed = PLAYER::PLAYER_PED_ID();
+    const Player player    = PLAYER::PLAYER_ID();
+    const Ped    playerPed = PLAYER::PLAYER_PED_ID();
 
-    if (!enabledMod || !ENTITY::DOES_ENTITY_EXIST(playerPed) || !PLAYER::IS_PLAYER_CONTROL_ON(player) || PLAYER::IS_PLAYER_DEAD(player) || PLAYER::IS_PLAYER_BEING_ARRESTED(player, TRUE))
+    if( !enabledMod || !ENTITY::DOES_ENTITY_EXIST( playerPed ) || !PLAYER::IS_PLAYER_CONTROL_ON( player ) || PLAYER::IS_PLAYER_DEAD( player ) || PLAYER::IS_PLAYER_BEING_ARRESTED( player, TRUE ) )
     {
         //sprintf_s(text, "%s2\n", text);
-        GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(0.0);
+        GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0 );
         return;
     }
 
-    if (!PED::IS_PED_IN_ANY_VEHICLE(playerPed, FALSE))
+    if( !PED::IS_PED_IN_ANY_VEHICLE( playerPed, FALSE ) )
     {
         //sprintf_s(text, "%s3\n", text);
-        if (enabledPed)
+        if( enabledPed )
         {
-            GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(pedBlur);
+            GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( pedBlur );
         }
         else
         {
-            GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(0.0);
+            GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0 );
         }
         return;
     }
 
-    if (CAM::GET_FOLLOW_VEHICLE_CAM_VIEW_MODE() == 4 || PED::IS_PED_IN_FLYING_VEHICLE(playerPed) || !enabledVeh)
+    if( CAM::GET_FOLLOW_VEHICLE_CAM_VIEW_MODE() == 4 || PED::IS_PED_IN_FLYING_VEHICLE( playerPed ) || !enabledVeh )
     {
         //sprintf_s(text, "%s4\n", text);
-        GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(0.0);
+        GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0 );
         return;
     }
 
@@ -93,83 +92,83 @@ __forceinline void update()
     //sprintf_s(text, "%s5\n", text);
     //set_status_text(text);
 
-    float speed = ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_USING(playerPed));
+    float speed = ENTITY::GET_ENTITY_SPEED( PED::GET_VEHICLE_PED_IS_USING( playerPed ) );
 
     speed -= vehStart / 3.6f;
     speed /= 150.0;
     speed *= vehBlur;
 
-    if (speed < 0.0)
+    if( speed < 0.0 )
     {
         speed = 0.0;
     }
-    else if (speed > 1.0)
+    else if( speed > 1.0 )
     {
         speed = 1.0;
     }
 
-    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(speed);
+    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( speed );
 }
 
-float GetPrivateProfileFloat(const char* sectionName, const char* keyName, const char* defaultValue, const char* fileName)
+float GetPrivateProfileFloat( const char* sectionName, const char* keyName, const char* defaultValue, const char* fileName )
 {
     char sValue[32];
-    GetPrivateProfileString(sectionName, keyName, defaultValue, sValue, 32, fileName);
-    return strtof(sValue, nullptr);
+    GetPrivateProfileString( sectionName, keyName, defaultValue, sValue, 32, fileName );
+    return strtof( sValue, nullptr );
 }
 
-bool GetPrivateProfileBool(const char* sectionName, const char* keyName, const bool defaultValue, const char* fileName)
+bool GetPrivateProfileBool( const char* sectionName, const char* keyName, const bool defaultValue, const char* fileName )
 {
-    return (GetPrivateProfileInt(sectionName, keyName, defaultValue ? 1 : 0, fileName) == 1 ? true : false);
+    return ( GetPrivateProfileInt( sectionName, keyName, defaultValue ? 1 : 0, fileName ) == 1 ? true : false );
 }
 
 void loadConfig()
 {
     char path[MAX_PATH];
-    GetModuleFileName(nullptr, path, MAX_PATH);
-    for (size_t i = strlen(path); i > 0; --i)
+    GetModuleFileName( nullptr, path, MAX_PATH );
+    for( size_t i = strlen( path ); i > 0; --i )
     {
-        if (path[i] == '\\')
+        if( path[i] == '\\' )
         {
             path[i] = '\0';
             break;
         }
     }
-    strcat_s(path, "\\advancedblur.ini");
+    strcat_s( path, "\\advancedblur.ini" );
 
-    enabledPed = GetPrivateProfileBool("PEDBLUR", "Enabled", true, path);
-    pedBlur = GetPrivateProfileFloat("PEDBLUR", "Strength", "0.1", path);
+    enabledPed = GetPrivateProfileBool( "PEDBLUR", "Enabled", true, path );
+    pedBlur    = GetPrivateProfileFloat( "PEDBLUR", "Strength", "0.1", path );
 
-    enabledVeh = GetPrivateProfileBool("VEHICLEBLUR", "Enabled", true, path);
-    vehBlur = GetPrivateProfileFloat("VEHICLEBLUR", "Strength", "1.0", path);
-    vehStart = GetPrivateProfileFloat("VEHICLEBLUR", "StartVelocity", "0.0", path);
+    enabledVeh = GetPrivateProfileBool( "VEHICLEBLUR", "Enabled", true, path );
+    vehBlur    = GetPrivateProfileFloat( "VEHICLEBLUR", "Strength", "1.0", path );
+    vehStart   = GetPrivateProfileFloat( "VEHICLEBLUR", "StartVelocity", "0.0", path );
 }
 
 void ScriptMain()
 {
     loadConfig();
 
-    GRAPHICS::SET_TIMECYCLE_MODIFIER("motionblur");
-    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(0.0);
+    GRAPHICS::SET_TIMECYCLE_MODIFIER( "motionblur" );
+    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0 );
 
-    while (true)
+    while( true )
     {
-        if (IsKeyJustUp(VK_DELETE))
+        if( IsKeyJustUp( VK_DELETE ) )
         {
             enabledMod = !enabledMod;
-            if (enabledMod)
+            if( enabledMod )
             {
                 loadConfig();
             }
         }
         update();
         //update_status_text();
-        WAIT(100);
+        WAIT( 100 );
     }
 }
 
 void UnloadScript()
 {
-    GRAPHICS::SET_TIMECYCLE_MODIFIER("motionblur");
-    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(0.0);
+    GRAPHICS::SET_TIMECYCLE_MODIFIER( "motionblur" );
+    GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0 );
 }

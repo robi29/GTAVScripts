@@ -321,9 +321,9 @@ void MD5Final(MD5_CTX* mdContext)
     }
 }
 
-static const DWORD dwHashOffset = 0x14;
+constexpr DWORD dwHashOffset = 0x14;
 
-BOOL CalculateDXBCChecksum(BYTE* pData, DWORD dwSize, DWORD dwHash[4])
+void CalculateDXBCChecksum(BYTE* pData, DWORD dwSize, DWORD dwHash[4])
 {
     MD5_CTX md5Ctx;
     MD5Init(&md5Ctx, 0);
@@ -384,8 +384,6 @@ BOOL CalculateDXBCChecksum(BYTE* pData, DWORD dwSize, DWORD dwHash[4])
     }
 
     memcpy(dwHash, md5Ctx.buf, 4 * sizeof(DWORD));
-
-    return TRUE;
 }
 
 int main(int argc, char** argv)
@@ -399,8 +397,8 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    unsigned startOffset = strtol(argv[2], NULL, 0);
-    unsigned endOffset   = strtol(argv[3], NULL, 0);
+    unsigned startOffset = strtol(argv[2], nullptr, 0);
+    unsigned endOffset   = strtol(argv[3], nullptr, 0);
 
     unsigned fsize = endOffset - startOffset;
 
@@ -410,6 +408,7 @@ int main(int argc, char** argv)
 
     if (string == nullptr)
     {
+        fclose(file);
         return 0;
     }
 
