@@ -388,6 +388,11 @@ void CalculateDXBCChecksum(BYTE* pData, DWORD dwSize, DWORD dwHash[4])
 
 int main(int argc, char** argv)
 {
+    if (argc < 4)
+    {
+        return 0;
+    }
+
     FILE* file = nullptr;
 
     fopen_s(&file, argv[1], "rb");

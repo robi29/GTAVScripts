@@ -60,7 +60,7 @@ __forceinline void update()
 
     for( int i = 0; i < vehicleCount; ++i )
     {
-        const register int vehicleID = vehsArray[i];
+        const int vehicleID = vehsArray[i];
         if( vehicleID > 0 && ENTITY::DOES_ENTITY_EXIST( vehicleID ) )
         {
             if( vehicleID == playerVehicleId )
@@ -112,9 +112,9 @@ __forceinline void update()
 
                 const Hash  modelHash = ENTITY::GET_ENTITY_MODEL( vehicleID );
                 std::string modelName = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL( modelHash );
-                for( auto& c : modelName )
+                for( char& c : modelName )
                 {
-                    c = toupper( c );
+                    c = static_cast<char>( toupper( c ) );
                 }
 
                 const auto modelID = vehLightID->find( modelName );

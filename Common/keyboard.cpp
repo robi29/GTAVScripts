@@ -20,6 +20,10 @@ struct
 
 void OnKeyboardMessage( DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, BOOL isWithAlt, BOOL wasDownBefore, BOOL isUpNow )
 {
+    (void) isExtended;
+    (void) scanCode;
+    (void) repeats;
+
     if( key < KEYS_SIZE )
     {
         keyStates[key].time          = GetTickCount();

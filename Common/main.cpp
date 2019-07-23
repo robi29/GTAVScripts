@@ -10,6 +10,8 @@ http://dev-c.com
 
 BOOL APIENTRY DllMain( HMODULE hInstance, DWORD reason, LPVOID lpReserved )
 {
+    (void) lpReserved;
+
     switch( reason )
     {
         case DLL_PROCESS_ATTACH:

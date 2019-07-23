@@ -71,7 +71,7 @@ bool reload             = false;
 bool onOff              = false;
 bool debug              = false;
 
-float progress               = 0.0;
+float currentProgress        = 0.0;
 bool  isNormalZone           = true;
 bool  isCloudZoneStart       = false;
 bool  isCloudZoneEnd         = false;
@@ -220,10 +220,10 @@ float posY = 0.65f;
 
 const float offset[textLines] = { 0.0000f, 0.2686f, 0.5371f, 0.8057f, 1.0071f, 1.2086f }; // , 1.5109f };
 
-__forceinline Weather& operator++( Weather& weather ) // prefix ++
+__forceinline Weather& operator++( Weather& weatherType ) // prefix ++
 {
-    weather = static_cast<Weather>( static_cast<int>( weather ) + 1 );
-    return weather;
+    weatherType = static_cast<Weather>( static_cast<int>( weatherType ) + 1 );
+    return weatherType;
 }
 
 #define GET_DECORATOR_BOOL( name, var )                                                    \
@@ -444,8 +444,8 @@ __forceinline bool isAllModifiersDisabled()
 
 __forceinline void update( Entity entity )
 {
-    register Vector3 coords;
-    register float   progress;
+    Vector3 coords;
+    float   progress;
 
     ++counter;
 
@@ -800,7 +800,7 @@ __forceinline void loadWeatherSettings( char* fileName, Weather weatherType, cha
     enableLightningAboveClouds[weatherIndex] = GetPrivateProfileBool( sectionName, "EnableLightningAboveClouds", false, fileName );
     enableLightningInSpace[weatherIndex]     = GetPrivateProfileBool( sectionName, "EnableLightningInSpace", false, fileName );
 
-    lightningFrequency[weatherIndex] = GetPrivateProfileInt( sectionName, "LightningFrequency", 5, fileName );
+    lightningFrequency[weatherIndex] = static_cast<char>( GetPrivateProfileInt( sectionName, "LightningFrequency", 5, fileName ) );
 }
 
 bool loadConfigFromFile( char* fileName, bool isMainFile )
@@ -905,8 +905,8 @@ void ScriptMain()
         *(UINT8*) ( address + *(int*) ( address + 8 ) + 13 ) = 0;
     }
 
-    register bool isOnMod = true;
-    register bool isDebug = false;
+    bool isOnMod = true;
+    bool isDebug = false;
 
     weatherHashes[static_cast<int>( Weather::Extrasunny )] = GAMEPLAY::GET_HASH_KEY( "extrasunny" );
     weatherHashes[static_cast<int>( Weather::Clear )]      = GAMEPLAY::GET_HASH_KEY( "clear" );
@@ -924,13 +924,13 @@ void ScriptMain()
     weatherHashes[static_cast<int>( Weather::Xmas )]       = GAMEPLAY::GET_HASH_KEY( "xmas" );
     weatherHashes[static_cast<int>( Weather::Halloween )]  = GAMEPLAY::GET_HASH_KEY( "halloween" );
 
-    GAMEPLAY::_GET_WEATHER_TYPE_TRANSITION( &weather0, &weather1, &progress );
+    GAMEPLAY::_GET_WEATHER_TYPE_TRANSITION( &weather0, &weather1, &currentProgress );
 
-    currentWeatherType = getWeatherType( ( progress < 0.5f ) ? weather0 : weather1 );
+    currentWeatherType = getWeatherType( ( currentProgress < 0.5f ) ? weather0 : weather1 );
 
     loadConfigFromFile( nameFile, true );
 
-    register Entity entity;
+    Entity entity;
 
     while( true )
     {
@@ -979,7 +979,7 @@ void ScriptMain()
 void UnloadScript()
 {
     GAMEPLAY::CLEAR_OVERRIDE_WEATHER();
-    GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION( weather0, weather1, progress );
+    GAMEPLAY::_SET_WEATHER_TYPE_TRANSITION( weather0, weather1, currentProgress );
     GRAPHICS::SET_TIMECYCLE_MODIFIER( normalZoneTimecycleModifier[static_cast<int>( currentWeatherType )] );
     GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0f );
     GRAPHICS::CLEAR_TIMECYCLE_MODIFIER();
