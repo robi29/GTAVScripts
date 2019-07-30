@@ -990,6 +990,28 @@ void ScriptMain()
     vehLightID->emplace( "ZR3802", 1 );
     vehLightID->emplace( "ZR3803", 1 );
     vehLightID->emplace( "DEVESTE", 1 );
+    vehLightID->emplace( "PARAGON", 6 ); // mpvinewood
+    vehLightID->emplace( "PARAGON2", 6 );
+    vehLightID->emplace( "JUGULAR", 6 );
+    vehLightID->emplace( "RROCKET", 0 );
+    vehLightID->emplace( "PEYOTE2", 2 );
+    vehLightID->emplace( "NEO", 6 );
+    vehLightID->emplace( "KRIEGER", 6 );
+    vehLightID->emplace( "S80", 6 );
+    vehLightID->emplace( "DYNASTY", 0 );
+    vehLightID->emplace( "CARACARA2", 6 );
+    vehLightID->emplace( "THRAX", 6 );
+    vehLightID->emplace( "NOVAK", 6 );
+    vehLightID->emplace( "ZORRUSSO", 6 );
+    vehLightID->emplace( "ISSI7", 6 );
+    vehLightID->emplace( "LOCUST", 6 );
+    vehLightID->emplace( "EMERUS", 6 );
+    vehLightID->emplace( "HELLION", 6 );
+    vehLightID->emplace( "GAUNTLET3", 2 );
+    vehLightID->emplace( "GAUNTLET4", 6 );
+    vehLightID->emplace( "NEBULA", 2 );
+    vehLightID->emplace( "ZION3", 2 );
+    vehLightID->emplace( "DRAFTER", 6 );
 
     bool restoreLightsSettings = false;
 
