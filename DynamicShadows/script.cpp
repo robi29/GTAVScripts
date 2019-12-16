@@ -823,7 +823,7 @@ void ScriptMain()
     vehLightID->emplace( "HELLFURY", 0 );
     vehLightID->emplace( "HUNTLEY2", 0 );
     vehLightID->emplace( "INTERC", 6 ); // INTERCEPTOR
-    vehLightID->emplace( "JB7002", 2 );
+    vehLightID->emplace( "JB7003", 2 );
     vehLightID->emplace( "LOKUS", 0 );
     vehLightID->emplace( "LYCAN", 0 );
     vehLightID->emplace( "LYCAN2", 0 );
@@ -849,7 +849,7 @@ void ScriptMain()
     vehLightID->emplace( "PRES2", 1 );
     vehLightID->emplace( "PSTOCKADE", 0 );
     vehLightID->emplace( "RANCHER", 0 );
-    vehLightID->emplace( "REBLA", 3 );
+    vehLightID->emplace( "REBLA2", 3 );
     vehLightID->emplace( "REEFER", 3 );
     vehLightID->emplace( "REGINA2", 0 );
     vehLightID->emplace( "REGINA3", 2 );
@@ -868,7 +868,7 @@ void ScriptMain()
     vehLightID->emplace( "STRATUM2", 2 );
     vehLightID->emplace( "STRETCH2", 0 );
     vehLightID->emplace( "STRETCH3", 6 );
-    vehLightID->emplace( "SULTAN2", 0 );
+    vehLightID->emplace( "SULTAN3", 0 );
     vehLightID->emplace( "SUPERD2", 6 );
     vehLightID->emplace( "SUPERGT", 0 );
     vehLightID->emplace( "TAXI2", 2 );
@@ -1012,6 +1012,26 @@ void ScriptMain()
     vehLightID->emplace( "NEBULA", 2 );
     vehLightID->emplace( "ZION3", 2 );
     vehLightID->emplace( "DRAFTER", 6 );
+    vehLightID->emplace( "RETINUE2", 2 ); // mpheist3
+    vehLightID->emplace( "OUTLAW", 6 );
+    vehLightID->emplace( "STRYDER", 0 );
+    vehLightID->emplace( "YOSEMITE2", 2 );
+    vehLightID->emplace( "FORMULA", 0 );
+    vehLightID->emplace( "FORMULA2", 0 );
+    vehLightID->emplace( "MINITANK", 0 );
+    vehLightID->emplace( "SUGOI", 0 );
+    vehLightID->emplace( "SULTAN2", 2 );
+    vehLightID->emplace( "EVERON", 0 );
+    vehLightID->emplace( "REBLA", 0 );
+    vehLightID->emplace( "VAGRANT", 6 );
+    vehLightID->emplace( "FURIA", 0 );
+    vehLightID->emplace( "VSTR", 0 );
+    vehLightID->emplace( "KOMODA", 0 );
+    vehLightID->emplace( "ASBO", 2 );
+    vehLightID->emplace( "ZHABA", 6 );
+    vehLightID->emplace( "JB7002", 1 );
+    vehLightID->emplace( "KANJO", 2 );
+    vehLightID->emplace( "IMORGON", 6 );
 
     bool restoreLightsSettings = false;
 
