@@ -6,7 +6,7 @@
 unsigned int toggleKey       = 0x31;
 unsigned int reloadKey       = 0x32;
 bool         isOneShadowMode = false;
-bool         isModOn         = true;
+bool         isModEnabled    = true;
 
 constexpr int vehsArraySize            = 300;
 int           vehsArray[vehsArraySize] = {};
@@ -1043,10 +1043,10 @@ void ScriptMain()
         }
         if( IsKeyJustUp( toggleKey ) )
         {
-            restoreLightsSettings = isModOn;
-            isModOn               = !isModOn;
+            restoreLightsSettings = isModEnabled;
+            isModEnabled          = !isModEnabled;
         }
-        if( isModOn )
+        if( isModEnabled )
         {
             update();
         }

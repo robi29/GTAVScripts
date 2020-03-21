@@ -99,7 +99,7 @@ const std::string cloudCodes[C_MAX]   = { "ALTOSTRATUS", "CIRROCUMULUS", "CIRRUS
                                           "STRATOCUMULUS", "STRIPEY", "WISPY" };
 // clang-format on
 
-bool         modEnabled                          = true;
+bool         isModEnabled                        = true;
 bool         realTimeDuration                    = true;
 bool         changingWeatherAfterSleepingEnabled = true;
 bool         freezeTime                          = false;
@@ -135,7 +135,7 @@ void loadConfigFromFile( const char* filePath )
     toggleKey = GetPrivateProfileHex( "KEYS", "ToggleKey", "0x33", filePath );
     reloadKey = GetPrivateProfileHex( "KEYS", "ReloadKey", "0x34", filePath );
 
-    modEnabled                          = GetPrivateProfileBool( "COMMON", "EnableMod", true, filePath );
+    isModEnabled                        = GetPrivateProfileBool( "COMMON", "EnableMod", true, filePath );
     realTimeDuration                    = GetPrivateProfileBool( "COMMON", "EnableRealTimeDuration", true, filePath );
     changingWeatherAfterSleepingEnabled = GetPrivateProfileBool( "COMMON", "EnableChangingWeatherAfterSleeping", true, filePath );
     freezeTime                          = GetPrivateProfileBool( "COMMON", "FreezeTime", false, filePath );
@@ -465,8 +465,8 @@ void ScriptMain()
         // Enable / disable modification.
         if( IsKeyJustUp( toggleKey ) )
         {
-            modEnabled = !modEnabled;
-            if( !modEnabled )
+            isModEnabled = !isModEnabled;
+            if( !isModEnabled )
             {
                 GRAPHICS::CLEAR_TIMECYCLE_MODIFIER();
             }
@@ -601,7 +601,7 @@ void ScriptMain()
         }
 
         // Apply changes if modification is enabled.
-        if( modEnabled )
+        if( isModEnabled )
         {
             // Weather is changing naturally.
             if( previousTransition < 0.45f && transition >= 0.45f )

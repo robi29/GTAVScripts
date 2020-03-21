@@ -905,8 +905,8 @@ void ScriptMain()
         *(UINT8*) ( address + *(int*) ( address + 8 ) + 13 ) = 0;
     }
 
-    bool isOnMod = true;
-    bool isDebug = false;
+    bool isModEnabled   = true;
+    bool isDebugEnabled = false;
 
     weatherHashes[static_cast<int>( Weather::Extrasunny )] = GAMEPLAY::GET_HASH_KEY( "extrasunny" );
     weatherHashes[static_cast<int>( Weather::Clear )]      = GAMEPLAY::GET_HASH_KEY( "clear" );
@@ -942,31 +942,31 @@ void ScriptMain()
         }
         if( IsKeyJustUp( onOffKey ) || onOff )
         {
-            if( isOnMod )
+            if( isModEnabled )
             {
                 if( !isNormalZone )
                 {
                     UnloadScript();
                     normalZoneUpdate();
                 }
-                isOnMod = false;
+                isModEnabled = false;
             }
             else
             {
-                isOnMod = true;
+                isModEnabled = true;
             }
             onOff = false;
         }
         if( IsKeyJustUp( debugKey ) || debug )
         {
-            isDebug = !isDebug;
-            debug   = false;
+            isDebugEnabled = !isDebugEnabled;
+            debug          = false;
         }
         entity = PLAYER::PLAYER_PED_ID();
         getDecorators( entity );
-        if( isOnMod )
+        if( isModEnabled )
         {
-            if( isDebug )
+            if( isDebugEnabled )
             {
                 update_status_text();
             }

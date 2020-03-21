@@ -23,12 +23,12 @@ void update_status_text()
     UI::END_TEXT_COMMAND_DISPLAY_TEXT(0.5, 0.5);
 }*/
 
-float pedBlur    = 0.1f;
-float vehBlur    = 1.0f;
-float vehStart   = 0.0f;
-bool  enabledVeh = true;
-bool  enabledPed = true;
-bool  enabledMod = true;
+float pedBlur      = 0.1f;
+float vehBlur      = 1.0f;
+float vehStart     = 0.0f;
+bool  enabledVeh   = true;
+bool  enabledPed   = true;
+bool  isModEnabled = true;
 
 __forceinline void update()
 {
@@ -49,7 +49,7 @@ __forceinline void update()
     const Player player    = PLAYER::PLAYER_ID();
     const Ped    playerPed = PLAYER::PLAYER_PED_ID();
 
-    if( !enabledMod || !ENTITY::DOES_ENTITY_EXIST( playerPed ) || !PLAYER::IS_PLAYER_CONTROL_ON( player ) || PLAYER::IS_PLAYER_DEAD( player ) || PLAYER::IS_PLAYER_BEING_ARRESTED( player, TRUE ) )
+    if( !isModEnabled || !ENTITY::DOES_ENTITY_EXIST( playerPed ) || !PLAYER::IS_PLAYER_CONTROL_ON( player ) || PLAYER::IS_PLAYER_DEAD( player ) || PLAYER::IS_PLAYER_BEING_ARRESTED( player, TRUE ) )
     {
         //sprintf_s(text, "%s2\n", text);
         GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0 );
@@ -155,8 +155,8 @@ void ScriptMain()
     {
         if( IsKeyJustUp( VK_DELETE ) )
         {
-            enabledMod = !enabledMod;
-            if( enabledMod )
+            isModEnabled = !isModEnabled;
+            if( isModEnabled )
             {
                 loadConfig();
             }
