@@ -802,7 +802,7 @@ void ScriptMain()
     vehLightID->emplace( "CHAVOS2", 0 );
     vehLightID->emplace( "CHEETAH3", 1 );
     vehLightID->emplace( "CONTENDER2", 0 );
-    vehLightID->emplace( "COQUETTE4", 0 );
+    vehLightID->emplace( "COQUETTE5", 0 );
     vehLightID->emplace( "DF8", 6 );
     vehLightID->emplace( "DIABOLUS", 0 );
     vehLightID->emplace( "DOUBLE2", 6 );
@@ -1032,6 +1032,20 @@ void ScriptMain()
     vehLightID->emplace( "JB7002", 1 );
     vehLightID->emplace( "KANJO", 2 );
     vehLightID->emplace( "IMORGON", 6 );
+    vehLightID->emplace( "OPENWHEEL1", 6 ); // mpsum
+    vehLightID->emplace( "COQUETTE4", 0 );
+    vehLightID->emplace( "TIGON", 0 );
+    vehLightID->emplace( "LANDSTAL2", 0 );
+    vehLightID->emplace( "PENUMBRA2", 6 );
+    vehLightID->emplace( "YOSEMITE3", 2 );
+    vehLightID->emplace( "CLUB", 6 );
+    vehLightID->emplace( "SEMINOLE2", 6 );
+    vehLightID->emplace( "OPENWHEEL2", 6 );
+    vehLightID->emplace( "GAUNTLET5", 2 );
+    vehLightID->emplace( "DUKES3", 2 );
+    vehLightID->emplace( "GLENDALE2", 6 );
+    vehLightID->emplace( "PEYOTE3", 2 );
+    vehLightID->emplace( "MANANA2", 2 );
 
     bool restoreLightsSettings = false;
 
