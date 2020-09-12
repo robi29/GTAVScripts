@@ -9,3 +9,4 @@
 *.exe
 *.ilk
 *.vcxproj.FileListAbsolute.txt
+*.recipe
