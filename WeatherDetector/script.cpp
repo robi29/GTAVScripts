@@ -10,8 +10,6 @@ http://dev-c.com
 #include <windows.h>
 #include <Shlwapi.h>
 #include <psapi.h>
-#pragma comment( lib, "shlwapi.lib" )
-#pragma comment( lib, "psapi.lib" )
 
 _ENBGetSDKVersion       enbGetSDKVersion       = nullptr;
 _ENBGetVersion          enbGetVersion          = nullptr;
@@ -583,35 +581,34 @@ void WINAPI CallbackFunction( ENBCallbackType calltype )
 
 void ScriptMain()
 {
-    weatherHashes[(long long) Weathers::Extrasunny] = GAMEPLAY::GET_HASH_KEY( "extrasunny" );
-    weatherHashes[(long long) Weathers::Clear]      = GAMEPLAY::GET_HASH_KEY( "clear" );
-    weatherHashes[(long long) Weathers::Clouds]     = GAMEPLAY::GET_HASH_KEY( "clouds" );
-    weatherHashes[(long long) Weathers::Smog]       = GAMEPLAY::GET_HASH_KEY( "smog" );
-    weatherHashes[(long long) Weathers::Foggy]      = GAMEPLAY::GET_HASH_KEY( "foggy" );
-    weatherHashes[(long long) Weathers::Overcast]   = GAMEPLAY::GET_HASH_KEY( "overcast" );
-    weatherHashes[(long long) Weathers::Rain]       = GAMEPLAY::GET_HASH_KEY( "rain" );
-    weatherHashes[(long long) Weathers::Thunder]    = GAMEPLAY::GET_HASH_KEY( "thunder" );
-    weatherHashes[(long long) Weathers::Clearing]   = GAMEPLAY::GET_HASH_KEY( "clearing" );
-    weatherHashes[(long long) Weathers::Neutral]    = GAMEPLAY::GET_HASH_KEY( "neutral" );
-    weatherHashes[(long long) Weathers::Snow]       = GAMEPLAY::GET_HASH_KEY( "snow" );
-    weatherHashes[(long long) Weathers::Blizzard]   = GAMEPLAY::GET_HASH_KEY( "blizzard" );
-    weatherHashes[(long long) Weathers::Snowlight]  = GAMEPLAY::GET_HASH_KEY( "snowlight" );
-    weatherHashes[(long long) Weathers::Xmas]       = GAMEPLAY::GET_HASH_KEY( "xmas" );
-    weatherHashes[(long long) Weathers::Halloween]  = GAMEPLAY::GET_HASH_KEY( "halloween" );
+    weatherHashes[(uint32_t) Weathers::Extrasunny] = GAMEPLAY::GET_HASH_KEY( "extrasunny" );
+    weatherHashes[(uint32_t) Weathers::Clear]      = GAMEPLAY::GET_HASH_KEY( "clear" );
+    weatherHashes[(uint32_t) Weathers::Clouds]     = GAMEPLAY::GET_HASH_KEY( "clouds" );
+    weatherHashes[(uint32_t) Weathers::Smog]       = GAMEPLAY::GET_HASH_KEY( "smog" );
+    weatherHashes[(uint32_t) Weathers::Foggy]      = GAMEPLAY::GET_HASH_KEY( "foggy" );
+    weatherHashes[(uint32_t) Weathers::Overcast]   = GAMEPLAY::GET_HASH_KEY( "overcast" );
+    weatherHashes[(uint32_t) Weathers::Rain]       = GAMEPLAY::GET_HASH_KEY( "rain" );
+    weatherHashes[(uint32_t) Weathers::Thunder]    = GAMEPLAY::GET_HASH_KEY( "thunder" );
+    weatherHashes[(uint32_t) Weathers::Clearing]   = GAMEPLAY::GET_HASH_KEY( "clearing" );
+    weatherHashes[(uint32_t) Weathers::Neutral]    = GAMEPLAY::GET_HASH_KEY( "neutral" );
+    weatherHashes[(uint32_t) Weathers::Snow]       = GAMEPLAY::GET_HASH_KEY( "snow" );
+    weatherHashes[(uint32_t) Weathers::Blizzard]   = GAMEPLAY::GET_HASH_KEY( "blizzard" );
+    weatherHashes[(uint32_t) Weathers::Snowlight]  = GAMEPLAY::GET_HASH_KEY( "snowlight" );
+    weatherHashes[(uint32_t) Weathers::Xmas]       = GAMEPLAY::GET_HASH_KEY( "xmas" );
+    weatherHashes[(uint32_t) Weathers::Halloween]  = GAMEPLAY::GET_HASH_KEY( "halloween" );
 
     DWORD   cb             = 1000 * sizeof( HMODULE );
     DWORD   cbNeeded       = 0;
     HMODULE enbmodule      = nullptr;
     HMODULE hmodules[1000] = {};
     HANDLE  hproc          = GetCurrentProcess();
-    //for (long i = 0; i < 1000; i++) hmodules[i] = NULL;
 
     //find proper library by existance of exported function, because several with the same name may exist
     if( EnumProcessModules( hproc, hmodules, cb, &cbNeeded ) )
     {
-        long count = cbNeeded / sizeof( HMODULE );
+        uint32_t count = cbNeeded / sizeof( HMODULE );
 
-        for( long i = 0; i < count; ++i )
+        for( uint32_t i = 0; i < count; ++i )
         {
             if( hmodules[i] == nullptr )
             {
@@ -642,42 +639,52 @@ void ScriptMain()
     {
         enbSetCallbackFunction( CallbackFunction );
     }
-    else
+
+    //GRAPHICS::_DRAW_LIGHT_WITH_RANGE_WITH_SHADOW(-1559.07, -1168.37, 4.54, 255, 0, 0, 10.0, 1.0, 0.7);
+
+    //GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW(-1559.07, -1148.37, 4.54, -1559.07, -1168.37, 4.54,
+    //  0, 255, 0, 20.0, 1.0, 1.0, 90.0, 1.0, 0.7);
+    bool reshadeMode = false;
+    char path[MAX_PATH];
+
+    if( GetModuleFileName( nullptr, path, MAX_PATH ) )
     {
-        //GRAPHICS::_DRAW_LIGHT_WITH_RANGE_WITH_SHADOW(-1559.07, -1168.37, 4.54, 255, 0, 0, 10.0, 1.0, 0.7);
-
-        //GRAPHICS::_DRAW_SPOT_LIGHT_WITH_SHADOW(-1559.07, -1148.37, 4.54, -1559.07, -1168.37, 4.54,
-        //  0, 255, 0, 20.0, 1.0, 1.0, 90.0, 1.0, 0.7);
-        bool reshadeMode = false;
-        char path[MAX_PATH];
-
-        if( GetModuleFileName( nullptr, path, MAX_PATH ) )
+        for( size_t i = strlen( path ); i > 0; --i )
         {
-            for( size_t i = strlen( path ); i > 0; --i )
+            if( path[i] == '\\' )
             {
-                if( path[i] == '\\' )
-                {
-                    path[i] = '\0';
-                    break;
-                }
-            }
-
-            strcat_s( path, "\\dxgi.dll" );
-
-            if( PathFileExists( path ) )
-            {
-                reshadeMode = true;
+                path[i] = '\0';
+                break;
             }
         }
 
-        if( reshadeMode )
+        char dxgiPath[MAX_PATH];
+        char reshadePath[MAX_PATH];
+        char reshade64Path[MAX_PATH];
+
+        strcpy_s( dxgiPath, path );
+        strcpy_s( reshadePath, path );
+        strcpy_s( reshade64Path, path );
+
+        strcat_s( dxgiPath, "\\dxgi.dll" );
+        strcat_s( reshadePath, "\\ReShade.dll" );
+        strcat_s( reshade64Path, "\\ReShade64.dll" );
+
+        if( INVALID_FILE_ATTRIBUTES != GetFileAttributes( dxgiPath ) || GetLastError() != ERROR_FILE_NOT_FOUND ||
+            INVALID_FILE_ATTRIBUTES != GetFileAttributes( reshadePath ) || GetLastError() != ERROR_FILE_NOT_FOUND ||
+            INVALID_FILE_ATTRIBUTES != GetFileAttributes( reshade64Path ) || GetLastError() != ERROR_FILE_NOT_FOUND )
         {
-            while( true )
-            {
-                update();
-                //update_status_text();
-                WAIT( 0 );
-            }
+            reshadeMode = true;
+        }
+    }
+
+    if( reshadeMode )
+    {
+        while( true )
+        {
+            update();
+            //update_status_text();
+            WAIT( 0 );
         }
     }
 }
