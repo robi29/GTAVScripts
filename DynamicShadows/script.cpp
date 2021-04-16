@@ -1046,6 +1046,27 @@ void ScriptMain()
     vehLightID->emplace( "GLENDALE2", 6 );
     vehLightID->emplace( "PEYOTE3", 2 );
     vehLightID->emplace( "MANANA2", 2 );
+    vehLightID->emplace( "SQUADDIE", 0 ); // mpheist4
+    vehLightID->emplace( "ANNIHILATOR", 1 );
+    vehLightID->emplace( "VETO", 1 );
+    vehLightID->emplace( "VETO2", 1 );
+    vehLightID->emplace( "ITALIRSX", 0 );
+    vehLightID->emplace( "TOREADOR", 0 );
+    vehLightID->emplace( "SLAMTRUCK", 2 );
+    vehLightID->emplace( "WEEVIL", 2 );
+    vehLightID->emplace( "ALKONOST", 2 );
+    vehLightID->emplace( "VETIR", 2 );
+    vehLightID->emplace( "PATROLBOAT", 2 );
+    vehLightID->emplace( "DINGHY5", 1 );
+    vehLightID->emplace( "AVISA", 0 );
+    vehLightID->emplace( "BRIOSO2", 2 );
+    vehLightID->emplace( "VERUS", 1 );
+    vehLightID->emplace( "LONGFIN", 0 );
+    vehLightID->emplace( "SEASPARROW2", 6 );
+    vehLightID->emplace( "SEASPARROW3", 6 );
+    vehLightID->emplace( "WINKY", 0 );
+    vehLightID->emplace( "MANCHEZ2", 0 );
+    vehLightID->emplace( "KOSATKA", 0 );
 
     bool restoreLightsSettings = false;
 
