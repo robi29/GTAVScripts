@@ -226,44 +226,48 @@ __forceinline Weather& operator++( Weather& weatherType ) // prefix ++
     return weatherType;
 }
 
-#define GET_DECORATOR_BOOL( name, var )                                                    \
-    if( DECORATOR::DECOR_IS_REGISTERED_AS_TYPE( #name, static_cast<int>( Decor::Bool ) ) ) \
-    {                                                                                      \
-        boolDecorator = DECORATOR::DECOR_GET_BOOL( entity, #name );                        \
-        if( boolDecorator == TRUE )                                                        \
-        {                                                                                  \
-            var = true;                                                                    \
-            DECORATOR::DECOR_SET_BOOL( entity, #name, FALSE );                             \
-        }                                                                                  \
+__forceinline bool GetDecoratorBoolean( const Entity entity, const char* name )
+{
+    if( DECORATOR::DECOR_IS_REGISTERED_AS_TYPE( const_cast<char*>( name ), static_cast<int>( Decor::Bool ) ) )
+    {
+        const BOOL boolDecorator = DECORATOR::DECOR_GET_BOOL( entity, const_cast<char*>( name ) );
+        if( boolDecorator == TRUE )
+        {
+            DECORATOR::DECOR_SET_BOOL( entity, const_cast<char*>( name ), FALSE );
+            return true;
+        }
     }
 
-__forceinline float lerp( float a, float b, float t )
+    return false;
+}
+
+__forceinline float lerp( const float a, const float b, const float t )
 {
     return ( 1 - t ) * a + t * b;
 }
 
-__forceinline unsigned GetPrivateProfileHex( char* sectionName, char* keyName, char* defaultValue, char* fileName )
+__forceinline unsigned GetPrivateProfileHex( const char* sectionName, const char* keyName, const char* defaultValue, const char* fileName )
 {
     char sValue[MAX_NAME];
     GetPrivateProfileString( sectionName, keyName, defaultValue, sValue, MAX_NAME, fileName );
     return strtol( sValue, NULL, 16 );
 }
 
-__forceinline float GetPrivateProfileFloat( char* sectionName, char* keyName, char* defaultValue, char* fileName )
+__forceinline float GetPrivateProfileFloat( const char* sectionName, const char* keyName, const char* defaultValue, const char* fileName )
 {
     char sValue[MAX_NAME];
     GetPrivateProfileString( sectionName, keyName, defaultValue, sValue, MAX_NAME, fileName );
     return strtof( sValue, NULL );
 }
 
-__forceinline bool GetPrivateProfileBool( char* sectionName, char* keyName, bool defaultValue, char* fileName )
+__forceinline bool GetPrivateProfileBool( const char* sectionName, const char* keyName, const bool defaultValue, const char* fileName )
 {
     return ( GetPrivateProfileInt( sectionName, keyName, defaultValue ? 1 : 0, fileName ) == 1 ? true : false );
 }
 
 __forceinline void update_status_text()
 {
-    for( unsigned i = 0; i < textLines; i++ )
+    for( unsigned i = 0; i < textLines; ++i )
     {
         UI::SET_TEXT_FONT( 0 );
         UI::SET_TEXT_SCALE( textScale, textScale );
@@ -271,22 +275,22 @@ __forceinline void update_status_text()
         UI::SET_TEXT_WRAP( 0.0f, 1.0f );
         UI::SET_TEXT_DROPSHADOW( 3, 0, 0, 0, 0 );
         UI::SET_TEXT_EDGE( 1, 0, 0, 0, 205 );
-        UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT( "STRING" );
+        UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT( const_cast<char*>( "STRING" ) );
         UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME( text[i] );
         UI::END_TEXT_COMMAND_DISPLAY_TEXT( posX, posY + offset[i] * textScale );
     }
 }
 
-__forceinline bool isSunnyWeather( Hash w )
+__forceinline bool isSunnyWeather( const Hash w )
 {
-    for( unsigned i = 0; i < 6; i++ )
+    for( unsigned i = 0; i < 6; ++i )
         if( weatherHashes[i] == w )
             return true;
 
     return false;
 }
 
-__forceinline Weather getWeatherType( Hash w )
+__forceinline Weather getWeatherType( const Hash w )
 {
     for( Weather i = Weather::Extrasunny; i < Weather::Count; ++i )
         if( weatherHashes[static_cast<int>( i )] == w )
@@ -412,14 +416,11 @@ __forceinline void doLightningInSpace()
     }
 }
 
-__forceinline void getDecorators( Entity entity )
+__forceinline void getDecorators( const Entity entity )
 {
-    int  intDecorator;
-    BOOL boolDecorator;
-
-    if( DECORATOR::DECOR_IS_REGISTERED_AS_TYPE( "fileindex", static_cast<int>( Decor::Int ) ) )
+    if( DECORATOR::DECOR_IS_REGISTERED_AS_TYPE( const_cast<char*>( "fileindex" ), static_cast<int>( Decor::Int ) ) )
     {
-        intDecorator = DECORATOR::DECOR_GET_INT( entity, "fileindex" );
+        int intDecorator = DECORATOR::DECOR_GET_INT( entity, const_cast<char*>( "fileindex" ) );
 
         if( intDecorator > 0 )
         {
@@ -432,9 +433,9 @@ __forceinline void getDecorators( Entity entity )
         }
     }
 
-    GET_DECORATOR_BOOL( "reload", reload );
-    GET_DECORATOR_BOOL( "enabled", onOff );
-    GET_DECORATOR_BOOL( "debugmode", debug );
+    reload = GetDecoratorBoolean( entity, "reload" );
+    onOff  = GetDecoratorBoolean( entity, "enabled" );
+    debug  = GetDecoratorBoolean( entity, "debugmode" );
 }
 
 __forceinline bool isAllModifiersDisabled()
@@ -450,7 +451,9 @@ __forceinline void update( Entity entity )
     ++counter;
 
     if( PED::IS_PED_IN_ANY_VEHICLE( entity, 0 ) )
+    {
         entity = PED::GET_VEHICLE_PED_IS_USING( entity );
+    }
 
     coords = ENTITY::GET_ENTITY_COORDS( entity, 0 );
 
@@ -540,7 +543,7 @@ __forceinline void update( Entity entity )
         if( !isSunnyWeather( weather ) )
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( progress );
-            GAMEPLAY::LOAD_CLOUD_HAT( "horsey", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "horsey" ), 0.0f );
             if( !isDefaultWind )
             {
                 GAMEPLAY::SET_WIND_SPEED( cloudWindMultiplier[static_cast<int>( currentWeatherType )] * windSpeed );
@@ -579,7 +582,7 @@ __forceinline void update( Entity entity )
         if( !isSunnyWeather( weather ) )
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( 1.0f );
-            GAMEPLAY::LOAD_CLOUD_HAT( "horsey", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "horsey" ), 0.0f );
             if( !isDefaultWind )
             {
                 GAMEPLAY::SET_WIND_SPEED( lerp( windSpeed * cloudWindMultiplier[static_cast<int>( currentWeatherType )], windSpeed * aboveWindMultiplier[static_cast<int>( currentWeatherType )], progress ) );
@@ -588,7 +591,7 @@ __forceinline void update( Entity entity )
         else
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( progress );
-            GAMEPLAY::LOAD_CLOUD_HAT( "Snowy 01", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "Snowy 01" ), 0.0f );
             if( !isDefaultWind )
             {
                 GAMEPLAY::SET_WIND_SPEED( lerp( windSpeed, windSpeed * aboveWindMultiplier[static_cast<int>( currentWeatherType )], progress ) );
@@ -610,12 +613,12 @@ __forceinline void update( Entity entity )
         if( !isSunnyWeather( weather ) )
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( 1.0f );
-            GAMEPLAY::LOAD_CLOUD_HAT( "horsey", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "horsey" ), 0.0f );
         }
         else
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( 1.0f );
-            GAMEPLAY::LOAD_CLOUD_HAT( "Snowy 01", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "Snowy 01" ), 0.0f );
         }
         defaultRainFX = false;
         GAMEPLAY::_SET_RAIN_FX_INTENSITY( 0.0f );
@@ -637,7 +640,7 @@ __forceinline void update( Entity entity )
         {
             if( !isSpaceZoneStart )
             {
-                GRAPHICS::SET_TIMECYCLE_MODIFIER( "nextgen" );
+                GRAPHICS::SET_TIMECYCLE_MODIFIER( const_cast<char*>( "nextgen" ) );
             }
             reloadModifier = true;
         }
@@ -659,12 +662,12 @@ __forceinline void update( Entity entity )
         if( !isSunnyWeather( weather ) )
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( 1.0f );
-            GAMEPLAY::LOAD_CLOUD_HAT( "horsey", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "horsey" ), 0.0f );
         }
         else
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( 1.0f );
-            GAMEPLAY::LOAD_CLOUD_HAT( "Snowy 01", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "Snowy 01" ), 0.0f );
         }
         defaultRainFX = false;
         GAMEPLAY::_SET_RAIN_FX_INTENSITY( 0.0f );
@@ -702,12 +705,12 @@ __forceinline void update( Entity entity )
         if( !isSunnyWeather( weather ) )
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( 1.0f );
-            GAMEPLAY::LOAD_CLOUD_HAT( "horsey", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "horsey" ), 0.0f );
         }
         else
         {
             GAMEPLAY::_SET_CLOUD_HAT_OPACITY( 1.0f );
-            GAMEPLAY::LOAD_CLOUD_HAT( "Snowy 01", 0.0f );
+            GAMEPLAY::LOAD_CLOUD_HAT( const_cast<char*>( "Snowy 01" ), 0.0f );
         }
         defaultRainFX = false;
         GAMEPLAY::_SET_RAIN_FX_INTENSITY( 0.0f );
@@ -741,7 +744,7 @@ __forceinline void update( Entity entity )
     sprintf_s( text[5], "spaceZoneTimecycMod: %s\n\nwind speed : %.2f\ntimecycle index: %d\n%s", spaceZoneTimecycleModifier[currentWeatherIndex], GAMEPLAY::GET_WIND_SPEED(), GRAPHICS::GET_TIMECYCLE_MODIFIER_INDEX(), nameFile );
 }
 
-__forceinline void loadWeatherSettings( char* fileName, Weather weatherType, char* sectionName )
+__forceinline void loadWeatherSettings( const char* fileName, const Weather weatherType, const char* sectionName )
 {
     const int weatherIndex = static_cast<int>( weatherType );
 
@@ -759,7 +762,7 @@ __forceinline void loadWeatherSettings( char* fileName, Weather weatherType, cha
     spaceWindMultiplier[weatherIndex]  = GetPrivateProfileFloat( sectionName, "SpaceZoneWindMultiplier", "0.0", fileName );
 
     GetPrivateProfileString( sectionName, "NormalZoneClouds", "NO_CLOUDS", sValue, MAX_NAME, fileName );
-    for( unsigned i = 0; i < static_cast<unsigned>( Cloud::Count ); i++ )
+    for( unsigned i = 0; i < static_cast<unsigned>( Cloud::Count ); ++i )
     {
         if( !strcmp( sValue, cloudCodes[i] ) )
         {
@@ -770,7 +773,7 @@ __forceinline void loadWeatherSettings( char* fileName, Weather weatherType, cha
     strcpy( weatherClouds[weatherIndex], cloudTypes[static_cast<int>( clouds )] );
 
     GetPrivateProfileString( sectionName, "AboveCloudsZoneWeatherOverride", "EXTRASUNNY", sValue, MAX_NAME, fileName );
-    for( unsigned i = 0; i < static_cast<unsigned>( Weather::Count ); i++ )
+    for( unsigned i = 0; i < static_cast<unsigned>( Weather::Count ); ++i )
     {
         if( !strcmp( weatherTypes[i], sValue ) )
         {
@@ -780,7 +783,7 @@ __forceinline void loadWeatherSettings( char* fileName, Weather weatherType, cha
     }
 
     GetPrivateProfileString( sectionName, "SpaceZoneWeatherOverride", "HALLOWEEN", sValue, MAX_NAME, fileName );
-    for( unsigned i = 0; i < static_cast<unsigned>( Weather::Count ); i++ )
+    for( unsigned i = 0; i < static_cast<unsigned>( Weather::Count ); ++i )
     {
         if( !strcmp( weatherTypes[i], sValue ) )
         {
@@ -868,7 +871,7 @@ uintptr_t FindPattern( const char* pattern, const char* mask, const char* startA
                 return reinterpret_cast<uintptr_t>( startAddress ) - mask_length;
             }
 
-            i++;
+            ++i;
         }
         else
         {
@@ -908,21 +911,21 @@ void ScriptMain()
     bool isModEnabled   = true;
     bool isDebugEnabled = false;
 
-    weatherHashes[static_cast<int>( Weather::Extrasunny )] = GAMEPLAY::GET_HASH_KEY( "extrasunny" );
-    weatherHashes[static_cast<int>( Weather::Clear )]      = GAMEPLAY::GET_HASH_KEY( "clear" );
-    weatherHashes[static_cast<int>( Weather::Clouds )]     = GAMEPLAY::GET_HASH_KEY( "clouds" );
-    weatherHashes[static_cast<int>( Weather::Smog )]       = GAMEPLAY::GET_HASH_KEY( "smog" );
-    weatherHashes[static_cast<int>( Weather::Neutral )]    = GAMEPLAY::GET_HASH_KEY( "neutral" );
-    weatherHashes[static_cast<int>( Weather::Snowlight )]  = GAMEPLAY::GET_HASH_KEY( "snowlight" );
-    weatherHashes[static_cast<int>( Weather::Foggy )]      = GAMEPLAY::GET_HASH_KEY( "foggy" );
-    weatherHashes[static_cast<int>( Weather::Overcast )]   = GAMEPLAY::GET_HASH_KEY( "overcast" );
-    weatherHashes[static_cast<int>( Weather::Rain )]       = GAMEPLAY::GET_HASH_KEY( "rain" );
-    weatherHashes[static_cast<int>( Weather::Thunder )]    = GAMEPLAY::GET_HASH_KEY( "thunder" );
-    weatherHashes[static_cast<int>( Weather::Clearing )]   = GAMEPLAY::GET_HASH_KEY( "clearing" );
-    weatherHashes[static_cast<int>( Weather::Snow )]       = GAMEPLAY::GET_HASH_KEY( "snow" );
-    weatherHashes[static_cast<int>( Weather::Blizzard )]   = GAMEPLAY::GET_HASH_KEY( "blizzard" );
-    weatherHashes[static_cast<int>( Weather::Xmas )]       = GAMEPLAY::GET_HASH_KEY( "xmas" );
-    weatherHashes[static_cast<int>( Weather::Halloween )]  = GAMEPLAY::GET_HASH_KEY( "halloween" );
+    weatherHashes[static_cast<int>( Weather::Extrasunny )] = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "extrasunny" ) );
+    weatherHashes[static_cast<int>( Weather::Clear )]      = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clear" ) );
+    weatherHashes[static_cast<int>( Weather::Clouds )]     = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clouds" ) );
+    weatherHashes[static_cast<int>( Weather::Smog )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "smog" ) );
+    weatherHashes[static_cast<int>( Weather::Neutral )]    = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "neutral" ) );
+    weatherHashes[static_cast<int>( Weather::Snowlight )]  = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "snowlight" ) );
+    weatherHashes[static_cast<int>( Weather::Foggy )]      = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "foggy" ) );
+    weatherHashes[static_cast<int>( Weather::Overcast )]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "overcast" ) );
+    weatherHashes[static_cast<int>( Weather::Rain )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "rain" ) );
+    weatherHashes[static_cast<int>( Weather::Thunder )]    = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "thunder" ) );
+    weatherHashes[static_cast<int>( Weather::Clearing )]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clearing" ) );
+    weatherHashes[static_cast<int>( Weather::Snow )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "snow" ) );
+    weatherHashes[static_cast<int>( Weather::Blizzard )]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "blizzard" ) );
+    weatherHashes[static_cast<int>( Weather::Xmas )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "xmas" ) );
+    weatherHashes[static_cast<int>( Weather::Halloween )]  = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "halloween" ) );
 
     GAMEPLAY::_GET_WEATHER_TYPE_TRANSITION( &weather0, &weather1, &currentProgress );
 

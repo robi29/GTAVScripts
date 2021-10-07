@@ -581,21 +581,21 @@ void WINAPI CallbackFunction( ENBCallbackType calltype )
 
 void ScriptMain()
 {
-    weatherHashes[(uint32_t) Weathers::Extrasunny] = GAMEPLAY::GET_HASH_KEY( "extrasunny" );
-    weatherHashes[(uint32_t) Weathers::Clear]      = GAMEPLAY::GET_HASH_KEY( "clear" );
-    weatherHashes[(uint32_t) Weathers::Clouds]     = GAMEPLAY::GET_HASH_KEY( "clouds" );
-    weatherHashes[(uint32_t) Weathers::Smog]       = GAMEPLAY::GET_HASH_KEY( "smog" );
-    weatherHashes[(uint32_t) Weathers::Foggy]      = GAMEPLAY::GET_HASH_KEY( "foggy" );
-    weatherHashes[(uint32_t) Weathers::Overcast]   = GAMEPLAY::GET_HASH_KEY( "overcast" );
-    weatherHashes[(uint32_t) Weathers::Rain]       = GAMEPLAY::GET_HASH_KEY( "rain" );
-    weatherHashes[(uint32_t) Weathers::Thunder]    = GAMEPLAY::GET_HASH_KEY( "thunder" );
-    weatherHashes[(uint32_t) Weathers::Clearing]   = GAMEPLAY::GET_HASH_KEY( "clearing" );
-    weatherHashes[(uint32_t) Weathers::Neutral]    = GAMEPLAY::GET_HASH_KEY( "neutral" );
-    weatherHashes[(uint32_t) Weathers::Snow]       = GAMEPLAY::GET_HASH_KEY( "snow" );
-    weatherHashes[(uint32_t) Weathers::Blizzard]   = GAMEPLAY::GET_HASH_KEY( "blizzard" );
-    weatherHashes[(uint32_t) Weathers::Snowlight]  = GAMEPLAY::GET_HASH_KEY( "snowlight" );
-    weatherHashes[(uint32_t) Weathers::Xmas]       = GAMEPLAY::GET_HASH_KEY( "xmas" );
-    weatherHashes[(uint32_t) Weathers::Halloween]  = GAMEPLAY::GET_HASH_KEY( "halloween" );
+    weatherHashes[static_cast<uint32_t>( Weathers::Extrasunny )] = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "extrasunny" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Clear )]      = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clear" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Clouds )]     = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clouds" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Smog )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "smog" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Foggy )]      = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "foggy" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Overcast )]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "overcast" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Rain )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "rain" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Thunder )]    = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "thunder" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Clearing )]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clearing" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Neutral )]    = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "neutral" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Snow )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "snow" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Blizzard )]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "blizzard" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Snowlight )]  = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "snowlight" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Xmas )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "xmas" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Halloween )]  = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "halloween" ) );
 
     DWORD   cb             = 1000 * sizeof( HMODULE );
     DWORD   cbNeeded       = 0;

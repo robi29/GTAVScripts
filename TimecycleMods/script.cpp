@@ -413,21 +413,21 @@ void ScriptMain()
 
     strcat_s( filePath, "\\timecyclemods.ini" );
 
-    weatherHashes[EXTRASUNNY] = GAMEPLAY::GET_HASH_KEY( "extrasunny" );
-    weatherHashes[CLEAR]      = GAMEPLAY::GET_HASH_KEY( "clear" );
-    weatherHashes[CLOUDS]     = GAMEPLAY::GET_HASH_KEY( "clouds" );
-    weatherHashes[SMOG]       = GAMEPLAY::GET_HASH_KEY( "smog" );
-    weatherHashes[NEUTRAL]    = GAMEPLAY::GET_HASH_KEY( "neutral" );
-    weatherHashes[SNOWLIGHT]  = GAMEPLAY::GET_HASH_KEY( "snowlight" );
-    weatherHashes[FOGGY]      = GAMEPLAY::GET_HASH_KEY( "foggy" );
-    weatherHashes[OVERCAST]   = GAMEPLAY::GET_HASH_KEY( "overcast" );
-    weatherHashes[RAIN]       = GAMEPLAY::GET_HASH_KEY( "rain" );
-    weatherHashes[THUNDER]    = GAMEPLAY::GET_HASH_KEY( "thunder" );
-    weatherHashes[CLEARING]   = GAMEPLAY::GET_HASH_KEY( "clearing" );
-    weatherHashes[SNOW]       = GAMEPLAY::GET_HASH_KEY( "snow" );
-    weatherHashes[BLIZZARD]   = GAMEPLAY::GET_HASH_KEY( "blizzard" );
-    weatherHashes[XMAS]       = GAMEPLAY::GET_HASH_KEY( "xmas" );
-    weatherHashes[HALLOWEEN]  = GAMEPLAY::GET_HASH_KEY( "halloween" );
+    weatherHashes[EXTRASUNNY] = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "extrasunny" ) );
+    weatherHashes[CLEAR]      = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clear" ) );
+    weatherHashes[CLOUDS]     = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clouds" ) );
+    weatherHashes[SMOG]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "smog" ) );
+    weatherHashes[NEUTRAL]    = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "neutral" ) );
+    weatherHashes[SNOWLIGHT]  = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "snowlight" ) );
+    weatherHashes[FOGGY]      = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "foggy" ) );
+    weatherHashes[OVERCAST]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "overcast" ) );
+    weatherHashes[RAIN]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "rain" ) );
+    weatherHashes[THUNDER]    = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "thunder" ) );
+    weatherHashes[CLEARING]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "clearing" ) );
+    weatherHashes[SNOW]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "snow" ) );
+    weatherHashes[BLIZZARD]   = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "blizzard" ) );
+    weatherHashes[XMAS]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "xmas" ) );
+    weatherHashes[HALLOWEEN]  = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "halloween" ) );
 
     Hash        currentWeather     = weatherHashes[EXTRASUNNY];
     Hash        nextWeather        = weatherHashes[EXTRASUNNY];

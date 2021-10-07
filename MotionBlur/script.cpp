@@ -23,12 +23,13 @@ void update_status_text()
     UI::END_TEXT_COMMAND_DISPLAY_TEXT(0.5, 0.5);
 }*/
 
-float pedBlur      = 0.1f;
-float vehBlur      = 1.0f;
-float vehStart     = 0.0f;
-bool  enabledVeh   = true;
-bool  enabledPed   = true;
-bool  isModEnabled = true;
+float       pedBlur      = 0.1f;
+float       vehBlur      = 1.0f;
+float       vehStart     = 0.0f;
+bool        enabledVeh   = true;
+bool        enabledPed   = true;
+bool        isModEnabled = true;
+const char* modifierName = "motionblur";
 
 __forceinline void update()
 {
@@ -43,7 +44,7 @@ __forceinline void update()
 
     if( GRAPHICS::GET_TIMECYCLE_MODIFIER_INDEX() == -1 )
     {
-        GRAPHICS::SET_TIMECYCLE_MODIFIER( "motionblur" );
+        GRAPHICS::SET_TIMECYCLE_MODIFIER( const_cast<char*>( modifierName ) );
     }
 
     const Player player    = PLAYER::PLAYER_ID();
@@ -148,7 +149,7 @@ void ScriptMain()
 {
     loadConfig();
 
-    GRAPHICS::SET_TIMECYCLE_MODIFIER( "motionblur" );
+    GRAPHICS::SET_TIMECYCLE_MODIFIER( const_cast<char*>( modifierName ) );
     GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0 );
 
     while( true )
@@ -169,6 +170,6 @@ void ScriptMain()
 
 void UnloadScript()
 {
-    GRAPHICS::SET_TIMECYCLE_MODIFIER( "motionblur" );
+    GRAPHICS::SET_TIMECYCLE_MODIFIER( const_cast<char*>( modifierName ) );
     GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( 0.0 );
 }

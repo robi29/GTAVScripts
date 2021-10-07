@@ -96,8 +96,8 @@ __forceinline void update()
                 }
                 VEHICLE::SET_VEHICLE_LIGHT_MULTIPLIER( vehicleID, 0.0f );
 
-                const int left  = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME( vehicleID, "headlight_l" );
-                const int right = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME( vehicleID, "headlight_r" );
+                const int left  = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME( vehicleID, const_cast<char*>( "headlight_l" ) );
+                const int right = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME( vehicleID, const_cast<char*>( "headlight_r" ) );
 
                 Vector3 leftLightPos  = { 0.0f, 0, 0.0f, 0, 0.0f, 0 };
                 Vector3 rightLightPos = { 0.0f, 0, 0.0f, 0, 0.0f, 0 };
