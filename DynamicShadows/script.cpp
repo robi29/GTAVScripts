@@ -1086,6 +1086,23 @@ void ScriptMain()
     vehLightID->emplace( "CYPHER", 0 );
     vehLightID->emplace( "JESTER4", 0 );
     vehLightID->emplace( "VECTRE", 0 );
+    vehLightID->emplace( "SHINOBI", 1 ); // mpcontract
+    vehLightID->emplace( "REEVER", 0 );
+    vehLightID->emplace( "CHAMPION", 1 );
+    vehLightID->emplace( "CINQUEMILA", 0 );
+    vehLightID->emplace( "IWAGEN", 0 );
+    vehLightID->emplace( "COMET7", 0 );
+    vehLightID->emplace( "ASTRON", 0 );
+    vehLightID->emplace( "BALLER7", 1 );
+    vehLightID->emplace( "BUFFALO4", 1 );
+    vehLightID->emplace( "DEITY", 1 );
+    vehLightID->emplace( "JUBILEE", 0 );
+    vehLightID->emplace( "GRANGER2", 1 );
+    vehLightID->emplace( "IGNUS", 0 );
+    vehLightID->emplace( "PATRIOT3", 0 );
+    vehLightID->emplace( "YOUGA4", 0 );
+    vehLightID->emplace( "ZENO", 0 );
+    vehLightID->emplace( "MULE5", 0 );
 
     bool restoreLightsSettings = false;
 
