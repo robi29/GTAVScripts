@@ -1103,6 +1103,11 @@ void ScriptMain()
     vehLightID->emplace( "YOUGA4", 0 );
     vehLightID->emplace( "ZENO", 0 );
     vehLightID->emplace( "MULE5", 0 );
+    vehLightID->emplace( "S95", 0 ); // mpg9ec
+    vehLightID->emplace( "ASTRON2", 0 );
+    vehLightID->emplace( "CYCLONE2", 0 );
+    vehLightID->emplace( "IGNUS2", 0 );
+    vehLightID->emplace( "ARBITERGT", 2 );
 
     bool restoreLightsSettings = false;
 
