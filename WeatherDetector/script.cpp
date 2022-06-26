@@ -77,6 +77,7 @@ UI::_DRAW_TEXT(0.5, 0.5);
 #define LIGHTSNOW_HEATHAZE      0.0f
 #define XMAS_HEATHAZE           0.0f
 #define HALLOWEEN_HEATHAZE      0.0f
+#define UNDERWATER_HEATHAZE     0.0f
 #define NULL_HEATHAZE           0.0f
 
 #define H0          0.0f
@@ -122,6 +123,7 @@ enum class Weathers : uint32_t
     Snowlight,
     Xmas,
     Halloween,
+    Underwater,
     Count
 };
 
@@ -144,6 +146,7 @@ static constexpr float weathers[16] =
     LIGHTSNOW_HEATHAZE,
     XMAS_HEATHAZE,
     HALLOWEEN_HEATHAZE,
+    UNDERWATER_HEATHAZE,
     NULL_HEATHAZE
 };
 
@@ -446,7 +449,7 @@ void ExecuteSomething()
 
     vector[2] *= 0.154f;
 
-    memcpy( parameterVector.Data, &vector, parameterVector.Size );
+    memcpy( parameterVector.Data, vector, parameterVector.Size );
 
     char angleName[] = "Angle";
     enbSetParameter( nullptr, shaderName, angleName, &parameterVector );
@@ -596,6 +599,7 @@ void ScriptMain()
     weatherHashes[static_cast<uint32_t>( Weathers::Snowlight )]  = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "snowlight" ) );
     weatherHashes[static_cast<uint32_t>( Weathers::Xmas )]       = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "xmas" ) );
     weatherHashes[static_cast<uint32_t>( Weathers::Halloween )]  = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "halloween" ) );
+    weatherHashes[static_cast<uint32_t>( Weathers::Underwater )] = GAMEPLAY::GET_HASH_KEY( const_cast<char*>( "underwater" ) );
 
     DWORD   cb             = 1000 * sizeof( HMODULE );
     DWORD   cbNeeded       = 0;
