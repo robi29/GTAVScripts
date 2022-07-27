@@ -39,7 +39,8 @@ constexpr Colour const id[] =
     { 0xFF, 0xCE, 0x1C }, // 5 (original 87)
     { 0x24, 0xD1, 0x2C }, // 6 (original 76)
     { 0xFA, 0xEC, 0xC8 }, // 7 (original 14)
-    { 0xFF, 0x00, 0x00 }  // 8 (for testing)
+    { 0xFF, 0xEA, 0xA3 }, // 8 (original 181)
+    { 0xFF, 0x00, 0x00 }  // 9 (for testing)
 };
 
 std::unordered_map<std::string, uint8_t>* vehLightID = nullptr;
@@ -575,7 +576,7 @@ void ScriptMain()
     vehLightID->emplace( "SPEEDER", 0 );
     vehLightID->emplace( "KALAHARI", 0 );
     vehLightID->emplace( "PARADISE", 0 );
-    vehLightID->emplace( "TORNADO6", 2 ); //mpbiker
+    vehLightID->emplace( "TORNADO6", 2 ); // mpbiker
     vehLightID->emplace( "RAPTOR", 1 );
     vehLightID->emplace( "VORTEX", 1 );
     vehLightID->emplace( "AVARUS", 1 );
@@ -860,7 +861,7 @@ void ScriptMain()
     vehLightID->emplace( "SABRE2", 2 );
     vehLightID->emplace( "SCHAFTER", 1 );
     vehLightID->emplace( "SCHAFTERGTR", 1 );
-    vehLightID->emplace( "SENTINEL4", 0 );
+    vehLightID->emplace( "SENTINEL5", 0 );
     vehLightID->emplace( "SMUGGLER", 1 );
     vehLightID->emplace( "SOLAIR", 0 );
     vehLightID->emplace( "SOVEREIGN2", 0 );
@@ -878,7 +879,7 @@ void ScriptMain()
     vehLightID->emplace( "TURISMO", 0 );
     vehLightID->emplace( "TYPHOON", 0 );
     vehLightID->emplace( "URANUS", 0 );
-    vehLightID->emplace( "VIGERO2", 2 );
+    vehLightID->emplace( "VIGERO3", 2 );
     vehLightID->emplace( "VINCENT", 0 );
     vehLightID->emplace( "VIOLATOR", 1 );
     vehLightID->emplace( "VOODOO3", 2 );
@@ -1108,6 +1109,24 @@ void ScriptMain()
     vehLightID->emplace( "CYCLONE2", 0 );
     vehLightID->emplace( "IGNUS2", 0 );
     vehLightID->emplace( "ARBITERGT", 2 );
+    vehLightID->emplace( "OMNISEGT", 1 ); // mpsum2
+    vehLightID->emplace( "SENTINEL4", 2 );
+    vehLightID->emplace( "CONADA", 0 );
+    vehLightID->emplace( "RUINER4", 1 );
+    vehLightID->emplace( "BRIOSO3", 2 );
+    vehLightID->emplace( "CORSITA", 1 );
+    vehLightID->emplace( "DRAUGUR", 1 );
+    vehLightID->emplace( "KANJOSJ", 8 );
+    vehLightID->emplace( "POSTLUDE", 2 );
+    vehLightID->emplace( "TORERO2", 0 );
+    vehLightID->emplace( "VIGERO2", 1 );
+    vehLightID->emplace( "LM87", 2 );
+    vehLightID->emplace( "TENF", 1 );
+    vehLightID->emplace( "TENF2", 1 );
+    vehLightID->emplace( "RHINEHART", 1 );
+    vehLightID->emplace( "GREENWOOD", 1 );
+    vehLightID->emplace( "SM722", 0 );
+    vehLightID->emplace( "WEEVIL2", 2 );
 
     bool restoreLightsSettings = false;
 
