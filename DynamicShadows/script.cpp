@@ -48,9 +48,7 @@ std::unordered_map<std::string, uint8_t>* vehLightID = nullptr;
 __forceinline void update()
 {
     const int vehicleArrayCount = worldGetAllVehicles( vehsArray, vehsArraySize );
-    const int vehicleCount      = ( vehicleArrayCount < 300 )
-             ? vehicleArrayCount
-             : 300;
+    const int vehicleCount      = std::clamp( vehicleArrayCount, 0, vehsArraySize );
 
     const Entity  playerID        = PLAYER::PLAYER_PED_ID();
     const Vehicle playerVehicleId = PED::IS_PED_IN_ANY_VEHICLE( playerID, 0 )
@@ -227,7 +225,10 @@ void loadConfigFromFile()
 
 void RestoreOriginalLightsSettings()
 {
-    for( unsigned i = 0; i < vehsArraySize; ++i )
+    const int vehicleArrayCount = worldGetAllVehicles( vehsArray, vehsArraySize );
+    const int vehicleCount      = std::clamp( vehicleArrayCount, 0, vehsArraySize );
+
+    for( int i = 0; i < vehicleCount; ++i )
     {
         const int vehicleID = vehsArray[i];
         if( vehicleID != 0 && ENTITY::DOES_ENTITY_EXIST( vehicleID ) )
@@ -247,6 +248,8 @@ void ScriptMain()
     {
         return;
     }
+
+    vehLightID->reserve( 1000 );
 
     vehLightID->emplace( "NINEF", 1 );
     vehLightID->emplace( "NINEF2", 1 );
