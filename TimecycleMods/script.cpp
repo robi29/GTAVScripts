@@ -380,7 +380,7 @@ unsigned SetWeatherAndClouds( const Hash weatherNow, const bool changeClouds, co
     {
         if( weatherHashes[i] == weatherNow && weather[i].modifierEnabled )
         {
-            GRAPHICS::SET_TIMECYCLE_MODIFIER( const_cast<char*>( weather[i].name.c_str() ) );
+            GRAPHICS::SET_TIMECYCLE_MODIFIER( weather[i].name.data() );
             GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH( weather[i].modifierStrength );
 
             // Changing clouds.
