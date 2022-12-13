@@ -1,6 +1,7 @@
 #include "..\Common\inc\script.h"
 #include "..\Common\inc\keyboard.h"
 
+#include <string>
 #include <unordered_map>
 #include <algorithm>
 
@@ -799,7 +800,7 @@ void ScriptMain()
     vehLightID->try_emplace( "BOBCAT", 2 );
     vehLightID->try_emplace( "BODHI", 0 );
     vehLightID->try_emplace( "BOXVILLE6", 0 );
-    vehLightID->try_emplace( "BRICKADE2", 0 );
+    vehLightID->try_emplace( "BRICKADE3", 0 );
     vehLightID->try_emplace( "BUCCANEER3", 0 );
     vehLightID->try_emplace( "BUS2", 0 );
     vehLightID->try_emplace( "CABBY", 0 );
@@ -1130,6 +1131,23 @@ void ScriptMain()
     vehLightID->try_emplace( "GREENWOOD", 1 );
     vehLightID->try_emplace( "SM722", 0 );
     vehLightID->try_emplace( "WEEVIL2", 2 );
+    vehLightID->try_emplace( "TAHOMA", 2 ); // mpchristmas3
+    vehLightID->try_emplace( "BROADWAY", 1 );
+    vehLightID->try_emplace( "R300", 1 );
+    vehLightID->try_emplace( "TULIP2", 1 );
+    vehLightID->try_emplace( "EVERON2", 1 );
+    vehLightID->try_emplace( "VIRTUE", 1 );
+    vehLightID->try_emplace( "BOOR", 1 );
+    vehLightID->try_emplace( "ISSI8", 1 );
+    vehLightID->try_emplace( "PANTHERE", 1 );
+    vehLightID->try_emplace( "ENTITY3", 1 );
+    vehLightID->try_emplace( "EUDORA", 2 );
+    vehLightID->try_emplace( "POWERSURGE", 1 );
+    vehLightID->try_emplace( "JOURNEY2", 0 );
+    vehLightID->try_emplace( "CARGOPLANE2", 0 );
+    vehLightID->try_emplace( "BRICKADE2", 0 );
+    vehLightID->try_emplace( "MANCHEZ3", 0 );
+    vehLightID->try_emplace( "SURFER3", 8 );
 
     bool restoreLightsSettings = false;
 
