@@ -1148,6 +1148,23 @@ void ScriptMain()
     vehLightID->try_emplace( "BRICKADE2", 0 );
     vehLightID->try_emplace( "MANCHEZ3", 0 );
     vehLightID->try_emplace( "SURFER3", 8 );
+    vehLightID->try_emplace( "INDUCTOR2", 0 ); // mp2023_01
+    vehLightID->try_emplace( "INDUCTOR", 0 );
+    vehLightID->try_emplace( "RAIJU", 1 );
+    vehLightID->try_emplace( "MONSTROCITI", 1 );
+    vehLightID->try_emplace( "COUREUR", 0 );
+    vehLightID->try_emplace( "RATEL", 1 );
+    vehLightID->try_emplace( "STINGERTT", 1 );
+    vehLightID->try_emplace( "AVENGER3", 1 );
+    vehLightID->try_emplace( "AVENGER4", 1 );
+    vehLightID->try_emplace( "CLIQUE2", 2 );
+    vehLightID->try_emplace( "STREAMER216", 1 );
+    vehLightID->try_emplace( "BRIGHAM", 2 );
+    vehLightID->try_emplace( "GAUNTLET6", 1 );
+    vehLightID->try_emplace( "CONADA2", 1 );
+    vehLightID->try_emplace( "L35", 0 );
+    vehLightID->try_emplace( "SPEEDO5", 0 );
+    vehLightID->try_emplace( "BUFFALO5", 1 );
 
     bool restoreLightsSettings = false;
 
