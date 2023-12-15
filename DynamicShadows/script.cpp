@@ -472,7 +472,7 @@ void ScriptMain()
     vehLightID->try_emplace( "EMPEROR2", 2 );
     vehLightID->try_emplace( "SURFER2", 2 );
     vehLightID->try_emplace( "TOWTRUCK", 7 );
-    vehLightID->try_emplace( "TWOTRUCK2", 7 );
+    vehLightID->try_emplace( "TWOTRUCK2", 7 ); // TODO: typo?
     vehLightID->try_emplace( "BALLER", 1 );
     vehLightID->try_emplace( "SURFER", 2 );
     vehLightID->try_emplace( "MAMMATUS", 0 );
@@ -799,7 +799,7 @@ void ScriptMain()
     vehLightID->try_emplace( "BLADE2", 1 );
     vehLightID->try_emplace( "BOBCAT", 2 );
     vehLightID->try_emplace( "BODHI", 0 );
-    vehLightID->try_emplace( "BOXVILLE6", 0 );
+    vehLightID->try_emplace( "BOXVILLE7", 0 );
     vehLightID->try_emplace( "BRICKADE3", 0 );
     vehLightID->try_emplace( "BUCCANEER3", 0 );
     vehLightID->try_emplace( "BUS2", 0 );
@@ -883,7 +883,7 @@ void ScriptMain()
     vehLightID->try_emplace( "TURISMO", 0 );
     vehLightID->try_emplace( "TYPHOON", 0 );
     vehLightID->try_emplace( "URANUS", 0 );
-    vehLightID->try_emplace( "VIGERO3", 2 );
+    vehLightID->try_emplace( "VIGERO4", 2 );
     vehLightID->try_emplace( "VINCENT", 0 );
     vehLightID->try_emplace( "VIOLATOR", 1 );
     vehLightID->try_emplace( "VOODOO3", 2 );
@@ -891,7 +891,7 @@ void ScriptMain()
     vehLightID->try_emplace( "WILLARD", 0 );
     vehLightID->try_emplace( "WOLFSBANE2", 0 );
     vehLightID->try_emplace( "YANKEE", 7 );
-    vehLightID->try_emplace( "TANKEE2", 7 );
+    vehLightID->try_emplace( "TANKEE2", 7 ); // TODO: typo?
     vehLightID->try_emplace( "COMET5", 1 ); // mpchristmas2017
     vehLightID->try_emplace( "RAIDEN", 1 );
     vehLightID->try_emplace( "VISERIS", 0 );
@@ -1165,6 +1165,38 @@ void ScriptMain()
     vehLightID->try_emplace( "L35", 0 );
     vehLightID->try_emplace( "SPEEDO5", 0 );
     vehLightID->try_emplace( "BUFFALO5", 1 );
+    vehLightID->try_emplace( "POLICE5", 1 ); // mp2023_02
+    vehLightID->try_emplace( "VIVANITE", 0 );
+    vehLightID->try_emplace( "TERMINUS", 1 );
+    vehLightID->try_emplace( "IMPALER6", 2 );
+    vehLightID->try_emplace( "DORADO", 0 );
+    vehLightID->try_emplace( "TOWTRUCK4", 7 );
+    vehLightID->try_emplace( "TOWTRUCK3", 7 );
+    vehLightID->try_emplace( "BENSON2", 7 );
+    vehLightID->try_emplace( "IMPALER5", 2 );
+    vehLightID->try_emplace( "VIGERO3", 1 );
+    vehLightID->try_emplace( "CAVALCADE3", 1 );
+    vehLightID->try_emplace( "DRIFTFR36", 1 );
+    vehLightID->try_emplace( "DRIFTJESTER", 0 );
+    vehLightID->try_emplace( "DRIFTFUTO", 2 );
+    vehLightID->try_emplace( "DRIFTEUROS", 0 );
+    vehLightID->try_emplace( "DRIFTYOSEMITE", 2 );
+    vehLightID->try_emplace( "DRIFTTAMPA", 2 );
+    vehLightID->try_emplace( "DRIFTREMUS", 2 );
+    vehLightID->try_emplace( "POLGAUNTLET", 1 );
+    vehLightID->try_emplace( "ALEUTIAN", 0 );
+    vehLightID->try_emplace( "FREIGHT2", 0 );
+    vehLightID->try_emplace( "DOMINATOR9", 1 );
+    vehLightID->try_emplace( "TURISMO3", 1 );
+    vehLightID->try_emplace( "BOXVILLE6", 0 );
+    vehLightID->try_emplace( "TVTRAILER2", 0 );
+    vehLightID->try_emplace( "FR36", 1 );
+    vehLightID->try_emplace( "ASTEROPE2", 1 );
+    vehLightID->try_emplace( "BOATTRAILER2", 0 );
+    vehLightID->try_emplace( "BOATTRAILER3", 0 );
+    vehLightID->try_emplace( "PHANTOM4", 7 );
+    vehLightID->try_emplace( "TRAILERS5", 0 );
+    vehLightID->try_emplace( "BALLER8", 1 );
 
     bool restoreLightsSettings = false;
 
