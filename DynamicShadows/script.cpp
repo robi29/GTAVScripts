@@ -808,7 +808,7 @@ void ScriptMain()
     vehLightID->try_emplace( "CHAVOS2", 0 );
     vehLightID->try_emplace( "CHEETAH3", 1 );
     vehLightID->try_emplace( "CONTENDER2", 0 );
-    vehLightID->try_emplace( "COQUETTE6", 0 );
+    vehLightID->try_emplace( "COQUETTE7", 0 );
     vehLightID->try_emplace( "DF8", 1 );
     vehLightID->try_emplace( "DIABOLUS", 0 );
     vehLightID->try_emplace( "DOUBLE2", 1 );
@@ -1218,6 +1218,24 @@ void ScriptMain()
     vehLightID->try_emplace( "DRIFTCYPHER", 0 );
     vehLightID->try_emplace( "DRIFTVORSCHLAG", 1 );
     vehLightID->try_emplace( "VORSCHLAGHAMMER", 1 );
+    vehLightID->try_emplace( "FIREBOLT", 1 ); // mp2024_02
+    vehLightID->try_emplace( "COQUETTE6", 1 );
+    vehLightID->try_emplace( "BANSHEE3", 1 );
+    vehLightID->try_emplace( "TITAN2", 1 );
+    vehLightID->try_emplace( "CHAVOSV6", 1 );
+    vehLightID->try_emplace( "FREIGHTCAR3", 0 );
+    vehLightID->try_emplace( "CARGOBOB5", 1 );
+    vehLightID->try_emplace( "DUSTER2", 1 );
+    vehLightID->try_emplace( "JESTER5", 0 );
+    vehLightID->try_emplace( "YOUGA5", 0 );
+    vehLightID->try_emplace( "DRIFTFUTO2", 2 );
+    vehLightID->try_emplace( "DRIFTJESTER3", 1 );
+    vehLightID->try_emplace( "DRIFTCHEBUREK", 2 );
+    vehLightID->try_emplace( "POLCOQUETTE4", 0 );
+    vehLightID->try_emplace( "POLFACTION2", 2 );
+    vehLightID->try_emplace( "POLTERMINUS", 1 );
+    vehLightID->try_emplace( "POLCARACARA", 1 );
+    vehLightID->try_emplace( "POLURANUS", 2 );
 
     bool restoreLightsSettings = false;
 
