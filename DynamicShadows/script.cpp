@@ -806,7 +806,7 @@ void ScriptMain()
     vehLightID->try_emplace( "CABBY", 0 );
     vehLightID->try_emplace( "CHAVOS", 0 );
     vehLightID->try_emplace( "CHAVOS2", 0 );
-    vehLightID->try_emplace( "CHEETAH3", 1 );
+    vehLightID->try_emplace( "CHEETAH4", 1 );
     vehLightID->try_emplace( "CONTENDER2", 0 );
     vehLightID->try_emplace( "COQUETTE7", 0 );
     vehLightID->try_emplace( "DF8", 1 );
@@ -817,7 +817,7 @@ void ScriptMain()
     vehLightID->try_emplace( "FELTZER", 1 );
     vehLightID->try_emplace( "FEROCI", 0 );
     vehLightID->try_emplace( "FEROCI2", 0 );
-    vehLightID->try_emplace( "FLATBED2", 0 );
+    vehLightID->try_emplace( "FLATBED3", 0 );
     vehLightID->try_emplace( "FLOATER", 1 );
     vehLightID->try_emplace( "FORTUNE", 0 );
     vehLightID->try_emplace( "FREEWAY", 0 );
@@ -865,7 +865,7 @@ void ScriptMain()
     vehLightID->try_emplace( "SABRE2", 2 );
     vehLightID->try_emplace( "SCHAFTER", 1 );
     vehLightID->try_emplace( "SCHAFTERGTR", 1 );
-    vehLightID->try_emplace( "SENTINEL5", 0 );
+    vehLightID->try_emplace( "SENTINEL6", 0 );
     vehLightID->try_emplace( "SMUGGLER", 1 );
     vehLightID->try_emplace( "SOLAIR", 0 );
     vehLightID->try_emplace( "SOVEREIGN2", 0 );
@@ -1236,6 +1236,24 @@ void ScriptMain()
     vehLightID->try_emplace( "POLTERMINUS", 1 );
     vehLightID->try_emplace( "POLCARACARA", 1 );
     vehLightID->try_emplace( "POLURANUS", 2 );
+    vehLightID->try_emplace( "RAPIDGT4", 1 ); // mp2025_01
+    vehLightID->try_emplace( "SUZUME", 1 );
+    vehLightID->try_emplace( "MINIMUS", 1 );
+    vehLightID->try_emplace( "WOODLANDER", 1 );
+    vehLightID->try_emplace( "EVERON3", 1 );
+    vehLightID->try_emplace( "TAMPA4", 1 );
+    vehLightID->try_emplace( "HARDY", 1 );
+    vehLightID->try_emplace( "DRIFTHARDY", 1 );
+    vehLightID->try_emplace( "POLICEB2", 1 );
+    vehLightID->try_emplace( "L352", 0 );
+    vehLightID->try_emplace( "DRIFTL352", 0 );
+    vehLightID->try_emplace( "DRIFTDOMINATOR10", 1 );
+    vehLightID->try_emplace( "STOCKADE4", 0 );
+    vehLightID->try_emplace( "DRIFTCHAVOSV6", 1 );
+    vehLightID->try_emplace( "CHEETAH3", 1 );
+    vehLightID->try_emplace( "FLATBED2", 0 );
+    vehLightID->try_emplace( "SENTINEL5", 0 );
+    vehLightID->try_emplace( "MAVERICK2", 0 );
 
     bool restoreLightsSettings = false;
 
